@@ -150,6 +150,42 @@ class AdmModules extends Seeder
                 'is_active' => 1,
             ],
 
+            [
+
+                'created_at' => date('Y-m-d H:i:s'),
+                'name' => 'BTO Order List',
+                'icon' => 'fa-solid fa-list-ul',
+                'path' => 'bto_order_list',
+                'table_name' => 'order_list',
+                'controller' => 'OrderList\OrderListController',
+                'is_protected' => 0,
+                'is_active' => 1,
+            ],
+
+            [
+
+                'created_at' => date('Y-m-d H:i:s'),
+                'name' => 'BTO IMFS',
+                'icon' => 'fa-solid fa-table-list',
+                'path' => 'bto_imfs',
+                'table_name' => 'order_list',
+                'controller' => 'BtoImfs\BtoImfsController',
+                'is_protected' => 0,
+                'is_active' => 1,
+            ],
+
+            [
+
+                'created_at' => date('Y-m-d H:i:s'),
+                'name' => 'Status',
+                'icon' => 'fa-solid fa-check',
+                'path' => 'status',
+                'table_name' => 'bto_status',
+                'controller' => 'Status\StatusController',
+                'is_protected' => 0,
+                'is_active' => 1,
+            ],
+
      
         ];
 

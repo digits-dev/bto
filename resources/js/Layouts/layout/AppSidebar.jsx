@@ -36,7 +36,7 @@ const AppSidebar = () => {
                     }`}
                 >
                     <div className="h-[50px] w-[1.5px] bg-white"></div>
-                    <p className="ml-5 font-semibold text-[25px]">TEMP</p>
+                    <p className="ml-5 font-semibold text-[25px]">BTO</p>
                 </div>
             </div>
 

@@ -2,26 +2,15 @@
 use App\Helpers\CommonHelpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Test\TestController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\MenusController;
 use App\Http\Controllers\Admin\ModulsController;
-use App\Http\Controllers\Action\ActionController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\PrivilegesController;
-use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\DepStatus\DepStatusController;
 use App\Http\Controllers\Users\ChangePasswordController;
-use App\Http\Controllers\DepDevices\DepDevicesController;
-use App\Http\Controllers\Api\AppleDeviceEnrollmentController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\ListOfOrders\ListOfOrdersController;
-use App\Http\Controllers\EnrollmentList\EnrollmentListController;
-use App\Http\Controllers\EnrollmentStatus\EnrollmentStatusController;
-use App\Http\Controllers\ItemMaster\ItemMasterController;
 use Inertia\Inertia; // We are going to use this class to render React components
-use App\Http\Controllers\PullErpController;
 use App\Http\Controllers\Users\ProfilePageController;
 
 /*
@@ -35,9 +24,6 @@ use App\Http\Controllers\Users\ProfilePageController;
 |
 */
 
-//query from beach
-Route::get('/query', [PullErpController::class, 'getListOfOrdersFromErpv2']);
-Route::get('/enroll', [ListOfOrdersController::class, 'enrollDevices']);
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('login', [LoginController::class, 'index'])->name('login');
@@ -49,22 +35,6 @@ Route::get('/reset_password_email/{email}', [ResetPasswordController::class, 'ge
 Route::post('/send_resetpass_email/reset',[ResetPasswordController::class, 'resetPassword']);
 
 Route::post('login-save', [LoginController::class, 'authenticate'])->name('login-save');
-
-Route::group(['prefix' => 'api'], function () {
-    
-    // Route for testing showOrderDetails
-    Route::get('/test-show-order-details', [AppleDeviceEnrollmentController::class, 'showOrderDetails'])
-        ->name('test.showOrderDetails');
-
-    // Route for testing testEnrollDevice
-    Route::get('/test-enroll-device', [AppleDeviceEnrollmentController::class, 'testEnrollDevice'])
-        ->name('test.enrollDevice');
-
-    // Route for testing checkTransactionStatus
-    Route::get('/test-check-transaction-status', [AppleDeviceEnrollmentController::class, 'checkTransactionStatus'])
-        ->name('test.checkTransactionStatus');
-    
-});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -100,63 +70,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/menu_management/edit-menu-save/{id}', [MenusController::class, 'postEditSave'])->name('edit-menus-save');
     Route::post('/set-status-menus', [MenusController::class, 'postStatusSave'])->name('delete-menus-save');
 
-    //EXPORTS
-    Route::get('/list-of-orders-export', [ListOfOrdersController::class, 'export']);
-    Route::get('/dep-devices-export', [DepDevicesController::class, 'export']);
-    Route::get('/enrollment-list-export', [EnrollmentListController::class, 'export']);
-    Route::get('/customers-export', [CustomerController::class, 'export']);
-    Route::get('/actions-export', [ActionController::class, 'export']);
-    Route::get('/dep-status-export', [DepStatusController::class, 'export']);
-    Route::get('/enrollment-status-export', [EnrollmentStatusController::class, 'export']);
-    Route::get('/item-master-export', [ItemMasterController::class, 'export']);
-    Route::get('/export-json/{log_type}/{order_id}', [ListOfOrdersController::class, 'exportText'])->name('export-json');
-    Route::get('/export-transaction/{order_id}', [ListOfOrdersController::class, 'exportTransaction'])->name('export-transaction');
-
-    //List of Orders
-    Route::get('/list_of_orders/{order}', [ListOfOrdersController::class, 'show']);
-    Route::get('/list_of_orders/{order}/edit', [ListOfOrdersController::class, 'edit']);
-    Route::post('/list_of_orders/enroll', [ListOfOrdersController::class, 'enrollDevices']);
-    Route::post('/list_of_orders/return', [ListOfOrdersController::class, 'unEnrollDevices']);
-    Route::post('/list_of_orders/bulk-enroll', [ListOfOrdersController::class, 'bulkEnrollDevices']);
-    Route::post('/list_of_orders/bulk-return', [ListOfOrdersController::class, 'bulkReturnDevices']);
-
-    //EnrollmentList
-    Route::get('/enrollment_list/{enrollmentList}', [EnrollmentListController::class, 'EnrollmentListDetails']);
-    Route::get('/enrollment_list/{transactionId}/check_status', [EnrollmentListController::class, 'checkTransactionStatus']);
-
-    //IMPORTS
-    Route::post('/customers-import', [CustomerController::class, 'import']);
-    Route::post('/actions-import', [ActionController::class, 'import']);
-    Route::post('/dep-status-import', [DepStatusController::class, 'import']);
-    Route::post('/enrollment-status-import', [EnrollmentStatusController::class, 'import']);
-
-    //IMPORTS TEMPLATE
-    Route::get('/customers-import-template', [CustomerController::class, 'downloadTemplate']);
-    Route::get('/actions-import-template', [ActionController::class, 'downloadTemplate']);
-    Route::get('/dep-status-import-template', [DepStatusController::class, 'downloadTemplate']);
-    Route::get('/enrollment-status-import-template', [EnrollmentStatusController::class, 'downloadTemplate']);
-
-    //SUBMASTERS
-
-    Route::post('/item_master_create', [ItemMasterController::class, 'addItemMaster']);
-    Route::put('/item_master_update/{itemMaster}', [ItemMasterController::class, 'updateItemMaster']);
-
-    Route::post('/customers', [CustomerController::class, 'store']);
-    Route::put('/customers/bulkupdate', [CustomerController::class, 'bulkUpdate']);
-    Route::put('/customers/{customer}', [CustomerController::class, 'update']);
-
-    Route::post('/actions', [ActionController::class, 'store']);
-    Route::put('/actions/bulkupdate', [ActionController::class, 'bulkUpdate']);
-    Route::put('/actions/{action}', [ActionController::class, 'update']);
-
-
-    Route::post('/dep_statuses', [DepStatusController::class, 'store']);
-    Route::put('/dep_statuses/bulkupdate', [DepStatusController::class, 'bulkUpdate']);
-    Route::put('/dep_statuses/{dep_status}', [DepStatusController::class, 'update']);
-
-    Route::post('/enrollment_statuses', [EnrollmentStatusController::class, 'store']);
-    Route::put('/enrollment_statuses/bulkupdate', [EnrollmentStatusController::class, 'bulkUpdate']);
-    Route::put('/enrollment_statuses/{enrollment_status}', [EnrollmentStatusController::class, 'update']);
 
 });
 

@@ -117,7 +117,7 @@ const ResetPasswordEmail = ({ email }) => {
                     />
                 </div>
                 <p className="text-white font-nunito-sans font-bold text-[20px] text-center">
-                    Template
+                    Build to Order System
                 </p>
             </div>
             <div className="bg-white rounded-lg max-w-lg w-full font-nunito-sans">

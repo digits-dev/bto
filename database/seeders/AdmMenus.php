@@ -41,6 +41,83 @@ class AdmMenus extends Seeder
             ]
         );
 
+        DB::table('adm_menuses')->updateOrInsert(
+            [
+                'name'              => 'BTO Order List',
+            ],
+            [
+                'name'              => 'BTO Order List',
+                'type'              => 'Route',
+                'path'              => 'OrderList\OrderListControllerGetIndex',
+                'slug'              => 'bto_order_list',
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-list-ul',
+                'parent_id'         => 0,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 1
+            ]
+        );
+
+        DB::table('adm_menuses')->updateOrInsert(
+            [
+                'name'              => 'BTO IMFS',
+            ],
+            [
+                'name'              => 'BTO IMFS',
+                'type'              => 'Route',
+                'path'              => 'BtoImfs\BtoImfsControllerGetIndex',
+                'slug'              => 'bto_imfs',
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-table-list',
+                'parent_id'         => 0,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 2
+            ]
+        );
+
+        DB::table('adm_menuses')->updateOrInsert(
+            [
+                'name'              => 'Submaster',
+            ],
+            [
+                'name'              => 'Submaster',
+                'type'              => 'URL',
+                'path'              => '#',
+                'slug'              => NULL,
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-bars',
+                'parent_id'         => 0,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 3
+            ]
+        );
+
+        DB::table('adm_menuses')->updateOrInsert(
+            [
+                'name'              => 'Status',
+            ],
+            [
+                'name'              => 'Status',
+                'type'              => 'Route',
+                'path'              => 'Status\StatusControllerGetIndex',
+                'slug'              => 'status',
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-check',
+                'parent_id'         => 4,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 1
+            ]
+        );
+
+
     }
 
 }
