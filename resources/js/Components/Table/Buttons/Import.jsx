@@ -3,9 +3,11 @@ import TableButton from './TableButton'
 import { useState } from 'react'
 import { router, useForm } from '@inertiajs/react'
 
-const Import = ({importPath, templatePath}) => {
+
+const Import = ({importPath, templatePath , handleToast}) => {
 
   const [show, setShow] = useState(false);
+
 
   const { data, setData, post, progress, errors, reset, clearErrors  } = useForm({
     file: null,
@@ -13,7 +15,7 @@ const Import = ({importPath, templatePath}) => {
 
   const submit = (e) => {
     e.preventDefault()
-    post(importPath, {forceFormData: true,  onSuccess: () => {handleShow(); reset();} });
+    post(importPath, {forceFormData: true,  onSuccess: () => {handleShow(); reset(); handleToast();} });
   }
   
   const handleShow = () => {

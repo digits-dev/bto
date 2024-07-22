@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useRef } from "react";
 import DissapearingToast from "../Components/Toast/DissapearingToast";
 
 const ToastContext = createContext();
@@ -7,6 +7,7 @@ export function ToastProvider({ children }) {
 	const [message, setMessage] = useState("");
 	const [messageType, setMessageType] = useState("");
 	const [duration, setDuration] = useState(3000);
+	const timeoutId = useRef(null);
 
 	const handleToast = useCallback((message, messageType, duration = 3000, ...params) => {
 		document.getElementById("app-content").scrollIntoView(true);
@@ -14,7 +15,14 @@ export function ToastProvider({ children }) {
 		setMessageType(messageType);
 		setDuration(duration);
 
-		setTimeout(() => setMessage(""), duration);
+		if (timeoutId.current) {
+			clearTimeout(timeoutId.current);
+		}
+	
+		timeoutId.current = setTimeout(() => {
+			setMessage("");
+			timeoutId.current = null; 
+		}, duration);
 
 		params.forEach((param) => {
 			if (typeof param === "function") {

@@ -7,9 +7,10 @@ const Export = ({ path, handleToast }) => {
             title: `<p class="font-nunito-sans" >Are you sure that you want to export this table?</p>`,
             showCancelButton: true,
             confirmButtonText: "Confirm",
-            confirmButtonColor: "#000000",
+            confirmButtonColor: "#201E43",
+            cancelButtonColor: "#134B70",
             icon: "question",
-            iconColor: "#D1B701",
+            iconColor: "#134B70",
             reverseButtons: true,
         }).then(async (result) => {
             if (result.isConfirmed) {

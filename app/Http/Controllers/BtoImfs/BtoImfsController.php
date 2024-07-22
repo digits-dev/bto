@@ -37,7 +37,7 @@ class BtoImfsController extends Controller
     {
 
         $data = [];
-        $data['order_list'] = self::getAllData()->paginate($this->perPage)->withQueryString();
+        $data['bto_imfs'] = self::getAllData()->paginate($this->perPage)->withQueryString();
         $data['queryParams'] = request()->query();
 
         return Inertia::render('BtoImfs/BtoImfs', $data);

@@ -9,12 +9,13 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 
-class ImportActionsTemplate implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
+class BtoStatusTemplate implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
 {
     public function headings(): array
     {
         return [
-            'Action Name',
+            'Status Name',
+            'Color',
         ];
     }
 
@@ -22,16 +23,12 @@ class ImportActionsTemplate implements FromArray, WithHeadings, ShouldAutoSize, 
     {
         return [
             [
-                'Enroll Device',
+                'Sample Status',
+                'red',
             ],
             [
-                'Return Device',
-            ],
-            [
-                'Void Order',
-            ],
-            [
-                'Override Order',
+                'Sample Status 2',
+                'green',
             ],
         ];
     }
@@ -41,5 +38,4 @@ class ImportActionsTemplate implements FromArray, WithHeadings, ShouldAutoSize, 
         $sheet->getStyle('1:1')->getFont()->setBold(true);
         $sheet->getStyle($sheet->calculateWorksheetDimension())->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
     }
-
 }

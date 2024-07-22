@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 
-class ItemMasterExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
+class BtoStatusExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
     use Exportable;
     public $query;
@@ -22,48 +22,33 @@ class ItemMasterExport implements FromQuery, WithHeadings, WithMapping, ShouldAu
 
     public function headings(): array {
         $headers = [
-                    "Digits Code",
-                    "UPC Code Up 1",
-                    "UPC Code Up 2",
-                    "UPC Code Up 3",
-                    "UPC Code Up 4",
-                    "UPC Code Up 5",
-                    "WH Category",
-                    "Supplier Item Code",
-                    "Item Description",
-                    "Brand Description",
+                    "BTO Status ID",
+                    "Status Name",
+                    "Creation Date",
                 ];
-        return $headers;
 
+        return $headers;
     }
 
     public function map($item): array {
 
-       $itemMaster = [
-                    $item->digits_code,
-                    $item->upc_code_up_1,
-                    $item->upc_code_up_2,
-                    $item->upc_code_up_3,
-                    $item->upc_code_up_4,
-                    $item->upc_code_up_5,
-                    $item->wh_category,
-                    $item->supplier_item_code,
-                    $item->item_description,
-                    $item->brand_description,
+       $status = [
+                    $item->id,
+                    $item->status_name,
+                    $item->created_date,
                 ];
        
-        return $itemMaster;
+        return $status;
     }
 
     public function query(){       
         return $this->query;
     }
-
-
+    
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('1:1')->getFont()->setBold(true);
         $sheet->getStyle($sheet->calculateWorksheetDimension())->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
     }
-
+    
 }

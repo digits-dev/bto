@@ -20,7 +20,7 @@ class AdmUsersStatuses extends Seeder
                 'type' => 'users'
             ],
             [
-                'name' => 'In Active',
+                'name' => 'Inactive',
                 'type' => 'users'
             ]
         ];

@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call([AdmMenuPrivileges::class]);
         $this->call([AdmUsersSeeders::class]);
         $this->call([AdmUsersStatuses::class]);
+        $this->call([BtoStatusSeeder::class]);
     }
 }

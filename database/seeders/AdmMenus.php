@@ -100,10 +100,10 @@ class AdmMenus extends Seeder
 
         DB::table('adm_menuses')->updateOrInsert(
             [
-                'name'              => 'Status',
+                'name'              => 'BTO Status',
             ],
             [
-                'name'              => 'Status',
+                'name'              => 'BTO Status',
                 'type'              => 'Route',
                 'path'              => 'Status\StatusControllerGetIndex',
                 'slug'              => 'status',

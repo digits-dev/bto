@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PrivilegesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Status\StatusController;
 use Inertia\Inertia; // We are going to use this class to render React components
 use App\Http\Controllers\Users\ProfilePageController;
 
@@ -69,6 +70,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/menu_management/edit/{id}', [MenusController::class, 'getEdit'])->name('MenusControllerGetEdit');
     Route::post('/menu_management/edit-menu-save/{id}', [MenusController::class, 'postEditSave'])->name('edit-menus-save');
     Route::post('/set-status-menus', [MenusController::class, 'postStatusSave'])->name('delete-menus-save');
+
+    //BTO STATUS
+    Route::post('/bto_status', [StatusController::class, 'store']);
+    Route::put('/bto_status/bulkupdate', [StatusController::class, 'bulkUpdate']);
+    Route::put('/bto_status/{bto_status}', [StatusController::class, 'update']);
+
+    // EXPORTS
+    Route::get('/bto_status_export', [StatusController::class, 'export']);
+
+    // IMPORTS
+    Route::post('/bto_status_import', [StatusController::class, 'import']);
+    
+    // TEMPLATES
+    Route::get('/bto_status_template', [StatusController::class, 'downloadTemplate']);
 
 
 });
