@@ -15,13 +15,21 @@ return new class extends Migration
             $table->id();
             $table->string('customer_name')->nullable();
             $table->integer('order_qty')->nullable();
-            $table->string('store_name')->nullable();
+            $table->integer('stores_id');
             $table->string('phone_number')->nullable();
+            $table->string('item_description')->nullable();
             $table->integer('status')->default(1);
-            $table->string('part_no')->nullable();
-            $table->string('srp')->nullable();
-            $table->string('order_date')->nullable();
+            $table->string('digits_code', 10)->nullable();
+            $table->string('part_number', 255)->nullable();
+            $table->decimal('store_cost')->nullable();
+            $table->decimal('srp')->nullable();
+            $table->dateTime('order_date')->nullable();
+            $table->integer('created_by');
             $table->timestamps();
+            $table->integer('updated_by_mcb')->nullable();
+            $table->dateTime('updated_by_mcb_date')->nullable();
+            $table->integer('updated_by_acctg')->nullable();
+            $table->dateTime('updated_by_acctg_date')->nullable();
         });
     }
 
