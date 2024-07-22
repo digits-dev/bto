@@ -1,32 +1,42 @@
 import React from "react";
 import DescIcon from "../Table/Icons/DescIcon";
 import FormatLabelName from "../../Utilities/FormatLabelName";
-import Select from 'react-select';
+import Select from "react-select";
 
 const colourStyles = {
     multiValue: (styles, { data }) => {
-      const color = data.color;
-      return {
-        ...styles,
-      };
+        const color = data.color;
+        return {
+            ...styles,
+        };
     },
     multiValueLabel: (styles, { data }) => ({
-      ...styles,
-      color: data.color,
+        ...styles,
+        color: data.color,
     }),
     multiValueRemove: (styles, { data }) => ({
-      ...styles,
-      color: data.color,
-      ':hover': {
-        backgroundColor: data.color,
-        color: 'white',
-      },
-      backgroundColor: 'black',
-      color: 'white',
+        ...styles,
+        color: data.color,
+        ":hover": {
+            backgroundColor: data.color,
+            color: "white",
+        },
+        backgroundColor: "black",
+        color: "white",
     }),
 };
 
-const DropdownSelect = ({ options, onChange, value, name, defaultSelect, displayName, is_multi='', selectType = '', placeholder }) => {
+const DropdownSelect = ({
+    options,
+    onChange,
+    value,
+    name,
+    defaultSelect,
+    displayName,
+    is_multi = "",
+    selectType = "",
+    placeholder,
+}) => {
     return (
         <div className="relative">
             <label
@@ -35,19 +45,20 @@ const DropdownSelect = ({ options, onChange, value, name, defaultSelect, display
             >
                 {displayName || FormatLabelName(name)}
             </label>
-            {selectType 
-            ? 
-           <Select
-                placeholder={placeholder}
-                defaultValue={value}
-                name={name}
-                className="block w-full py-2 border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={onChange}
-                options={options.map(opt => ({ value: opt.id, label: opt.name, name: name }))}
-            />
-             
-               
-            : 
+            {selectType ? (
+                <Select
+                    placeholder={placeholder}
+                    defaultValue={value}
+                    name={name}
+                    className="block w-full pt-1 border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    onChange={onChange}
+                    options={options.map((opt) => ({
+                        value: opt.id,
+                        label: opt.name,
+                        name: name,
+                    }))}
+                />
+            ) : (
                 <select
                     name={name}
                     value={value}
@@ -61,14 +72,14 @@ const DropdownSelect = ({ options, onChange, value, name, defaultSelect, display
                         </option>
                     ))}
                 </select>
-            }
-            {!selectType 
-            ? 
+            )}
+            {!selectType ? (
                 <span className="absolute top-1/2 right-5 -translate-y-1/2  pointer-events-none">
                     <DescIcon />
                 </span>
-            : ''}
-           
+            ) : (
+                ""
+            )}
         </div>
     );
 };

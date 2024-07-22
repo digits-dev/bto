@@ -9,9 +9,10 @@ const InputComponent = ({
     placeholder,
     displayName,
     checked,
+    extendClass,
 }) => {
     return (
-        <div className="">
+        <div className={extendClass}>
             <label
                 htmlFor={name}
                 className="block text-sm font-bold text-gray-700 font-nunito-sans"

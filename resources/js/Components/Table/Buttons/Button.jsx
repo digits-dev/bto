@@ -15,14 +15,14 @@ const Button = ({
                 <button
                     onClick={onClick}
                     disabled={disabled}
-                    className={`bg-primary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 ${extendClass}`}
+                    className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 ${extendClass}`}
                 >
                     {children}
                 </button>
             ) : (
                 <Link
                     href={href}
-                    className={`bg-primary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 ${extendClass}`}
+                    className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 ${extendClass}`}
                 >
                     {children}
                 </Link>

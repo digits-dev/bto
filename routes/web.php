@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\MenusController;
 use App\Http\Controllers\Admin\ModulsController;
 use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\OrderList\OrderListController;
 use App\Http\Controllers\Admin\PrivilegesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Users\ChangePasswordController;
@@ -84,6 +85,10 @@ Route::middleware(['auth'])->group(function () {
     
     // TEMPLATES
     Route::get('/bto_status_template', [StatusController::class, 'downloadTemplate']);
+
+    // BTO Order List
+    Route::get('/bto_add', [OrderListController::class, 'add']);
+    Route::post('/bto_add_Save', [OrderListController::class, 'addSave']);
 
 
 });

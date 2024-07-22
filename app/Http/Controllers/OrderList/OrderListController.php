@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrderList;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
 
 class OrderListController extends Controller
 {
@@ -37,6 +38,24 @@ class OrderListController extends Controller
         $data['queryParams'] = request()->query();
 
         return Inertia::render('OrderList/OrderList', $data);
+    }
+
+    public function add() {
+
+        return Inertia::render('OrderList/add');
+    }
+    
+    public function addSave(Request $request) {
+        if ($request->hasFile('uploaded_file')) {
+            $file = $request->file('uploaded_file');  // Use the `file` method to get the uploaded file
+            $filename = time() . '_' . $file->getClientOriginalName();  // Get the original file name
+            $file->move(public_path('images'), $filename);  // Move the file to the desired directory
+        
+            return response()->json(['success' => 'File uploaded successfully', 'filename' => $filename], 200);
+        }
+        
+
+
     }
 }
 
