@@ -29,6 +29,36 @@ class AdmPrivileges extends Seeder
                 'theme_color'   => 'skin-green',
                 'created_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'name' => 'Store Head',
+                'is_superadmin' => 0,
+                'theme_color'   => 'skin-green',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Assistant Store Head',
+                'is_superadmin' => 0,
+                'theme_color'   => 'skin-green',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Cashier',
+                'is_superadmin' => 0,
+                'theme_color'   => 'skin-green',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Merchandising',
+                'is_superadmin' => 0,
+                'theme_color'   => 'skin-green',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Accounting',
+                'is_superadmin' => 0,
+                'theme_color'   => 'skin-green',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
         ];
 
         foreach ($data as $priv) {
