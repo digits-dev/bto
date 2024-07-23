@@ -30,6 +30,7 @@ const OrderList = ({ orders, queryParams }) => {
         }, 5);
     }, []);
 
+    console.log(orders);
 
     return (
         <>
@@ -156,7 +157,7 @@ const OrderList = ({ orders, queryParams }) => {
                                             {item.order_qty}
                                         </RowData>
                                         <RowData isLoading={loading}>
-                                            {item.stores_id}
+                                            {item.bto_store.location_name}
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.phone_number}

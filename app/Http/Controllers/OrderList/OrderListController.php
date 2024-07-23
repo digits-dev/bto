@@ -22,8 +22,7 @@ class OrderListController extends Controller
 
     public function getAllData()
     {
-        $query = OrderList::query()->with('btoStatus:id,status_name,color');
-
+        $query = OrderList::query()->with(['btoStatus:id,status_name,color', 'btoStore:id,location_name']);
 
         $filter = $query->searchAndFilter(request());
 

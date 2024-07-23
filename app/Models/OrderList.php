@@ -33,6 +33,11 @@ class OrderList extends Model
                             $query->where('status_name', 'LIKE', "%$search%");
                         });
                     }
+                    if($field === 'stores_id') {
+                        $query->orWhereHas('btoStore', function ($query) use ($search) {
+                            $query->where('location_name', 'LIKE', "%$search%");
+                        });
+                    }
                     $query->orWhere($field, 'LIKE', "%$search%");
                 }
             });
@@ -50,5 +55,9 @@ class OrderList extends Model
 
     public function btoStatus(){
         return $this->belongsTo(BtoStatus::class, 'status', 'id');
+    }
+
+    public function btoStore(){
+        return $this->belongsTo(StoreLocation::class, 'stores_id', 'id');
     }
 }

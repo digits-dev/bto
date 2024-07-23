@@ -222,7 +222,7 @@ const StoreLocation = ({storeLocation,queryParams}) => {
         action="create"
         handleShow={()=>{
           handleShowCreate(); 
-            handleToast("Created Status", "success");
+            handleToast("Created Store", "success");
         }}   
       />
     </Modal>
@@ -235,7 +235,7 @@ const StoreLocation = ({storeLocation,queryParams}) => {
         action="edit" 
         handleShow={()=>{
             handleShowEdit(); 
-            handleToast("Updated Status", "success");
+            handleToast("Updated Store", "success");
         }} 
         updateFormValues={updateFormValues}
       />
