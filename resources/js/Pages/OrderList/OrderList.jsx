@@ -90,6 +90,18 @@ const OrderList = ({ orders, queryParams }) => {
                                     Item Description
                                 </TableHeader>
                                 <TableHeader
+                                    name="uom"
+                                    queryParams={queryParams}
+                                >
+                                    UOM
+                                </TableHeader>
+                                <TableHeader
+                                    name="brand"
+                                    queryParams={queryParams}
+                                >
+                                    Brand
+                                </TableHeader>
+                                <TableHeader
                                     name="status"
                                     queryParams={queryParams}
                                     width="lg"
@@ -151,6 +163,12 @@ const OrderList = ({ orders, queryParams }) => {
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.item_description}
+                                        </RowData>
+                                        <RowData isLoading={loading}>
+                                            {item.uom}
+                                        </RowData>
+                                        <RowData isLoading={loading}>
+                                            {item.brand}
                                         </RowData>
                                         <RowStatus isLoading={loading} color={item.bto_status.color} >
                                             {item.bto_status.status_name}
