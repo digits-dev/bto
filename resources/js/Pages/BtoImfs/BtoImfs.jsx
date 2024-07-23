@@ -49,55 +49,37 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
                   Id
                 </TableHeader>
                 <TableHeader
-                  name="customer_name"
+                  name="digits_code"
                   queryParams={queryParams}
                   width='lg'
                 >
-                  Customer Name
+                  Digits Code
                 </TableHeader>
                 <TableHeader
-                  name="order_qty"
-                  queryParams={queryParams}
-                >
-                  Order Qty
-                </TableHeader>
-                <TableHeader
-                  name="store_name"
-                  width='lg'
-                  queryParams={queryParams}
-                >
-                  Store Name
-                </TableHeader>
-                <TableHeader
-                  name="phone_number"
-                  width='lg'
-                  queryParams={queryParams}
-                >
-                  Phone Number
-                </TableHeader>
-                <TableHeader
-                  name="status"
-                  queryParams={queryParams}
-                >
-                  Status
-                </TableHeader>
-                <TableHeader
-                  name="part_no"
+                  name="part_number"
                   queryParams={queryParams}
                 >
                   Part #
                 </TableHeader>
                 <TableHeader
+                  name="item_description"
+                  width='lg'
+                  queryParams={queryParams}
+                >
+                  Item Description
+                </TableHeader>
+                <TableHeader
                   name="srp"
+                  width='lg'
                   queryParams={queryParams}
                 >
                   SRP
                 </TableHeader>
                 <TableHeader
-                  name="order_date"
+                  name="store_cost"
                   queryParams={queryParams}
                 >
-                  Order Date
+                  Store Cost
                 </TableHeader>
                 <TableHeader
                   sortable={false}
@@ -116,28 +98,19 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
                     {item.id}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.customer_name}
+                    {item.digits_code}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.order_qty}
+                    {item.part_number}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.store_name}
-                  </RowData>
-                  <RowData isLoading={loading}>
-                    {item.phone_number}
-                  </RowData>
-                  <RowData isLoading={loading}>
-                    {item.status}
-                  </RowData>
-                  <RowData isLoading={loading}>
-                    {item.part_no}
+                    {item.item_description}
                   </RowData>
                   <RowData isLoading={loading}>
                     {item.srp}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.order_date}
+                    {item.store_cost}
                   </RowData>
                   <RowData
                       isLoading={loading}
@@ -145,18 +118,11 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
                       width="sm"
                       center
                   >
-                      <RowActions>
-                          <RowAction
-                              type="button"
-                              action="view"
-                              size="md"
-                          />
-                          <RowAction
-                              type="button"
-                              action="edit"
-                              size="md"
-                          />
-                      </RowActions>
+                    <RowAction
+                        type="button"
+                        action="view"
+                        size="md"
+                    />
                   </RowData>
                 </Row>
                 
