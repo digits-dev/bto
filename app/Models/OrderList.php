@@ -14,10 +14,10 @@ class OrderList extends Model
     protected $filterable = [
         'customer_name', 
         'order_qty', 
-        'store_name', 
+        'stores_id', 
         'phone_number', 
         'status', 
-        'part_no',
+        'part_number',
         'srp',
         'order_date',
     ];
@@ -28,11 +28,11 @@ class OrderList extends Model
             $search = $request->input('search');
             $query->where(function ($query) use ($search) {
                 foreach ($this->filterable as $field) {
-                    // if($field === 'enrollment_status') {
-                    //     $query->orWhereHas('status', function ($query) use ($search) {
-                    //         $query->where('enrollment_status', 'LIKE', "%$search%");
-                    //     });
-                    // }
+                    if($field === 'status') {
+                        $query->orWhereHas('btoStatus', function ($query) use ($search) {
+                            $query->where('status_name', 'LIKE', "%$search%");
+                        });
+                    }
                     $query->orWhere($field, 'LIKE', "%$search%");
                 }
             });
@@ -46,5 +46,9 @@ class OrderList extends Model
         }
     
         return $query;
+    }
+
+    public function btoStatus(){
+        return $this->belongsTo(BtoStatus::class, 'status', 'id');
     }
 }

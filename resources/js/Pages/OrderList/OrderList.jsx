@@ -19,7 +19,7 @@ import Tbody from "../../Components/Table/Tbody";
 import RowData from "../../Components/Table/RowData";
 import RowAction from "../../Components/Table/RowAction";
 import RowActions from "../../Components/Table/RowActions";
-import AddForm from "./add";
+import RowStatus from "../../Components/Table/RowStatus";
 
 const OrderList = ({ orders, queryParams }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -29,6 +29,7 @@ const OrderList = ({ orders, queryParams }) => {
             setTitle("BTO Order List");
         }, 5);
     }, []);
+
 
     return (
         <>
@@ -82,8 +83,16 @@ const OrderList = ({ orders, queryParams }) => {
                                     Phone Number
                                 </TableHeader>
                                 <TableHeader
+                                    name="item_description"
+                                    width="lg"
+                                    queryParams={queryParams}
+                                >
+                                    Item Description
+                                </TableHeader>
+                                <TableHeader
                                     name="status"
                                     queryParams={queryParams}
+                                    width="lg"
                                 >
                                     Status
                                 </TableHeader>
@@ -92,6 +101,12 @@ const OrderList = ({ orders, queryParams }) => {
                                     queryParams={queryParams}
                                 >
                                     Part #
+                                </TableHeader>
+                                <TableHeader
+                                    name="store_cost"
+                                    queryParams={queryParams}
+                                >
+                                    Store Cost
                                 </TableHeader>
                                 <TableHeader
                                     name="srp"
@@ -129,16 +144,22 @@ const OrderList = ({ orders, queryParams }) => {
                                             {item.order_qty}
                                         </RowData>
                                         <RowData isLoading={loading}>
-                                            {item.store_name}
+                                            {item.stores_id}
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.phone_number}
                                         </RowData>
                                         <RowData isLoading={loading}>
-                                            {item.status}
+                                            {item.item_description}
+                                        </RowData>
+                                        <RowStatus isLoading={loading} color={item.bto_status.color} >
+                                            {item.bto_status.status_name}
+                                        </RowStatus>
+                                        <RowData isLoading={loading}>
+                                            {item.part_number}
                                         </RowData>
                                         <RowData isLoading={loading}>
-                                            {item.part_no}
+                                            {item.store_cost}
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.srp}
