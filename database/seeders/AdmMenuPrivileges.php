@@ -14,8 +14,6 @@ class AdmMenuPrivileges extends Seeder
      */
     public function run()
     {
-        // DB::table('cms_moduls')->where('id', '>=', 12)->delete();
-        // DB::statement('ALTER TABLE cms_moduls AUTO_INCREMENT = 12');
         $data = [
             [
                 'id_adm_menus' => 1,
@@ -45,22 +43,7 @@ class AdmMenuPrivileges extends Seeder
                 'id_adm_menus' => 6,
                 'id_adm_privileges' => 1
             ],
-            [
-                'id_adm_menus' => 7,
-                'id_adm_privileges' => 1
-            ],
-            [
-                'id_adm_menus' => 8,
-                'id_adm_privileges' => 1
-            ],
-            [
-                'id_adm_menus' => 9,
-                'id_adm_privileges' => 1
-            ],
-            [
-                'id_adm_menus' => 10,
-                'id_adm_privileges' => 1
-            ],
+           
         ];
 
         if (DB::table('adm_menus_privileges')->count() == 0) {

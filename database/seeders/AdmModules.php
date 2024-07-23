@@ -186,6 +186,18 @@ class AdmModules extends Seeder
                 'is_active' => 1,
             ],
 
+            [
+
+                'created_at' => date('Y-m-d H:i:s'),
+                'name' => 'BTO Store Location',
+                'icon' => 'fa-solid fa-location-dot',
+                'path' => 'store_location',
+                'table_name' => 'store_locations',
+                'controller' => 'StoreLocation\StoreLocationController',
+                'is_protected' => 0,
+                'is_active' => 1,
+            ],
+
      
         ];
 

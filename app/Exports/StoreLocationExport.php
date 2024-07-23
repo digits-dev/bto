@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 
-class BtoStatusExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
+class StoreLocationExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
     use Exportable;
     public $query;
@@ -22,8 +22,8 @@ class BtoStatusExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
 
     public function headings(): array {
         $headers = [
-                    "BTO Status ID",
-                    "Status Name",
+                    "Store ID",
+                    "Location Name",
                     "Creation Date",
                 ];
 
@@ -32,13 +32,13 @@ class BtoStatusExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
 
     public function map($item): array {
 
-       $status = [
+       $location = [
                     $item->id,
-                    $item->status_name,
+                    $item->location_name,
                     $item->created_date,
-                 ];
+                ];
        
-        return $status;
+        return $location;
     }
 
     public function query(){       

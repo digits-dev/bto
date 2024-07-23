@@ -116,6 +116,24 @@ class AdmMenus extends Seeder
                 'sorting'           => 1
             ]
         );
+        DB::table('adm_menuses')->updateOrInsert(
+            [
+                'name'              => 'BTO Store Location',
+            ],
+            [
+                'name'              => 'BTO Store Location',
+                'type'              => 'Route',
+                'path'              => 'StoreLocation\StoreLocationControllerGetIndex',
+                'slug'              => 'store_location',
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-location-dot',
+                'parent_id'         => 4,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 2
+            ]
+        );
 
 
     }

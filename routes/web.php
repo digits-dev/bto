@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Status\StatusController;
+use App\Http\Controllers\StoreLocation\StoreLocationController;
 use Inertia\Inertia; // We are going to use this class to render React components
 use App\Http\Controllers\Users\ProfilePageController;
 
@@ -25,7 +26,6 @@ use App\Http\Controllers\Users\ProfilePageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('login', [LoginController::class, 'index'])->name('login');
@@ -77,14 +77,22 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/bto_status/bulkupdate', [StatusController::class, 'bulkUpdate']);
     Route::put('/bto_status/{bto_status}', [StatusController::class, 'update']);
 
+    //STORE LOCATION
+    Route::post('/store_location', [StoreLocationController::class, 'store']);
+    Route::put('/store_location/{store_location}', [StoreLocationController::class, 'update']);
+    Route::put('/store_location/bulkupdate', [StoreLocationController::class, 'bulkUpdate']);
+
     // EXPORTS
     Route::get('/bto_status_export', [StatusController::class, 'export']);
+    Route::get('/store_location_export', [StoreLocationController::class, 'export']);
 
     // IMPORTS
     Route::post('/bto_status_import', [StatusController::class, 'import']);
+    Route::post('/store_location_import', [StoreLocationController::class, 'import']);
     
     // TEMPLATES
     Route::get('/bto_status_template', [StatusController::class, 'downloadTemplate']);
+    Route::get('/store_location_template', [StoreLocationController::class, 'downloadTemplate']);
 
     // BTO Order List
     Route::get('/bto_add', [OrderListController::class, 'add']);

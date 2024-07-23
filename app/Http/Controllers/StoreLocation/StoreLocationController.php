@@ -1,20 +1,23 @@
 <?php
+namespace App\Http\Controllers\StoreLocation;
 
-namespace App\Http\Controllers\Status;
-
-use App\Exports\BtoStatusExport;
-use App\ImportTemplates\BtoStatusTemplate;
+use App\Exports\StoreLocationExport;
+use App\Helpers\CommonHelpers;
 use App\Http\Controllers\Controller;
-use App\Imports\BtoStatusImport;
-use App\Models\BtoStatus;
+use App\Imports\StoreLocationImport;
+use App\ImportTemplates\StoreLocationTemplate;
+use App\Models\StoreLocation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
-class StatusController extends Controller
-{
+class StoreLocationController extends Controller{
+
     private $sortBy;
     private $sortDir;
     private $perPage;
@@ -25,9 +28,9 @@ class StatusController extends Controller
         $this->perPage = request()->get('perPage', 10);
     }
 
-    public function getIndex(): Response
-    {
-        $query = BtoStatus::query();
+    public function getIndex(){
+
+        $query = StoreLocation::query();
 
         $query->when(request('search'), function ($query, $search) {
             $query->where('status_name', 'LIKE', "%$search%");
@@ -36,33 +39,12 @@ class StatusController extends Controller
         $query->select('*', DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as created_date"));
 
         $data = [];
-        $data['btoStatus'] = $query->orderBy($this->sortBy, $this->sortDir)->paginate($this->perPage)->withQueryString();
+        $data['storeLocation'] = $query->orderBy($this->sortBy, $this->sortDir)->paginate($this->perPage)->withQueryString();
         $data['queryParams'] = request()->query();
 
-        return Inertia::render('Status/Status', $data);
+        return Inertia("StoreLocation/StoreLocation", $data);
     }
 
-    public function store(Request $request){
-
-        $request->validate([
-            'status_name' => 'required|unique:bto_statuses,status_name',
-            'color' => 'required',
-        ]);
-        
-        BtoStatus::create(['status_name'=> $request->input('status_name'), 'color' => $request->input('color')]);
-    }
-
-    public function update(Request $request, BtoStatus $bto_status){
-        $request->validate([
-            'status_name' => "required|unique:bto_statuses,status_name,$bto_status->id,id",
-            'status' => 'required',
-            'color' => 'required',
-        ]);
-
-        $bto_status->update(['status_name'=> $request->input('status_name'),  'status' => $request->input('status'), 'color' => $request->input('color')]);
-    }
-
-    
     public function bulkUpdate(Request $request){
 
         $ids = $request->input('ids');
@@ -70,31 +52,49 @@ class StatusController extends Controller
 
         $request->validate([
             'ids' => 'required',
-            'ids.*' => 'exists:bto_statuses,id',
+            'ids.*' => 'exists:store_locations,id',
             'status' => 'required', 
         ]);
 
-        BtoStatus::whereIn('id', $ids)->update(['status' => $status]);
+        StoreLocation::whereIn('id', $ids)->update(['status' => $status]);
 
         $data = ['message'=>'Data updated!', 'status'=>'success'];
 
         return response()->json($data);
     }
 
+    public function store(Request $request){
+
+        $request->validate([
+            'location_name' => 'required|unique:store_locations,location_name',
+        ]);
+        
+        StoreLocation::create(['location_name'=> $request->input('location_name')]);
+    }
+
+    public function update(Request $request, StoreLocation $store_location){
+        $request->validate([
+            'location_name' => "required|unique:store_locations,location_name,$store_location->id,id",
+            'status' => 'required',
+        ]);
+
+        $store_location->update(['location_name'=> $request->input('location_name'),  'status' => $request->input('status')]);
+    }
+
     public function export()
     {
 
-        $filename            = "BTO Status - " . date ('Y-m-d H:i:s');
+        $filename            = "BTO Store Location - " . date ('Y-m-d H:i:s');
         $result = self::getAllData()->orderBy($this->sortBy, $this->sortDir);
 
-        return Excel::download(new BtoStatusExport($result), $filename . '.xlsx');
+        return Excel::download(new StoreLocationExport($result), $filename . '.xlsx');
     }
 
     public function getAllData()
     {
-        $query = BtoStatus::select([
+        $query = StoreLocation::select([
             'id', 
-            'status_name', 
+            'location_name', 
             DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as created_date")
         ]);
 
@@ -111,9 +111,9 @@ class StatusController extends Controller
         try {
             $importFile = $request->file('file');
 
-            Excel::import(new BtoStatusImport, $importFile);
+            Excel::import(new StoreLocationImport, $importFile);
     
-            return to_route('/status');
+            return to_route('/store_location');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             // Handle validation errors during import
             return back()->with('error', 'Validation error: ' . $e->getMessage());
@@ -126,10 +126,12 @@ class StatusController extends Controller
 
     public function downloadTemplate()
     {
-        $filename = "Import BTO Status Template".".xlsx";
-        return Excel::download(new BtoStatusTemplate, $filename);
+        $filename = "Import Store Location Template".".xlsx";
+        return Excel::download(new StoreLocationTemplate, $filename);
     }
-    
+
+
 }
+
 
 ?>
