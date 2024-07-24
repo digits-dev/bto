@@ -100,6 +100,25 @@ class AdmMenus extends Seeder
 
         DB::table('adm_menuses')->updateOrInsert(
             [
+                'name'              => 'Item Master',
+            ],
+            [
+                'name'              => 'Item Master',
+                'type'              => 'Route',
+                'path'              => 'ItemMaster\ItemMasterControllerGetIndex',
+                'slug'              => 'item_master',
+                'color'             => NULL,
+                'icon'              => 'fa-solid fa-box-open',
+                'parent_id'         => 4,
+                'is_active'         => 1,
+                'is_dashboard'      => 0,
+                'id_adm_privileges'  => 1,
+                'sorting'           => 1
+            ]
+        );
+
+        DB::table('adm_menuses')->updateOrInsert(
+            [
                 'name'              => 'BTO Status',
             ],
             [
@@ -113,7 +132,7 @@ class AdmMenus extends Seeder
                 'is_active'         => 1,
                 'is_dashboard'      => 0,
                 'id_adm_privileges'  => 1,
-                'sorting'           => 1
+                'sorting'           => 2
             ]
         );
         DB::table('adm_menuses')->updateOrInsert(
@@ -131,9 +150,11 @@ class AdmMenus extends Seeder
                 'is_active'         => 1,
                 'is_dashboard'      => 0,
                 'id_adm_privileges'  => 1,
-                'sorting'           => 2
+                'sorting'           => 3
             ]
         );
+
+       
 
 
     }

@@ -43,6 +43,10 @@ class AdmMenuPrivileges extends Seeder
                 'id_adm_menus' => 6,
                 'id_adm_privileges' => 1
             ],
+            [
+                'id_adm_menus' =>7,
+                'id_adm_privileges' => 1
+            ],
            
         ];
 

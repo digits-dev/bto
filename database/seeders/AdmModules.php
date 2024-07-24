@@ -177,6 +177,17 @@ class AdmModules extends Seeder
             [
 
                 'created_at' => date('Y-m-d H:i:s'),
+                'name' => 'Item Master',
+                'icon' => 'fa-solid fa-box-open',
+                'path' => 'item_master',
+                'table_name' => 'item_master',
+                'controller' => 'ItemMaster\ItemMasterController',
+                'is_protected' => 0,
+                'is_active' => 1,
+            ],
+            [
+
+                'created_at' => date('Y-m-d H:i:s'),
                 'name' => 'BTO Status',
                 'icon' => 'fa-solid fa-check',
                 'path' => 'status',

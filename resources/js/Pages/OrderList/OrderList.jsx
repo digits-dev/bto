@@ -32,7 +32,6 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
         }, 5);
     }, []);
 
-    console.log(orders);
 
     const canEdit = (privilegeId, status) => {
         return (
