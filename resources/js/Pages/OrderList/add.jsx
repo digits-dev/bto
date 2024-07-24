@@ -79,120 +79,116 @@ const AddForm = ({ store_name }) => {
 
     return (
         <>
-            <AppContent>
-                <Head title="Add Form" />
-                <ContentPanel>
-                    <form onSubmit={handleSubmit}>
-                        <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
-                            <div className="lg:w-[60%] lg:flex gap-3">
-                                <div className="flex flex-col flex-1 gap-y-3">
-                                    <InputComponent
-                                        extendClass="w-full "
-                                        name="customer_name"
-                                        onChange={handleChange}
-                                    />
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        extendClass1={`${
-                                            errors.order_qty
-                                                ? "border-red-500"
-                                                : ""
-                                        }`}
-                                        name="order_qty"
-                                        onChange={handleChange}
-                                    />
-                                    {errors.order_qty && (
-                                        <span className="text-red-500">
-                                            {errors.order_qty}
-                                        </span>
-                                    )}
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        extendClass1={`${
-                                            errors.phone_number
-                                                ? "border-red-500"
-                                                : ""
-                                        }`}
-                                        name="phone_number"
-                                        onChange={handleChange}
-                                    />
-                                    {errors.phone_number && (
-                                        <span className="text-red-500">
-                                            {errors.phone_number}
-                                        </span>
-                                    )}
-                                </div>
-                                <div className="flex flex-col flex-1 gap-y-3">
-                                    <DropdownSelect
-                                        displayName="Store Name"
-                                        name="stores_id"
-                                        selectType="react-select"
-                                        is_required={true}
-                                        onChange={handleChange}
-                                        options={storeOptions}
-                                    />
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        name="item_description"
-                                        onChange={handleChange}
-                                    />
-                                </div>
+            <Head title="Add Form" />
+            <ContentPanel>
+                <form onSubmit={handleSubmit}>
+                    <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
+                        <div className="lg:w-[60%] lg:flex gap-3">
+                            <div className="flex flex-col flex-1 gap-y-3">
+                                <InputComponent
+                                    extendClass="w-full "
+                                    name="customer_name"
+                                    onChange={handleChange}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    extendClass1={`${
+                                        errors.order_qty ? "border-red-500" : ""
+                                    }`}
+                                    name="order_qty"
+                                    onChange={handleChange}
+                                />
+                                {errors.order_qty && (
+                                    <span className="text-red-500">
+                                        {errors.order_qty}
+                                    </span>
+                                )}
+                                <InputComponent
+                                    extendClass="w-full"
+                                    extendClass1={`${
+                                        errors.phone_number
+                                            ? "border-red-500"
+                                            : ""
+                                    }`}
+                                    name="phone_number"
+                                    onChange={handleChange}
+                                />
+                                {errors.phone_number && (
+                                    <span className="text-red-500">
+                                        {errors.phone_number}
+                                    </span>
+                                )}
                             </div>
-                            <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
-                                <label
-                                    htmlFor="input-file"
-                                    className="relative w-full"
-                                >
-                                    <input
-                                        required
-                                        id="input-file"
-                                        name="image"
-                                        type="file"
-                                        accept="image/*"
-                                        className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
-                                        onChange={handleImageChange}
-                                    />
-                                    <div
-                                        id="image-view"
-                                        className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
-                                    >
-                                        {selectedImage ? (
-                                            <img
-                                                className="w-80"
-                                                id="image"
-                                                src={selectedImage}
-                                                alt="Selected"
-                                            />
-                                        ) : (
-                                            <>
-                                                <img
-                                                    className="w-75"
-                                                    id="image"
-                                                    src="/images/others/upload.png"
-                                                    alt="Upload"
-                                                />
-                                                <p className="text-sm font-bold">
-                                                    Upload Image
-                                                </p>
-                                                <p className="text-sm text-slate-500">
-                                                    File Supported: JPEG, PNG
-                                                </p>
-                                            </>
-                                        )}
-                                    </div>
-                                </label>
+                            <div className="flex flex-col flex-1 gap-y-3">
+                                <DropdownSelect
+                                    displayName="Store Name"
+                                    name="stores_id"
+                                    selectType="react-select"
+                                    is_required={true}
+                                    onChange={handleChange}
+                                    options={storeOptions}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    name="item_description"
+                                    onChange={handleChange}
+                                />
                             </div>
                         </div>
-                        <Link
-                            className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
-                            href="/bto_order_list"
-                        >
-                            Back
-                        </Link>
-                        <TableButton type="submit">Create</TableButton>
-                    </form>
-                </ContentPanel>
-            </AppContent>
+                        <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
+                            <label
+                                htmlFor="input-file"
+                                className="relative w-full"
+                            >
+                                <input
+                                    required
+                                    id="input-file"
+                                    name="image"
+                                    type="file"
+                                    accept="image/*"
+                                    className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
+                                    onChange={handleImageChange}
+                                />
+                                <div
+                                    id="image-view"
+                                    className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
+                                >
+                                    {selectedImage ? (
+                                        <img
+                                            className="w-80"
+                                            id="image"
+                                            src={selectedImage}
+                                            alt="Selected"
+                                        />
+                                    ) : (
+                                        <>
+                                            <img
+                                                className="w-75"
+                                                id="image"
+                                                src="/images/others/upload.png"
+                                                alt="Upload"
+                                            />
+                                            <p className="text-sm font-bold">
+                                                Upload Image
+                                            </p>
+                                            <p className="text-sm text-slate-500">
+                                                File Supported: JPEG, PNG
+                                            </p>
+                                        </>
+                                    )}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <Link
+                        className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
+                        href="/bto_order_list"
+                    >
+                        Back
+                    </Link>
+                    <TableButton type="submit">Create</TableButton>
+                </form>
+            </ContentPanel>
         </>
     );
 };

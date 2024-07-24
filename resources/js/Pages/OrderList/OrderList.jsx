@@ -34,7 +34,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
     const canEdit = (privilegeId, status) => {
         return (
             (privilegeId === 6 && status === 1) ||
-            (privilegeId === 7 && status === 4)
+            (privilegeId === 7 && status === 4) ||
+            (privilegeId === 6 && status === 2)
         );
     };
 

@@ -26,6 +26,7 @@ const EditForm = ({ order_list, my_privilege_id, status }) => {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         part_number: "",
+        store_cost: "",
         order_list_id: order_list.id,
     });
 
@@ -102,14 +103,14 @@ const EditForm = ({ order_list, my_privilege_id, status }) => {
                                         name="stores_id"
                                         value={order_list.stores_id}
                                     />
-                                </div>
-                                <div className="flex flex-col flex-1 gap-y-3">
                                     <InputComponent
                                         extendClass="w-full"
                                         is_disabled={true}
                                         name="item_description"
                                         value={order_list.item_description}
                                     />
+                                </div>
+                                <div className="flex flex-col flex-1 gap-y-3">
                                     <InputComponent
                                         extendClass="w-full"
                                         is_disabled={true}
@@ -132,12 +133,14 @@ const EditForm = ({ order_list, my_privilege_id, status }) => {
                                         <InputComponent
                                             extendClass="w-full"
                                             is_disabled={
-                                                my_privilege_id == 6
+                                                my_privilege_id == 6 &&
+                                                order_list.status == 1
                                                     ? false
                                                     : true
                                             }
                                             value={
-                                                my_privilege_id == 6
+                                                my_privilege_id == 6 &&
+                                                order_list.status == 1
                                                     ? data.part_number
                                                     : order_list.part_number
                                             }
@@ -146,6 +149,45 @@ const EditForm = ({ order_list, my_privilege_id, status }) => {
                                             onChange={handleChange}
                                         />
                                     )}
+
+                                    {[6, 7].includes(my_privilege_id) &&
+                                        (order_list.status == 4 ||
+                                            order_list.status == 2) && (
+                                            <InputComponent
+                                                extendClass="w-full"
+                                                is_disabled={
+                                                    my_privilege_id == 7
+                                                        ? false
+                                                        : true
+                                                }
+                                                value={
+                                                    my_privilege_id == 7
+                                                        ? data.store_cost
+                                                        : order_list.store_cost
+                                                }
+                                                name="store_cost"
+                                                onChange={handleChange}
+                                            />
+                                        )}
+                                    {[6, 7].includes(my_privilege_id) &&
+                                        order_list.status == 2 && (
+                                            <InputComponent
+                                                extendClass="w-full"
+                                                is_disabled={
+                                                    my_privilege_id == 6
+                                                        ? false
+                                                        : true
+                                                }
+                                                value={
+                                                    my_privilege_id == 6
+                                                        ? data.srp
+                                                        : order_list.srp
+                                                }
+                                                name="srp"
+                                                displayName="SRP"
+                                                onChange={handleChange}
+                                            />
+                                        )}
                                 </div>
                             </div>
                             <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
@@ -176,7 +218,9 @@ const EditForm = ({ order_list, my_privilege_id, status }) => {
                         >
                             Back
                         </Link>
-                        <TableButton type="submit">Update</TableButton>
+                        <TableButton extendClass="mt-4" type="submit">
+                            Update
+                        </TableButton>
                     </form>
                 </ContentPanel>
             </AppContent>

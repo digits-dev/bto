@@ -4,6 +4,7 @@ namespace App\Http\Controllers\OrderList;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderList;
+use App\Models\BtoImfs;
 use App\Models\StoreLocation;
 use App\Models\BtoStatus;
 use Inertia\Inertia;
@@ -17,6 +18,7 @@ class OrderListController extends Controller
     private $sortDir;
     private $perPage;
 
+    private const forPartNumber = 1;
     private const forSRP = 2;
     private const closed = 3;
     private const ForCosting = 4;
@@ -58,17 +60,16 @@ class OrderListController extends Controller
     }
     
     public function addSave(Request $request) {
-
-        $validatedData = $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'order_qty' => 'required|integer|min:1',
-            'item_description' => 'required|string|max:500',
-            'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-            'uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'stores_id' => 'required|integer|min:1',
-        ]);
-
         
+            $validatedData = $request->validate([
+                'customer_name' => 'required|string|max:255',
+                'order_qty' => 'required|integer|min:1',
+                'item_description' => 'required|string|max:500',
+                'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
+                'stores_id' => 'required|integer|min:1',
+            ]);
+      
+    
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
             'customer_name' => $request->customer_name,
@@ -96,18 +97,47 @@ class OrderListController extends Controller
         $data['order_list'] = OrderList::find($id);
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
-        return Inertia::render('OrderList/edit', $data);
+        if (CommonHelpers::myPrivilegeId() == 6) {
+            return Inertia::render('OrderList/EditMerchandising', $data);
+        }else {
+            return Inertia::render('OrderList/EditAccounting', $data);
+        }
     }
 
     public function editSave(Request $request) {
+        $orderList = OrderList::find($request->order_list_id);
+        if ($orderList->status == self::forPartNumber) {
+            $orderList->update([
+                'status' => self::ForCosting,
+                'part_number' => $request->part_number,
+                'updated_by_mcb' => CommonHelpers::myId(),
+                'updated_by_mcb_date' => date('Y-m-d H:i:s'),
+                 ]);
+        }else if ($orderList->status == self::ForCosting) {
+            $orderList->update([
+                'status' => self::forSRP,
+                'store_cost' => $request->store_cost,
+                'updated_by_acctg' => CommonHelpers::myId(),
+                'updated_by_acctg_date' => date('Y-m-d H:i:s'),
+                 ]);
+        }else if ($orderList->status == self::forSRP) {
+            $orderList->update([
+                'status' => self::closed,
+                'srp' => $request->srp,
+                'updated_by_mcb2' => CommonHelpers::myId(),
+                'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
+                 ]);
 
-        OrderList::where('id', $request->order_list_id)
-        ->update([
-            'status' => self::ForCosting,
-            'part_number' => $request->part_number,
-            'updated_by_mcb' => CommonHelpers::myId(),
-            'updated_by_mcb_date' => date('Y-m-d H:i:s'),
-             ]);
+            $data = [
+                'part_number' => $orderList->part_number,
+                'item_description' => $orderList->item_description,
+                'store_cost' => $orderList->store_cost,
+                'srp' => $orderList->srp,
+            ];
+
+            BtoImfs::create($data);
+        }
+        
     
         return redirect ('/bto_order_list');
     }
