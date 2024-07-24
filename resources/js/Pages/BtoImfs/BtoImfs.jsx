@@ -16,7 +16,7 @@ import Filters from '../../Components/Table/Buttons/Filters';
 import Tbody from '../../Components/Table/Tbody';
 import RowData from '../../Components/Table/RowData';
 import RowAction from '../../Components/Table/RowAction';
-import RowActions from '../../Components/Table/RowActions';
+import moment from "moment";
 
 const BtoImfs = ({bto_imfs, queryParams}) => {
   const { setTitle } = useContext(NavbarContext);
@@ -30,7 +30,6 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
   return (
     <>
       <Head title="BTO IMFS" />
-      <AppContent>
       <ContentPanel>
           <TopPanel>
             <TableSearch queryParams={queryParams} />
@@ -38,22 +37,61 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
             <Export path="" />
             <Filters />
           </TopPanel>
-
           <TableContainer>
             <Thead>
               <Row>
                 <TableHeader
-                  name="id"
-                  queryParams={queryParams}
-                >
-                  Id
-                </TableHeader>
-                <TableHeader
-                  name="digits_code"
+                  name="reference_number"
                   queryParams={queryParams}
                   width='lg'
                 >
-                  Digits Code
+                  Reference #
+                </TableHeader>
+                <TableHeader
+                  name="customer_name"
+                  queryParams={queryParams}
+                  width='lg'
+                >
+                  Customer Name
+                </TableHeader>
+                <TableHeader
+                  name="order_qty"
+                  queryParams={queryParams}
+                >
+                  Order Qty
+                </TableHeader>
+                <TableHeader
+                  name="stores_id"
+                  width='lg'
+                  queryParams={queryParams}
+                >
+                  Store Name
+                </TableHeader>
+                <TableHeader
+                  name="phone_number"
+                  width='lg'
+                  queryParams={queryParams}
+                >
+                  Phone Number
+                </TableHeader>
+                <TableHeader
+                  name="item_description"
+                  queryParams={queryParams}
+                  width='lg'
+                >
+                  Item Description
+                </TableHeader>
+                <TableHeader
+                  name="uom"
+                  queryParams={queryParams}
+                >
+                  UOM
+                </TableHeader>
+                <TableHeader
+                  name="brand"
+                  queryParams={queryParams}
+                >
+                  Brand
                 </TableHeader>
                 <TableHeader
                   name="part_number"
@@ -62,24 +100,22 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
                   Part #
                 </TableHeader>
                 <TableHeader
-                  name="item_description"
-                  width='lg'
+                  name="store_cost"
                   queryParams={queryParams}
                 >
-                  Item Description
+                  Store Cost
                 </TableHeader>
                 <TableHeader
                   name="srp"
-                  width='lg'
                   queryParams={queryParams}
                 >
                   SRP
                 </TableHeader>
                 <TableHeader
-                  name="store_cost"
+                  name="order_date"
                   queryParams={queryParams}
                 >
-                  Store Cost
+                  Order Date
                 </TableHeader>
                 <TableHeader
                   sortable={false}
@@ -95,22 +131,40 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
               {bto_imfs && bto_imfs.data.map((item) => (
                 <Row key={item.id}>
                   <RowData isLoading={loading}>
-                    {item.id}
+                    {item.reference_number}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.digits_code}
+                    {item.customer_name}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.part_number}
+                    {item.order_qty}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {item.stores_id || ''}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {item.phone_number}
                   </RowData>
                   <RowData isLoading={loading}>
                     {item.item_description}
                   </RowData>
                   <RowData isLoading={loading}>
-                    {item.srp}
+                    {item.uom}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {item.brand}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {item.part_number}
                   </RowData>
                   <RowData isLoading={loading}>
                     {item.store_cost}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {item.srp}
+                  </RowData>
+                  <RowData isLoading={loading}>
+                    {moment(item.order_date).format("YYYY-MM-DD")}
                   </RowData>
                   <RowData
                       isLoading={loading}
@@ -130,8 +184,7 @@ const BtoImfs = ({bto_imfs, queryParams}) => {
             </Tbody>
           </TableContainer>
           <Pagination paginate={bto_imfs} />
-        </ContentPanel>
-      </AppContent>
+      </ContentPanel>
     </>
   )
 }
