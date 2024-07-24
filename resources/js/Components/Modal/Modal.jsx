@@ -23,7 +23,7 @@ const Modal = ({
     return (
         <>
             {modalLoading ? (
-                <div className="modal-backdrop z-[120]">
+                <div className="modal-backdrop z-[120] overflow-auto">
                     <div className="bg-transparent rounded-lg w-32 m-5 ">
                         <main className="py-5 px-5 flex items-center justify-center">
                             <LoadingIcon classes="h-14 w-14 fill-white" />
@@ -31,7 +31,7 @@ const Modal = ({
                     </div>
                 </div>
             ) : (
-                <div className="modal-backdrop z-[100]">
+                <div className="modal-backdrop z-[100] overflow-auto">
                     <div
                         className={`bg-white rounded-lg shadow-custom ${maxWidth} w-full m-5`}
                     >

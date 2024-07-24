@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PrivilegesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Users\ChangePasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ItemMaster\ItemMasterController;
 use App\Http\Controllers\Status\StatusController;
 use App\Http\Controllers\StoreLocation\StoreLocationController;
 use Inertia\Inertia; // We are going to use this class to render React components
@@ -81,6 +82,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store_location', [StoreLocationController::class, 'store']);
     Route::put('/store_location/{store_location}', [StoreLocationController::class, 'update']);
     Route::put('/store_location/bulkupdate', [StoreLocationController::class, 'bulkUpdate']);
+
+    //ITEM MASTER
+    Route::post('/item_master', [ItemMasterController::class, 'store']);
+    Route::put('/item_master/{itemMaster}', [ItemMasterController::class, 'update']);
 
     // EXPORTS
     Route::get('/bto_status_export', [StatusController::class, 'export']);
