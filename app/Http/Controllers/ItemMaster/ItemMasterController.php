@@ -1,5 +1,4 @@
 <?php
-
     namespace App\Http\Controllers\ItemMaster;
     use App\Helpers\CommonHelpers;
     use App\Http\Controllers\Controller;
@@ -13,7 +12,6 @@
 
     
     class ItemMasterController extends Controller{
-        
         public function getIndex(){
             return Inertia("ItemMaster/ItemMaster");
         }
