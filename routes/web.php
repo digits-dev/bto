@@ -95,8 +95,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/store_location_template', [StoreLocationController::class, 'downloadTemplate']);
 
     // BTO Order List
-    Route::get('/bto_add', [OrderListController::class, 'add']);
-    Route::post('/bto_add_Save', [OrderListController::class, 'addSave']);
+    Route::get('/bto_order_list/add', [OrderListController::class, 'add']);
+    Route::post('/bto_order_list/add_save', [OrderListController::class, 'addSave']);
+    Route::get('/bto_order_list/edit/{id}', [OrderListController::class, 'edit']);
+    Route::post('/bto_order_list/edit_save', [OrderListController::class, 'editSave']);
 
 
 });

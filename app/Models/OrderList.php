@@ -56,8 +56,17 @@ class OrderList extends Model
     public function btoStatus(){
         return $this->belongsTo(BtoStatus::class, 'status', 'id');
     }
-
-    public function btoStore(){
+    
+    public function storeLocation()
+    {
         return $this->belongsTo(StoreLocation::class, 'stores_id', 'id');
     }
+
+    public static function generateReferenceNumber()
+    {
+        $maxId = self::max('id'); 
+        $nextId = $maxId + 1; 
+        return 'BTO' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+    }
+    
 }

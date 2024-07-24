@@ -36,6 +36,7 @@ const DropdownSelect = ({
     is_multi = "",
     selectType = "",
     placeholder,
+    is_required,
 }) => {
     return (
         <div className="relative">
@@ -49,6 +50,7 @@ const DropdownSelect = ({
                 <Select
                     placeholder={placeholder}
                     defaultValue={value}
+                    required={is_required}
                     name={name}
                     className="block w-full pt-1 border-gray-300 bg-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     onChange={onChange}

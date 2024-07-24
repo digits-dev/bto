@@ -21,16 +21,22 @@ import RowAction from "../../Components/Table/RowAction";
 import RowActions from "../../Components/Table/RowActions";
 import RowStatus from "../../Components/Table/RowStatus";
 
-const OrderList = ({ orders, queryParams }) => {
+const OrderList = ({ orders, my_privilege_id, queryParams }) => {
     const { setTitle } = useContext(NavbarContext);
     const [loading, setLoading] = useState(false);
+    const [orderId, setOrderId] = useState(null);
     useEffect(() => {
         setTimeout(() => {
             setTitle("BTO Order List");
         }, 5);
     }, []);
 
-    console.log(orders);
+    const canEdit = (privilegeId, status) => {
+        return (
+            (privilegeId === 6 && status === 1) ||
+            (privilegeId === 7 && status === 4)
+        );
+    };
 
     return (
         <>
@@ -42,19 +48,30 @@ const OrderList = ({ orders, queryParams }) => {
                         <PerPage queryParams={queryParams} />
                         <Export path="" />
                         <Filters />
-                        <Button type="btn" href="/bto_add">
-                            Create Order
-                        </Button>
+                        {[1, 3, 4].includes(my_privilege_id) && (
+                            <Button type="btn" href="/bto_order_list/add">
+                                Create Order
+                            </Button>
+                        )}
                     </TopPanel>
 
                     <TableContainer>
                         <Thead>
                             <Row>
+                                {" "}
                                 <TableHeader
-                                    name="id"
+                                    name="status"
                                     queryParams={queryParams}
+                                    width="lg"
                                 >
-                                    Id
+                                    Status
+                                </TableHeader>
+                                <TableHeader
+                                    name="customer_name"
+                                    queryParams={queryParams}
+                                    width="lg"
+                                >
+                                    Reference #
                                 </TableHeader>
                                 <TableHeader
                                     name="customer_name"
@@ -103,13 +120,6 @@ const OrderList = ({ orders, queryParams }) => {
                                     Brand
                                 </TableHeader>
                                 <TableHeader
-                                    name="status"
-                                    queryParams={queryParams}
-                                    width="lg"
-                                >
-                                    Status
-                                </TableHeader>
-                                <TableHeader
                                     name="part_no"
                                     queryParams={queryParams}
                                 >
@@ -147,17 +157,24 @@ const OrderList = ({ orders, queryParams }) => {
                             {orders &&
                                 orders.data.map((item) => (
                                     <Row key={item.id}>
+                                        <RowStatus
+                                            isLoading={loading}
+                                            color={item.bto_status.color}
+                                        >
+                                            {item.bto_status.status_name}
+                                        </RowStatus>
                                         <RowData isLoading={loading}>
-                                            {item.id}
+                                            {item.reference_number}
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.customer_name}
                                         </RowData>
+
                                         <RowData isLoading={loading}>
                                             {item.order_qty}
                                         </RowData>
                                         <RowData isLoading={loading}>
-                                            {item.bto_store.location_name}
+                                            {item.store_location.location_name}
                                         </RowData>
                                         <RowData isLoading={loading}>
                                             {item.phone_number}
@@ -171,9 +188,7 @@ const OrderList = ({ orders, queryParams }) => {
                                         <RowData isLoading={loading}>
                                             {item.brand}
                                         </RowData>
-                                        <RowStatus isLoading={loading} color={item.bto_status.color} >
-                                            {item.bto_status.status_name}
-                                        </RowStatus>
+
                                         <RowData isLoading={loading}>
                                             {item.part_number}
                                         </RowData>
@@ -198,11 +213,16 @@ const OrderList = ({ orders, queryParams }) => {
                                                     action="view"
                                                     size="md"
                                                 />
-                                                <RowAction
-                                                    type="button"
-                                                    action="edit"
-                                                    size="md"
-                                                />
+                                                {canEdit(
+                                                    my_privilege_id,
+                                                    item.bto_status.id
+                                                ) && (
+                                                    <RowAction
+                                                        action="edit"
+                                                        href={`/bto_order_list/edit/${item.id}`}
+                                                        size="md"
+                                                    />
+                                                )}
                                             </RowActions>
                                         </RowData>
                                     </Row>

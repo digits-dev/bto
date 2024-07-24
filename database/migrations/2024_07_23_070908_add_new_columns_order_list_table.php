@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('order_lists', function (Blueprint $table) {
+            $table->string('status')->default(1)->after('id')->change();
+            $table->string('reference_number')->nullable()->after('status');
             $table->string('uom')->default('PCS')->after('item_description');
             $table->string('brand')->default('APPLE')->after('uom');
         });
@@ -25,6 +27,8 @@ return new class extends Migration
         Schema::table('order_lists', function (Blueprint $table) {
             $table->dropColumn('uom');
             $table->dropColumn('brand');
+            $table->dropColumn('reference_number');
+            $table->string('status')->after('uploaded_file')->change();
         });
     }
 };
