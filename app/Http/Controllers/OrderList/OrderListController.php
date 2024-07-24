@@ -19,9 +19,9 @@ class OrderListController extends Controller
     private $perPage;
 
     private const forPartNumber = 1;
-    private const forSRP = 2;
-    private const closed = 3;
-    private const ForCosting = 4;
+    private const forCosting = 2;
+    private const forSRP = 3;
+    private const closed = 4;
     
 
     public function __construct() {
@@ -108,12 +108,12 @@ class OrderListController extends Controller
         $orderList = OrderList::find($request->order_list_id);
         if ($orderList->status == self::forPartNumber) {
             $orderList->update([
-                'status' => self::ForCosting,
+                'status' => self::forCosting,
                 'part_number' => $request->part_number,
                 'updated_by_mcb' => CommonHelpers::myId(),
                 'updated_by_mcb_date' => date('Y-m-d H:i:s'),
                  ]);
-        }else if ($orderList->status == self::ForCosting) {
+        }else if ($orderList->status == self::forCosting) {
             $orderList->update([
                 'status' => self::forSRP,
                 'store_cost' => $request->store_cost,
@@ -129,10 +129,18 @@ class OrderListController extends Controller
                  ]);
 
             $data = [
-                'part_number' => $orderList->part_number,
+                'reference_number' => $orderList->reference_number,
+                'customer_name' => $orderList->customer_name,
+                'order_qty' => $orderList->order_qty,
+                'stores_id' => $orderList->stores_id,
+                'phone_number' => $orderList->phone_number,
                 'item_description' => $orderList->item_description,
+                'uom' => $orderList->uom,
+                'brand' => $orderList->brand,
+                'part_number' => $orderList->part_number,
                 'store_cost' => $orderList->store_cost,
                 'srp' => $orderList->srp,
+                'order_date' => $orderList->order_date,
             ];
 
             BtoImfs::create($data);

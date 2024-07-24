@@ -154,7 +154,7 @@ const EditFormMerchandising = ({ order_list, my_privilege_id, status }) => {
                                         onChange={handleChange}
                                     />
                                 )}
-                                {order_list.status == 2 && (
+                                {order_list.status == 3 && (
                                     <InputComponent
                                         extendClass="w-full"
                                         name="srp"
@@ -193,7 +193,7 @@ const EditFormMerchandising = ({ order_list, my_privilege_id, status }) => {
                         Back
                     </Link>
                     <TableButton extendClass="mt-4" type="submit">
-                        {order_list.status == 2 ? "Close" : "Update"}
+                        {order_list.status == 3 ? "Close" : "Update"}
                     </TableButton>
                 </form>
             </ContentPanel>

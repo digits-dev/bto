@@ -30,7 +30,7 @@ return new class extends Migration
             $table->dateTime('updated_by_mcb_date')->nullable();
             $table->integer('updated_by_acctg')->nullable();
             $table->dateTime('updated_by_acctg_date')->nullable();
-            $table->dateTime('updated_by_mcb2')->nullable();
+            $table->integer('updated_by_mcb2')->nullable();
             $table->dateTime('updated_by_mcb_date2')->nullable();
         });
     }

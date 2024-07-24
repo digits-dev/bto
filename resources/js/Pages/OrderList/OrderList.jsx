@@ -37,8 +37,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
     const canEdit = (privilegeId, status) => {
         return (
             (privilegeId === 6 && status === 1) ||
-            (privilegeId === 7 && status === 4) ||
-            (privilegeId === 6 && status === 2)
+            (privilegeId === 7 && status === 2) ||
+            (privilegeId === 6 && status === 3)
         );
     };
 
@@ -109,16 +109,10 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                             >
                                 Item Description
                             </TableHeader>
-                            <TableHeader
-                                name="uom"
-                                queryParams={queryParams}
-                            >
+                            <TableHeader name="uom" queryParams={queryParams}>
                                 UOM
                             </TableHeader>
-                            <TableHeader
-                                name="brand"
-                                queryParams={queryParams}
-                            >
+                            <TableHeader name="brand" queryParams={queryParams}>
                                 Brand
                             </TableHeader>
                             <TableHeader
@@ -133,10 +127,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                             >
                                 Store Cost
                             </TableHeader>
-                            <TableHeader
-                                name="srp"
-                                queryParams={queryParams}
-                            >
+                            <TableHeader name="srp" queryParams={queryParams}>
                                 SRP
                             </TableHeader>
                             <TableHeader
@@ -176,7 +167,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                                         {item.order_qty}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.store_location?.location_name || ''}
+                                        {item.store_location?.location_name ||
+                                            ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.phone_number}
@@ -201,7 +193,9 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                                         {item.srp}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {moment(item.order_date).format("YYYY-MM-DD")}
+                                        {moment(item.order_date).format(
+                                            "YYYY-MM-DD"
+                                        )}
                                     </RowData>
                                     <RowData
                                         isLoading={loading}
