@@ -128,123 +128,121 @@ const Status = ({btoStatus, queryParams}) => {
   return (
     <>
       <Head title="BTO Status" />
-      <AppContent>
-        <ContentPanel>
-          <TopPanel>
-            <BulkActions actions={bulkActions} onActionSelected={handleActionSelected}></BulkActions>
-            <TableSearch queryParams={queryParams} />
-            <PerPage queryParams={queryParams} />
-            <TableButton onClick={handleShowCreate}>
-                Add BTO Status
-            </TableButton>
-            <Import importPath="/bto_status_import" templatePath="/bto_status_template" handleToast={()=>handleToast('Import Success', 'success')}/>
-            <Export  path="/bto_status_export"/>
-          </TopPanel>
-          <TableContainer>
-            <Thead>
-              <Row>
-                <TableHeader
-                  width="sm"
-                  sortable={false}
-                  justify="center"
-                >
+      <ContentPanel>
+        <TopPanel>
+          <BulkActions actions={bulkActions} onActionSelected={handleActionSelected}></BulkActions>
+          <TableSearch queryParams={queryParams} />
+          <PerPage queryParams={queryParams} />
+          <TableButton onClick={handleShowCreate}>
+              Add BTO Status
+          </TableButton>
+          <Import importPath="/bto_status_import" templatePath="/bto_status_template" handleToast={()=>handleToast('Import Success', 'success')}/>
+          <Export  path="/bto_status_export"/>
+        </TopPanel>
+        <TableContainer>
+          <Thead>
+            <Row>
+              <TableHeader
+                width="sm"
+                sortable={false}
+                justify="center"
+              >
+                <Checkbox
+                    type="checkbox"
+                    name="selectAll"
+                    id="selectAll"
+                    handleClick={handleSelectAll}
+                    isChecked={selectAll}
+                />
+              </TableHeader>
+              <TableHeader name="id" queryParams={queryParams}>
+                  Status ID
+              </TableHeader>
+              <TableHeader name="status_name" queryParams={queryParams}>
+                  Status Name
+              </TableHeader>
+              <TableHeader name="status" queryParams={queryParams}>
+                  Status
+              </TableHeader>
+              <TableHeader
+                sortable={false}
+                width="auto"
+                justify="center"
+              >
+                  Action
+              </TableHeader>
+            </Row>
+          </Thead>
+          <Tbody data={btoStatus.data}>
+            {btoStatus && btoStatus.data.map((item) => (
+              <Row key={item.id}>
+                <RowData center>
                   <Checkbox
                       type="checkbox"
-                      name="selectAll"
-                      id="selectAll"
-                      handleClick={handleSelectAll}
-                      isChecked={selectAll}
+                      id={item.id}
+                      handleClick={()=>handleCheckboxChange(item.id)}
+                      isChecked={selectedItems.includes(item.id)}
                   />
-                </TableHeader>
-                <TableHeader name="id" queryParams={queryParams}>
-                    Status ID
-                </TableHeader>
-                <TableHeader name="status_name" queryParams={queryParams}>
-                    Status Name
-                </TableHeader>
-                <TableHeader name="status" queryParams={queryParams}>
-                    Status
-                </TableHeader>
-                <TableHeader
-                  sortable={false}
-                  width="auto"
-                  justify="center"
+                </RowData>
+                <RowData isLoading={loading} >
+                    {item.id}
+                </RowData>
+                <RowStatus isLoading={loading} color={item.color} >
+                    {item.status_name}
+                </RowStatus>
+                <RowStatus
+                        isLoading={loading}
+                        systemStatus={item.status ? "active" : "inactive"}
                 >
-                    Action
-                </TableHeader>
-              </Row>
-            </Thead>
-            <Tbody data={btoStatus.data}>
-              {btoStatus && btoStatus.data.map((item) => (
-                <Row key={item.id}>
-                  <RowData center>
-                    <Checkbox
-                        type="checkbox"
-                        id={item.id}
-                        handleClick={()=>handleCheckboxChange(item.id)}
-                        isChecked={selectedItems.includes(item.id)}
+                        {item.status ? "Active" : "Inactive"}
+                </RowStatus>
+                <RowData isLoading={loading} center>
+                    <RowAction
+                        type="button"
+                        onClick={()=>{
+                            handleShowEdit(); 
+                            setUpdateFormValues({
+                                currentId: item.id, 
+                                status_name: item.status_name, 
+                                status: item.status, 
+                                color: item.color
+                            });}}
+                        action="edit"
+                        size="md"
                     />
-                  </RowData>
-                  <RowData isLoading={loading} >
-                      {item.id}
-                  </RowData>
-                  <RowStatus isLoading={loading} color={item.color} >
-                      {item.status_name}
-                  </RowStatus>
-                  <RowStatus
-                          isLoading={loading}
-                          systemStatus={item.status ? "active" : "inactive"}
-                  >
-                          {item.status ? "Active" : "Inactive"}
-                  </RowStatus>
-                  <RowData isLoading={loading} center>
-                      <RowAction
-                          type="button"
-                          onClick={()=>{
-                              handleShowEdit(); 
-                              setUpdateFormValues({
-                                  currentId: item.id, 
-                                  status_name: item.status_name, 
-                                  status: item.status, 
-                                  color: item.color
-                              });}}
-                          action="edit"
-                          size="md"
-                      />
-                  </RowData>
-                </Row>
-              ))}
-            </Tbody>
-          </TableContainer>
-          <Pagination paginate={btoStatus} onClick={resetCheckbox} />
-        </ContentPanel>
-        <Modal
-            show={showCreate}
-            onClose={handleShowCreate}
-            title="Add BTO Status"
-        >
-          <BtoStatusForm 
-            action="create"
-            handleShow={()=>{
-              handleShowCreate(); 
-                handleToast("Created Status", "success");
-            }}   
-            />
-        </Modal>
-        <Modal
-            show={showEdit}
-            onClose={handleShowEdit}
-            title="Edit BTO Status"
-        >
-          <BtoStatusForm 
-            action="edit" 
-            handleShow={()=>{
-                handleShowEdit(); 
-                handleToast("Updated Status", "success");
-            }} 
-            updateFormValues={updateFormValues} />
-        </Modal>
-      </AppContent>
+                </RowData>
+              </Row>
+            ))}
+          </Tbody>
+        </TableContainer>
+        <Pagination paginate={btoStatus} onClick={resetCheckbox} />
+      </ContentPanel>
+      <Modal
+          show={showCreate}
+          onClose={handleShowCreate}
+          title="Add BTO Status"
+      >
+        <BtoStatusForm 
+          action="create"
+          handleShow={()=>{
+            handleShowCreate(); 
+              handleToast("Created Status", "success");
+          }}   
+          />
+      </Modal>
+      <Modal
+          show={showEdit}
+          onClose={handleShowEdit}
+          title="Edit BTO Status"
+      >
+        <BtoStatusForm 
+          action="edit" 
+          handleShow={()=>{
+              handleShowEdit(); 
+              handleToast("Updated Status", "success");
+          }} 
+          updateFormValues={updateFormValues} />
+      </Modal>
     </>
   )
 }
