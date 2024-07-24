@@ -28,97 +28,95 @@ const Logs = ({ logs, queryParams }) => {
     return (
         <>
             <Head title="Item Master" />
-            <AppContent>
-                <ContentPanel>
-                    <TopPanel>
-                        <TableSearch queryParams={queryParams} />
-                        <PerPage queryParams={queryParams} />
-                        <Export path="" />
-                    </TopPanel>
+            <ContentPanel>
+                <TopPanel>
+                    <TableSearch queryParams={queryParams} />
+                    <PerPage queryParams={queryParams} />
+                    <Export path="" />
+                </TopPanel>
 
-                    <TableContainer>
-                        <Thead>
-                            <Row>
-                                <TableHeader
-                                    name="ipaddress"
-                                    queryParams={queryParams}
-                                    width="md"
-                                >
-                                    IP Address
-                                </TableHeader>
+                <TableContainer>
+                    <Thead>
+                        <Row>
+                            <TableHeader
+                                name="ipaddress"
+                                queryParams={queryParams}
+                                width="md"
+                            >
+                                IP Address
+                            </TableHeader>
 
-                                <TableHeader
-                                    name="useragent"
-                                    queryParams={queryParams}
-                                    width="xl"
-                                >
-                                    User Agent
-                                </TableHeader>
+                            <TableHeader
+                                name="useragent"
+                                queryParams={queryParams}
+                                width="xl"
+                            >
+                                User Agent
+                            </TableHeader>
 
-                                <TableHeader
-                                    name="url"
-                                    queryParams={queryParams}
-                                    width="xl"
-                                >
-                                    Url
-                                </TableHeader>
+                            <TableHeader
+                                name="url"
+                                queryParams={queryParams}
+                                width="xl"
+                            >
+                                Url
+                            </TableHeader>
 
-                                <TableHeader
-                                    name="description"
-                                    queryParams={queryParams}
-                                    width="xl"
-                                >
-                                    Description
-                                </TableHeader>
+                            <TableHeader
+                                name="description"
+                                queryParams={queryParams}
+                                width="xl"
+                            >
+                                Description
+                            </TableHeader>
 
-                                <TableHeader
-                                    name="id_adm_users"
-                                    queryParams={queryParams}
-                                    width="lg"
-                                >
-                                    User
-                                </TableHeader>
+                            <TableHeader
+                                name="id_adm_users"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
+                                User
+                            </TableHeader>
 
-                                <TableHeader
-                                    name="created_at"
-                                    queryParams={queryParams}
-                                    width="xl"
-                                >
-                                    Log Date
-                                </TableHeader>
-                            </Row>
-                        </Thead>
-                        <Tbody data={logs.data}>
-                            {logs &&
-                                logs.data.map((item) => (
-                                    <Row key={item.id}>
-                                        <RowData isLoading={loading}>
-                                            {item.ipaddress}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.useragent}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.url}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.description}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.user.name}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {moment(item.created_at).format(
-                                                "YYYY-MM-DD HH:mm:ss"
-                                            )}
-                                        </RowData>
-                                    </Row>
-                                ))}
-                        </Tbody>
-                    </TableContainer>
-                    <Pagination paginate={logs} />
-                </ContentPanel>
-            </AppContent>
+                            <TableHeader
+                                name="created_at"
+                                queryParams={queryParams}
+                                width="xl"
+                            >
+                                Log Date
+                            </TableHeader>
+                        </Row>
+                    </Thead>
+                    <Tbody data={logs.data}>
+                        {logs &&
+                            logs.data.map((item) => (
+                                <Row key={item.id}>
+                                    <RowData isLoading={loading}>
+                                        {item.ipaddress}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.useragent}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.url}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.description}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.user.name}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {moment(item.created_at).format(
+                                            "YYYY-MM-DD HH:mm:ss"
+                                        )}
+                                    </RowData>
+                                </Row>
+                            ))}
+                    </Tbody>
+                </TableContainer>
+                <Pagination paginate={logs} />
+            </ContentPanel>
         </>
     );
 };

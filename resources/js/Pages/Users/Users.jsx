@@ -421,170 +421,167 @@ const Users = ({ users, options, queryParams }) => {
     return (
         <>
             <Head title="Users Management" />
-            <AppContent>
-                <ContentPanel>
-                    <TopPanel>
-                        <BulkActions
-                            actions={bulkActions}
-                            onActionSelected={handleActionClick}
-                        />
-                        <TableSearch queryParams={queryParams} />
-                        <PerPage queryParams={queryParams} />
-                        <Import />
-                        <Filters />
-                        <TableButton onClick={handleCreate}>
-                            Create User
-                        </TableButton>
-                    </TopPanel>
-
-                    <TableContainer>
-                        <Thead>
-                            <Row>
-                                <TableHeader
-                                    name="users_id"
-                                    width="sm"
-                                    sortable={false}
-                                    justify="center"
-                                >
-                                    <Checkbox
-                                        type="checkbox"
-                                        name="selectAll"
-                                        id="selectAll"
-                                        handleClick={handleSelectAll}
-                                        isChecked={isCheckAll}
-                                    />
-                                </TableHeader>
-
-                                <TableHeader
-                                    name="user_name"
-                                    queryParams={queryParams}
-                                    width="sm"
-                                >
-                                    Name
-                                </TableHeader>
-
-                                <TableHeader
-                                    name="email"
-                                    queryParams={queryParams}
-                                >
-                                    Email
-                                </TableHeader>
-
-                                <TableHeader
-                                    name="privilege_name"
-                                    queryParams={queryParams}
-                                    width="sm"
-                                >
-                                    Privilege Name
-                                </TableHeader>
-                                <TableHeader
-                                    name="status"
-                                    queryParams={queryParams}
-                                    width="sm"
-                                >
-                                    Status
-                                </TableHeader>
-
-                                <TableHeader
-                                    sortable={false}
-                                    width="auto"
-                                    sticky="right"
-                                    justify="center"
-                                >
-                                    Action
-                                </TableHeader>
-                            </Row>
-                        </Thead>
-
-                        <Tbody data={users?.data}>
-                            {users &&
-                                users?.data.map((user, index) => (
-                                    <Row
-                                        key={user.user_name + user.u_id + index}
-                                    >
-                                        <RowData center>
-                                            <Checkbox
-                                                type="checkbox"
-                                                name="users_id[]"
-                                                id={user.u_id}
-                                                handleClick={handleClick}
-                                                isChecked={isCheck.includes(
-                                                    user.u_id
-                                                )}
-                                            />
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {user.user_name}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {user.email}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {user.privilege_name}
-                                        </RowData>
-                                        <RowStatus
-                                            isLoading={loading}
-                                            systemStatus={
-                                                user.status
-                                                    ? "active"
-                                                    : "inactive"
-                                            }
-                                        >
-                                            {user.status == 1
-                                                ? "Active"
-                                                : "Inactive"}
-                                        </RowStatus>
-                                        <RowData
-                                            isLoading={loading}
-                                            sticky="right"
-                                            width="sm"
-                                            center
-                                        >
-                                            <RowActions>
-                                                <RowAction
-                                                    type="button"
-                                                    action="edit"
-                                                    size="md"
-                                                    onClick={() =>
-                                                        handleEdit(user)
-                                                    }
-                                                />
-                                            </RowActions>
-                                        </RowData>
-                                    </Row>
-                                ))}
-                        </Tbody>
-                    </TableContainer>
-                    <div
-                        onClick={() => {
-                            setIsCheckAll(false), setIsCheck([]);
-                        }}
-                    >
-                        <Pagination paginate={users} />
-                    </div>
-                </ContentPanel>
-
-                <Modal
-                    show={showCreateModal}
-                    onClose={handleCloseCreateModal}
-                    title="Create User"
-                    width="lg"
-                >
-                    <CreateUserForm onClose={handleCloseCreateModal} />
-                </Modal>
-
-                <Modal
-                    show={showEditModal}
-                    onClose={handleCloseEditModal}
-                    title="Edit User"
-                    width="lg"
-                >
-                    <EditUserForm
-                        user={editUser}
-                        onClose={handleCloseEditModal}
+            <ContentPanel>
+                <TopPanel>
+                    <BulkActions
+                        actions={bulkActions}
+                        onActionSelected={handleActionClick}
                     />
-                </Modal>
-            </AppContent>
+                    <TableSearch queryParams={queryParams} />
+                    <PerPage queryParams={queryParams} />
+                    <Import />
+                    <Filters />
+                    <TableButton onClick={handleCreate}>
+                        Create User
+                    </TableButton>
+                </TopPanel>
+
+                <TableContainer>
+                    <Thead>
+                        <Row>
+                            <TableHeader
+                                name="users_id"
+                                width="sm"
+                                sortable={false}
+                                justify="center"
+                            >
+                                <Checkbox
+                                    type="checkbox"
+                                    name="selectAll"
+                                    id="selectAll"
+                                    handleClick={handleSelectAll}
+                                    isChecked={isCheckAll}
+                                />
+                            </TableHeader>
+
+                            <TableHeader
+                                name="user_name"
+                                queryParams={queryParams}
+                                width="sm"
+                            >
+                                Name
+                            </TableHeader>
+
+                            <TableHeader
+                                name="email"
+                                queryParams={queryParams}
+                            >
+                                Email
+                            </TableHeader>
+
+                            <TableHeader
+                                name="privilege_name"
+                                queryParams={queryParams}
+                                width="sm"
+                            >
+                                Privilege Name
+                            </TableHeader>
+                            <TableHeader
+                                name="status"
+                                queryParams={queryParams}
+                                width="sm"
+                            >
+                                Status
+                            </TableHeader>
+
+                            <TableHeader
+                                sortable={false}
+                                width="auto"
+                                sticky="right"
+                                justify="center"
+                            >
+                                Action
+                            </TableHeader>
+                        </Row>
+                    </Thead>
+
+                    <Tbody data={users?.data}>
+                        {users &&
+                            users?.data.map((user, index) => (
+                                <Row
+                                    key={user.user_name + user.u_id + index}
+                                >
+                                    <RowData center>
+                                        <Checkbox
+                                            type="checkbox"
+                                            name="users_id[]"
+                                            id={user.u_id}
+                                            handleClick={handleClick}
+                                            isChecked={isCheck.includes(
+                                                user.u_id
+                                            )}
+                                        />
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {user.user_name}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {user.email}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {user.privilege_name}
+                                    </RowData>
+                                    <RowStatus
+                                        isLoading={loading}
+                                        systemStatus={
+                                            user.status
+                                                ? "active"
+                                                : "inactive"
+                                        }
+                                    >
+                                        {user.status == 1
+                                            ? "Active"
+                                            : "Inactive"}
+                                    </RowStatus>
+                                    <RowData
+                                        isLoading={loading}
+                                        sticky="right"
+                                        width="sm"
+                                        center
+                                    >
+                                        <RowActions>
+                                            <RowAction
+                                                type="button"
+                                                action="edit"
+                                                size="md"
+                                                onClick={() =>
+                                                    handleEdit(user)
+                                                }
+                                            />
+                                        </RowActions>
+                                    </RowData>
+                                </Row>
+                            ))}
+                    </Tbody>
+                </TableContainer>
+                <div
+                    onClick={() => {
+                        setIsCheckAll(false), setIsCheck([]);
+                    }}
+                >
+                    <Pagination paginate={users} />
+                </div>
+            </ContentPanel>
+            <Modal
+                show={showCreateModal}
+                onClose={handleCloseCreateModal}
+                title="Create User"
+                width="lg"
+            >
+                <CreateUserForm onClose={handleCloseCreateModal} />
+            </Modal>
+
+            <Modal
+                show={showEditModal}
+                onClose={handleCloseEditModal}
+                title="Edit User"
+                width="lg"
+            >
+                <EditUserForm
+                    user={editUser}
+                    onClose={handleCloseEditModal}
+                />
+            </Modal>
         </>
     );
 };

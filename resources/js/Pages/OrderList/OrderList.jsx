@@ -20,6 +20,7 @@ import RowData from "../../Components/Table/RowData";
 import RowAction from "../../Components/Table/RowAction";
 import RowActions from "../../Components/Table/RowActions";
 import RowStatus from "../../Components/Table/RowStatus";
+import moment from "moment";
 
 const OrderList = ({ orders, my_privilege_id, queryParams }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -30,6 +31,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
             setTitle("BTO Order List");
         }, 5);
     }, []);
+
+    console.log(orders);
 
     const canEdit = (privilegeId, status) => {
         return (
@@ -42,197 +45,194 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
     return (
         <>
             <Head title="BTO Order List" />
-            <AppContent>
-                <ContentPanel>
-                    <TopPanel>
-                        <TableSearch queryParams={queryParams} />
-                        <PerPage queryParams={queryParams} />
-                        <Export path="" />
-                        <Filters />
-                        {[1, 3, 4].includes(my_privilege_id) && (
-                            <Button type="btn" href="/bto_order_list/add">
-                                Create Order
-                            </Button>
-                        )}
-                    </TopPanel>
+            <ContentPanel>
+                <TopPanel>
+                    <TableSearch queryParams={queryParams} />
+                    <PerPage queryParams={queryParams} />
+                    <Export path="" />
+                    <Filters />
+                    {[1, 3, 4].includes(my_privilege_id) && (
+                        <Button type="btn" href="/bto_order_list/add">
+                            Create Order
+                        </Button>
+                    )}
+                </TopPanel>
 
-                    <TableContainer>
-                        <Thead>
-                            <Row>
-                                {" "}
-                                <TableHeader
-                                    name="status"
-                                    queryParams={queryParams}
-                                    width="lg"
-                                >
-                                    Status
-                                </TableHeader>
-                                <TableHeader
-                                    name="customer_name"
-                                    queryParams={queryParams}
-                                    width="lg"
-                                >
-                                    Reference #
-                                </TableHeader>
-                                <TableHeader
-                                    name="customer_name"
-                                    queryParams={queryParams}
-                                    width="lg"
-                                >
-                                    Customer Name
-                                </TableHeader>
-                                <TableHeader
-                                    name="order_qty"
-                                    queryParams={queryParams}
-                                >
-                                    Order Qty
-                                </TableHeader>
-                                <TableHeader
-                                    name="store_name"
-                                    width="lg"
-                                    queryParams={queryParams}
-                                >
-                                    Store Name
-                                </TableHeader>
-                                <TableHeader
-                                    name="phone_number"
-                                    width="lg"
-                                    queryParams={queryParams}
-                                >
-                                    Phone Number
-                                </TableHeader>
-                                <TableHeader
-                                    name="item_description"
-                                    width="lg"
-                                    queryParams={queryParams}
-                                >
-                                    Item Description
-                                </TableHeader>
-                                <TableHeader
-                                    name="uom"
-                                    queryParams={queryParams}
-                                >
-                                    UOM
-                                </TableHeader>
-                                <TableHeader
-                                    name="brand"
-                                    queryParams={queryParams}
-                                >
-                                    Brand
-                                </TableHeader>
-                                <TableHeader
-                                    name="part_no"
-                                    queryParams={queryParams}
-                                >
-                                    Part #
-                                </TableHeader>
-                                <TableHeader
-                                    name="store_cost"
-                                    queryParams={queryParams}
-                                >
-                                    Store Cost
-                                </TableHeader>
-                                <TableHeader
-                                    name="srp"
-                                    queryParams={queryParams}
-                                >
-                                    SRP
-                                </TableHeader>
-                                <TableHeader
-                                    name="order_date"
-                                    queryParams={queryParams}
-                                >
-                                    Order Date
-                                </TableHeader>
-                                <TableHeader
-                                    sortable={false}
-                                    width="auto"
-                                    sticky="right"
-                                    justify="center"
-                                >
-                                    Action
-                                </TableHeader>
-                            </Row>
-                        </Thead>
-                        <Tbody data={orders}>
-                            {orders &&
-                                orders.data.map((item) => (
-                                    <Row key={item.id}>
-                                        <RowStatus
-                                            isLoading={loading}
-                                            color={item.bto_status.color}
-                                        >
-                                            {item.bto_status.status_name}
-                                        </RowStatus>
-                                        <RowData isLoading={loading}>
-                                            {item.reference_number}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.customer_name}
-                                        </RowData>
+                <TableContainer>
+                    <Thead>
+                        <Row>
+                            <TableHeader
+                                name="status"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
+                                Status
+                            </TableHeader>
+                            <TableHeader
+                                name="customer_name"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
+                                Reference #
+                            </TableHeader>
+                            <TableHeader
+                                name="customer_name"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
+                                Customer Name
+                            </TableHeader>
+                            <TableHeader
+                                name="order_qty"
+                                queryParams={queryParams}
+                            >
+                                Order Qty
+                            </TableHeader>
+                            <TableHeader
+                                name="store_name"
+                                width="lg"
+                                queryParams={queryParams}
+                            >
+                                Store Name
+                            </TableHeader>
+                            <TableHeader
+                                name="phone_number"
+                                width="lg"
+                                queryParams={queryParams}
+                            >
+                                Phone Number
+                            </TableHeader>
+                            <TableHeader
+                                name="item_description"
+                                width="lg"
+                                queryParams={queryParams}
+                            >
+                                Item Description
+                            </TableHeader>
+                            <TableHeader
+                                name="uom"
+                                queryParams={queryParams}
+                            >
+                                UOM
+                            </TableHeader>
+                            <TableHeader
+                                name="brand"
+                                queryParams={queryParams}
+                            >
+                                Brand
+                            </TableHeader>
+                            <TableHeader
+                                name="part_no"
+                                queryParams={queryParams}
+                            >
+                                Part #
+                            </TableHeader>
+                            <TableHeader
+                                name="store_cost"
+                                queryParams={queryParams}
+                            >
+                                Store Cost
+                            </TableHeader>
+                            <TableHeader
+                                name="srp"
+                                queryParams={queryParams}
+                            >
+                                SRP
+                            </TableHeader>
+                            <TableHeader
+                                name="order_date"
+                                queryParams={queryParams}
+                            >
+                                Order Date
+                            </TableHeader>
+                            <TableHeader
+                                sortable={false}
+                                width="auto"
+                                sticky="right"
+                                justify="center"
+                            >
+                                Action
+                            </TableHeader>
+                        </Row>
+                    </Thead>
+                    <Tbody data={orders}>
+                        {orders &&
+                            orders.data.map((item) => (
+                                <Row key={item.id}>
+                                    <RowStatus
+                                        isLoading={loading}
+                                        color={item.bto_status.color}
+                                    >
+                                        {item.bto_status.status_name}
+                                    </RowStatus>
+                                    <RowData isLoading={loading}>
+                                        {item.reference_number}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.customer_name}
+                                    </RowData>
 
-                                        <RowData isLoading={loading}>
-                                            {item.order_qty}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.store_location.location_name}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.phone_number}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.item_description}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.uom}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.brand}
-                                        </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.order_qty}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.store_location?.location_name || ''}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.phone_number}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.item_description}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.uom}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.brand}
+                                    </RowData>
 
-                                        <RowData isLoading={loading}>
-                                            {item.part_number}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.store_cost}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.srp}
-                                        </RowData>
-                                        <RowData isLoading={loading}>
-                                            {item.order_date}
-                                        </RowData>
-                                        <RowData
-                                            isLoading={loading}
-                                            sticky="right"
-                                            width="sm"
-                                            center
-                                        >
-                                            <RowActions>
+                                    <RowData isLoading={loading}>
+                                        {item.part_number}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.store_cost}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.srp}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {moment(item.order_date).format("YYYY-MM-DD")}
+                                    </RowData>
+                                    <RowData
+                                        isLoading={loading}
+                                        sticky="right"
+                                        width="sm"
+                                        center
+                                    >
+                                        <RowActions>
+                                            <RowAction
+                                                type="button"
+                                                action="view"
+                                                size="md"
+                                            />
+                                            {canEdit(
+                                                my_privilege_id,
+                                                item.bto_status.id
+                                            ) && (
                                                 <RowAction
-                                                    type="button"
-                                                    action="view"
+                                                    action="edit"
+                                                    href={`/bto_order_list/edit/${item.id}`}
                                                     size="md"
                                                 />
-                                                {canEdit(
-                                                    my_privilege_id,
-                                                    item.bto_status.id
-                                                ) && (
-                                                    <RowAction
-                                                        action="edit"
-                                                        href={`/bto_order_list/edit/${item.id}`}
-                                                        size="md"
-                                                    />
-                                                )}
-                                            </RowActions>
-                                        </RowData>
-                                    </Row>
-                                ))}
-                        </Tbody>
-                    </TableContainer>
-                    <Pagination paginate={orders} />
-                </ContentPanel>
-            </AppContent>
+                                            )}
+                                        </RowActions>
+                                    </RowData>
+                                </Row>
+                            ))}
+                    </Tbody>
+                </TableContainer>
+                <Pagination paginate={orders} />
+            </ContentPanel>
         </>
     );
 };

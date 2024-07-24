@@ -274,67 +274,65 @@ const MenusIndex = ({
     return (
         <div ref={scrollContainerRef} onWheel={handleWheel}>
             <Head title="Menu Management" />
-            <AppContent>
-                <ContentPanel>
-                    <div className="mb-5 text-red-400">
-                        *Welcome to the Menu Management page! To rearrange the
-                        items, set menus for specific privilege. Click and hold
-                        an item, then drag it to the desired position and
-                        release.
+            <ContentPanel>
+                <div className="mb-5 text-red-400">
+                    *Welcome to the Menu Management page! To rearrange the
+                    items, set menus for specific privilege. Click and hold
+                    an item, then drag it to the desired position and
+                    release.
+                </div>
+                {/* MENU ORDER ACTIVE */}
+                <div className="">
+                    <div className="bg-primary p-3 rounded-tl-lg rounded-tr-lg">
+                        <p className="text-white font-extrabold text-center">
+                            Menu Order (Active)
+                        </p>
                     </div>
-                    {/* MENU ORDER ACTIVE */}
-                    <div className="">
-                        <div className="bg-primary p-3 rounded-tl-lg rounded-tr-lg">
-                            <p className="text-white font-extrabold text-center">
-                                Menu Order (Active)
-                            </p>
+                    <div className="px-3 py-3">
+                        <div className="draggable-menu draggable-menu-active list-disc space-y-1">
+                            {renderMenuItems(menuActive, true)}
                         </div>
-                        <div className="px-3 py-3">
-                            <div className="draggable-menu draggable-menu-active list-disc space-y-1">
-                                {renderMenuItems(menuActive, true)}
+                        {menuActive.length === 0 && (
+                            <div
+                                align="center"
+                                id="inactive_text"
+                                className="text-gray-400 border-dashed border-gray-400 border p-10 flex justify-center items-center gap-3"
+                            >
+                                <i className="fa solid fa-inbox text-xl"></i>
+                                <span className="font-bold ">
+                                    Active Menu is Empty, Please Add New
+                                    Menu
+                                </span>
                             </div>
-                            {menuActive.length === 0 && (
-                                <div
-                                    align="center"
-                                    id="inactive_text"
-                                    className="text-gray-400 border-dashed border-gray-400 border p-10 flex justify-center items-center gap-3"
-                                >
-                                    <i className="fa solid fa-inbox text-xl"></i>
-                                    <span className="font-bold ">
-                                        Active Menu is Empty, Please Add New
-                                        Menu
-                                    </span>
-                                </div>
-                            )}
-                        </div>
+                        )}
                     </div>
-                    {/* MENU ORDER INACTIVE */}
-                    <div className="mt-10">
-                        <div className="bg-primary p-3">
-                            <p className="text-white font-extrabold text-center">
-                                Menu Order (Inactive)
-                            </p>
+                </div>
+                {/* MENU ORDER INACTIVE */}
+                <div className="mt-10">
+                    <div className="bg-primary p-3">
+                        <p className="text-white font-extrabold text-center">
+                            Menu Order (Inactive)
+                        </p>
+                    </div>
+                    <div className="p-5">
+                        <div className="draggable-menu draggable-menu-inactive space-y-1">
+                            {renderMenuItems(menuInactive, false)}
                         </div>
-                        <div className="p-5">
-                            <div className="draggable-menu draggable-menu-inactive space-y-1">
-                                {renderMenuItems(menuInactive, false)}
+                        {menuInactive.length === 0 && (
+                            <div
+                                align="center"
+                                id="inactive_text"
+                                className="text-gray-400 border-dashed border-gray-400 border p-10  flex justify-center items-center gap-3"
+                            >
+                                <i className="fa solid fa-inbox text-xl"></i>
+                                <span className="font-bold ">
+                                    Inactive Menu is Empty
+                                </span>
                             </div>
-                            {menuInactive.length === 0 && (
-                                <div
-                                    align="center"
-                                    id="inactive_text"
-                                    className="text-gray-400 border-dashed border-gray-400 border p-10  flex justify-center items-center gap-3"
-                                >
-                                    <i className="fa solid fa-inbox text-xl"></i>
-                                    <span className="font-bold ">
-                                        Inactive Menu is Empty
-                                    </span>
-                                </div>
-                            )}
-                        </div>
+                        )}
                     </div>
-                </ContentPanel>
-            </AppContent>
+                </div>
+            </ContentPanel>
         </div>
     );
 };

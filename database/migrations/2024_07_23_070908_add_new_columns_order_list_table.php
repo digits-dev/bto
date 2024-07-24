@@ -25,9 +25,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('order_lists', function (Blueprint $table) {
-            $table->dropColumn('uom');
-            $table->dropColumn('brand');
-            $table->dropColumn('reference_number');
+            if (Schema::hasColumn('order_lists', 'reference_number')) {
+                $table->dropColumn('reference_number');
+            }
+            if (Schema::hasColumn('order_lists', 'uom')) {
+                $table->dropColumn('uom');
+            }
+            if (Schema::hasColumn('order_lists', 'brand')) {
+                $table->dropColumn('brand');
+            }
             $table->string('status')->after('uploaded_file')->change();
         });
     }

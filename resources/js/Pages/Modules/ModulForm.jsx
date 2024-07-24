@@ -168,7 +168,7 @@ const CreateUserForm = ({ onClose }) => {
            
             <button
                 type="submit"
-                className="bg-black w-full text-white font-nunito-sans p-[12px] font-bold rounded-[10px] mt-5 hover:opacity-70"
+                className="bg-secondary w-full text-white font-nunito-sans p-[12px] font-bold rounded-[10px] mt-5 hover:opacity-70"
                 disabled={loading}
             >
                 {loading ? "Submitting..." : "Submit"}
