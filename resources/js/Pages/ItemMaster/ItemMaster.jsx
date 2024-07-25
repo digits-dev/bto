@@ -16,14 +16,11 @@ import TableHeader from '../../Components/Table/TableHeader';
 import RowData from '../../Components/Table/RowData';
 import { router } from '@inertiajs/react';
 import RowAction from '../../Components/Table/RowAction';
-import ItemMasterForm from './ItemMasterForm';
 import Modal from '../../Components/Modal/Modal';
 import { useToast } from "../../Context/ToastContext";
 
 const ItemMaster = ({itemMaster, queryParams}) => {
   const { setTitle } = useContext(NavbarContext);
-  const [showCreate, setShowCreate] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const { handleToast } = useToast();
   const [updateFormValues, setUpdateFormValues] = useState(
@@ -45,15 +42,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
     }, 5);
   }, []);
 
-  const handleShowCreate = () => {
-    setShowCreate(!showCreate);
-  }
-
-  const handleShowEdit = () => {
-    setShowEdit(!showEdit);
-  }
-
-
 
   return(
     <>
@@ -61,10 +49,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
         <TopPanel>
           <TableSearch queryParams={queryParams}/>
           <PerPage queryParams={queryParams}/>
-          <TableButton onClick={handleShowCreate}>
-              Add Item
-          </TableButton>
-          <Import/>
           <Export/>
         </TopPanel>
         <TableContainer>
@@ -116,7 +100,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
                     <RowAction
                       type="button"
                       onClick={()=>{
-                        handleShowEdit(); 
                         setUpdateFormValues({
                           id: item.id,
                           digits_code: item.digits_code, 
@@ -125,7 +108,7 @@ const ItemMaster = ({itemMaster, queryParams}) => {
                           srp: item.srp,
                           store_cost: item.store_cost,
                       });}}
-                      action="edit"
+                      action="show"
                       size="md"
                     />
                 </RowData>
@@ -135,32 +118,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
         </TableContainer>
         <Pagination paginate={itemMaster}/>
       </ContentPanel>
-      <Modal
-          show={showCreate}
-          onClose={handleShowCreate}
-          title="Add Item"
-      >
-        <ItemMasterForm 
-          action="create"
-          handleShow={()=>{
-            handleShowCreate(); 
-              handleToast("Created Item", "success");
-          }}   
-          />
-      </Modal>
-      <Modal
-          show={showEdit}
-          onClose={handleShowEdit}
-          title="Edit Item Master"
-      >
-        <ItemMasterForm 
-          action="edit" 
-          handleShow={()=>{
-              handleShowEdit(); 
-              handleToast("Updated Item", "success");
-          }} 
-          updateFormValues={updateFormValues} />
-      </Modal>
     </>
     );
 };

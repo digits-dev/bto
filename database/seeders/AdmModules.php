@@ -163,21 +163,8 @@ class AdmModules extends Seeder
             ],
 
             [
-
                 'created_at' => date('Y-m-d H:i:s'),
-                'name' => 'BTO IMFS',
-                'icon' => 'fa-solid fa-table-list',
-                'path' => 'bto_imfs',
-                'table_name' => 'order_list',
-                'controller' => 'BtoImfs\BtoImfsController',
-                'is_protected' => 0,
-                'is_active' => 1,
-            ],
-
-            [
-
-                'created_at' => date('Y-m-d H:i:s'),
-                'name' => 'Item Master',
+                'name' => 'BTO Item Master',
                 'icon' => 'fa-solid fa-box-open',
                 'path' => 'item_master',
                 'table_name' => 'item_master',
@@ -185,6 +172,8 @@ class AdmModules extends Seeder
                 'is_protected' => 0,
                 'is_active' => 1,
             ],
+
+           
             [
 
                 'created_at' => date('Y-m-d H:i:s'),

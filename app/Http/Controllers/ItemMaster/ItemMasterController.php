@@ -41,43 +41,6 @@ class ItemMasterController extends Controller{
 
         return Inertia("ItemMaster/ItemMaster", $data);
     }
-
-    public function store(Request $request){
-
-        $request->validate([
-            'digits_code' => 'required',
-            'part_number' => 'required|unique:item_masters,part_number',
-            'item_description' => 'required',
-            'srp' => 'required',
-            'store_cost' => 'required',
-        ]);
-        
-        ItemMaster::create([
-            'digits_code'=> $request->input('digits_code'), 
-            'part_number' => $request->input('part_number'),
-            'item_description' => $request->input('item_description'),
-            'srp' => $request->input('srp'),
-            'store_cost' => $request->input('store_cost'),
-        ]);
-    }
-
-    public function update(Request $request, ItemMaster $itemMaster){
-        $request->validate([
-            'digits_code' => 'required',
-            'part_number' => 'required|unique:item_masters,part_number',
-            'item_description' => 'required',
-            'srp' => 'required',
-            'store_cost' => 'required',
-        ]);
-
-        $itemMaster->update([
-            'digits_code'=> $request->input('digits_code'),  
-            'part_number' => $request->input('part_number'), 
-            'item_description' => $request->input('item_description'), 
-            'srp' => $request->input('srp'), 
-            'store_cost' => $request->input('store_cost'), 
-        ]);
-    }
 }
 
 ?>
