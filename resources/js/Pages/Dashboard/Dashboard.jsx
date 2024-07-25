@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { Head, usePage } from "@inertiajs/react";
-import AppContent from "../../Layouts/layout/AppContent";
 import Overview from "../../Components/Dashboard/Overview";
 import { NavbarContext } from "../../Context/NavbarContext";
+import Orders from "../../Components/Dashboard/Orders";
 
-const Dashboard = ({ customer, orders, devices, orders_count_wdate }) => {
+const Dashboard = ({ total_orders, part_input, costing, srp, closed, orders_count_wdate }) => {
     const { auth } = usePage().props;
     const { setTitle } = useContext(NavbarContext);
 
@@ -36,10 +36,13 @@ const Dashboard = ({ customer, orders, devices, orders_count_wdate }) => {
         <>
             <Head title="Dashboard" />
             <Overview
-                customer={customer}
-                orders={orders}
-                devices={devices}
+                total_orders={total_orders}
+                part_input={part_input}
+                costing={costing}
+                srp={srp}
+                closed={closed}
             />
+            <Orders orders_count_wdate={orders_count_wdate} />
         </>
     );
 };

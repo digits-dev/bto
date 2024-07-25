@@ -19,21 +19,36 @@ const DashboardOverviewCard = ({ title, data, src, url }) => {
     );
 };
 
-const Overview = ({ customer, orders, devices }) => {
+const Overview = ({ total_orders, part_input, costing, srp, closed }) => {
     return (
         <>
             <ContentPanel marginBottom={2}>
                 <p className="font-extrabold font-nunito-sans mb-3">Overview</p>
                 <div className="flex flex-row gap-2 flex-wrap justify-center md:justify-start">
                     <DashboardOverviewCard
-                        title="Users"
-                        data={customer}
-                        src={"images/navigation/user-management-icon.png"}
+                        title="Total Orders"
+                        data={total_orders}
+                        src={"images/navigation/order-icon.png"}
                     />
                     <DashboardOverviewCard
-                        title="Orders"
-                        data={orders}
-                        src={"images/navigation/order-icon.png"}
+                        title="For Part # Input"
+                        data={part_input}
+                        src={"images/others/hash-icon.png"}
+                    />
+                    <DashboardOverviewCard
+                        title="For Costing"
+                        data={costing}
+                        src={"images/others/money-icon.png"}
+                    />
+                    <DashboardOverviewCard
+                        title="For SRP"
+                        data={srp}
+                        src={"images/others/tag-icon.png"}
+                    />
+                    <DashboardOverviewCard
+                        title="Closed"
+                        data={closed}
+                        src={"images/others/closed-icon.png"}
                     />
                 </div>
             </ContentPanel>

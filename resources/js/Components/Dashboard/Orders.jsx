@@ -19,7 +19,7 @@ const Orders = ({ orders_count_wdate }) => {
             type: "datetime",
             categories: [],
         },
-        colors: ["#595757"],
+        colors: ["#0096FF"],
     });
 
     const [chartSeries, setChartSeries] = useState([
@@ -56,7 +56,7 @@ const Orders = ({ orders_count_wdate }) => {
     return (
         <>
             <ContentPanel marginBottom={0}>
-                <p className="font-extrabold font-nunito-sans mb-3">Orders</p>
+                <p className="font-extrabold font-nunito-sans mb-3">BTO Orders</p>
 
                 <Chart
                     options={chartOptions}

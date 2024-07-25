@@ -1,11 +1,18 @@
 import { Head, Link } from '@inertiajs/react'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ContentPanel from '../../Components/Table/ContentPanel'
 import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
+import { NavbarContext } from "../../Context/NavbarContext";
 
 const OrderListView = ({order_details}) => {
-    console.log(order_details);
+    const { setTitle } = useContext(NavbarContext);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setTitle("BTO Order List - Details");
+        }, 5);
+    }, []);
   return (
     <>
         <Head title='BTO Order List - Details'/>
