@@ -204,8 +204,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                                     >
                                         <RowActions>
                                             <RowAction
-                                                type="button"
                                                 action="view"
+                                                href={`/bto_order_list/${item.id}`}
                                                 size="md"
                                             />
                                             {canEdit(

@@ -69,13 +69,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
               <TableHeader name="store_cost" queryParams={queryParams}>
                   Store Cost
               </TableHeader>
-              <TableHeader
-                sortable={false}
-                width="auto"
-                justify="center"
-              >
-                  Action
-              </TableHeader>
             </Row>
           </Thead>
           <Tbody data={itemMaster.data}>
@@ -95,22 +88,6 @@ const ItemMaster = ({itemMaster, queryParams}) => {
                 </RowData>
                 <RowData isLoading={loading} >
                   {item.store_cost}
-                </RowData>
-                <RowData isLoading={loading} center>
-                    <RowAction
-                      type="button"
-                      onClick={()=>{
-                        setUpdateFormValues({
-                          id: item.id,
-                          digits_code: item.digits_code, 
-                          part_number: item.part_number, 
-                          item_description: item.item_description,  
-                          srp: item.srp,
-                          store_cost: item.store_cost,
-                      });}}
-                      action="show"
-                      size="md"
-                    />
                 </RowData>
               </Row>
             ))}

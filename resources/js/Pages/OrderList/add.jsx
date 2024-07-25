@@ -163,12 +163,12 @@ const AddForm = ({ store_name }) => {
                                     ) : (
                                         <>
                                             <img
-                                                className="w-75"
+                                                className="w-48"
                                                 id="image"
                                                 src="/images/others/upload.png"
                                                 alt="Upload"
                                             />
-                                            <p className="text-sm font-bold">
+                                            <p className="text-md font-nunito-sans font-black text-upload-text-color">
                                                 Upload Image
                                             </p>
                                             <p className="text-sm text-slate-500">

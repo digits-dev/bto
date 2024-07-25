@@ -52,6 +52,15 @@ class OrderListController extends Controller
 
     }
 
+    public function OrderListIndex($id){
+
+        $data = [];
+        $data['order_details'] =  OrderList::with('btoStatus:id,status_name')->findOrFail($id);
+
+        return Inertia::render('OrderList/OrderListView', $data);
+
+    }
+
     public function add() {
         $data = [];
         $data['store_name'] = StoreLocation::get();
@@ -61,13 +70,13 @@ class OrderListController extends Controller
     
     public function addSave(Request $request) {
         
-            $validatedData = $request->validate([
-                'customer_name' => 'required|string|max:255',
-                'order_qty' => 'required|integer|min:1',
-                'item_description' => 'required|string|max:500',
-                'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-                'stores_id' => 'required|integer|min:1',
-            ]);
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'order_qty' => 'required|integer|min:1',
+            'item_description' => 'required|string|max:500',
+            'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
+            'stores_id' => 'required|integer|min:1',
+        ]);
       
     
         $data = [

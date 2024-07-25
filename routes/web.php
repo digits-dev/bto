@@ -101,6 +101,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bto_order_list/add_save', [OrderListController::class, 'addSave']);
     Route::get('/bto_order_list/edit/{id}', [OrderListController::class, 'edit']);
     Route::post('/bto_order_list/edit_save', [OrderListController::class, 'editSave']);
+    Route::get('/bto_order_list/{id}', [OrderListController::class, 'OrderListIndex']);
+
 
 
 });

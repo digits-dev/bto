@@ -19,6 +19,7 @@ module.exports = {
                 tertiary: "#508C9B",
                 stroke: "9f9d9d",
                 "sidebar-hover-color": "#104C83",
+                "upload-text-color" : "#078DEF",
             },
             backgroundImage: {
                 "app-gradient": "linear-gradient(to bottom, #201E43, #130E75)",
