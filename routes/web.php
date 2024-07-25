@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
     //PROFILE PAGE
     Route::get('/profile', [ProfilePageController::class, 'getIndex'])->name('profile_page');
+    Route::put('/profile/{user}', [ProfilePageController::class, 'updateProfile']);
 
     //CHANGE PASSWORD
     Route::get('/change_password', [ChangePasswordController::class, 'getIndex'])->name('change_password');
@@ -82,10 +83,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store_location', [StoreLocationController::class, 'store']);
     Route::put('/store_location/{store_location}', [StoreLocationController::class, 'update']);
     Route::put('/store_location/bulkupdate', [StoreLocationController::class, 'bulkUpdate']);
-
-    //ITEM MASTER
-    Route::post('/item_master', [ItemMasterController::class, 'store']);
-    Route::put('/item_master/{itemMaster}', [ItemMasterController::class, 'update']);
 
     // EXPORTS
     Route::get('/bto_status_export', [StatusController::class, 'export']);

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
+        'stores_id',
 
     ];
 
@@ -63,5 +64,13 @@ class User extends Authenticatable
             $model->id_adm_privileges = request()->input('privilege_id');
             $model->password = 'qwerty';
         });
+    }
+
+    public function userStore() {
+        return $this->belongsTo(StoreLocation::class, 'stores_id', 'id');
+    }
+
+    public function userPrivilege() {
+        return $this->belongsTo(AdmPrivileges::class, 'id_adm_privileges', 'id');
     }
 }
