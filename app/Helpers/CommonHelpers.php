@@ -76,6 +76,10 @@ class CommonHelpers {
     {
         return Session::get('admin_privileges');
     }
+    public static function myLocationId()
+    {
+        return Session::get('stores_id');
+    }
 
     public static function myThemeColor()
     {

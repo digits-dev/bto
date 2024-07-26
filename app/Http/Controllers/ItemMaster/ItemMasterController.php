@@ -41,6 +41,18 @@ class ItemMasterController extends Controller{
 
         return Inertia("ItemMaster/ItemMaster", $data);
     }
+    public function getDigitsCode(Request $request)
+    {
+        $partNumber = $request->input('part_number');
+
+        $btoImf = ItemMaster::where('part_number', $partNumber)->first();
+
+        if ($btoImf) {
+            return response()->json($btoImf, 200);
+        } else {
+            return response()->json(['message' => 'Part number is not existing'], 404);
+        }
+    }
 }
 
 ?>

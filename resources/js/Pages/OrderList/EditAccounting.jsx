@@ -8,7 +8,7 @@ import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 
-const EditFormAccounting = ({ order_list, my_privilege_id, status }) => {
+const EditFormAccounting = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
     const { handleToast } = useToast();
 
@@ -99,7 +99,7 @@ const EditFormAccounting = ({ order_list, my_privilege_id, status }) => {
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="stores_id"
-                                    value={order_list.stores_id}
+                                    value={store_name}
                                 />
                                 <InputComponent
                                     extendClass="w-full"

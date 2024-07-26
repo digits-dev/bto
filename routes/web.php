@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MenusController;
 use App\Http\Controllers\Admin\ModulsController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\OrderList\OrderListController;
+use App\Http\Controllers\BtoImfs\BtoImfsController;
 use App\Http\Controllers\Admin\PrivilegesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Users\ChangePasswordController;
@@ -104,6 +105,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bto_order_list/{id}', [OrderListController::class, 'OrderListIndex']);
 
 
+    // Item Master
+    Route::post('/get-digits-code', [ItemMasterController::class, 'getDigitsCode']);
 
 });
 

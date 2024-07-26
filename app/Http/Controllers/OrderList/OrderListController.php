@@ -7,6 +7,7 @@ use App\Models\OrderList;
 use App\Models\BtoImfs;
 use App\Models\StoreLocation;
 use App\Models\BtoStatus;
+use App\Models\ItemMaster;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class OrderListController extends Controller
     private const forCosting = 2;
     private const forSRP = 3;
     private const closed = 4;
+    private const existing = 5;
     
 
     public function __construct() {
@@ -63,9 +65,9 @@ class OrderListController extends Controller
 
     public function add() {
         $data = [];
-        $data['store_name'] = StoreLocation::get();
+        // $data['store_name'] = StoreLocation::get();
 
-        return Inertia::render('OrderList/add', $data);
+        return Inertia::render('OrderList/Add', $data);
     }
     
     public function addSave(Request $request) {
@@ -75,9 +77,7 @@ class OrderListController extends Controller
             'order_qty' => 'required|integer|min:1',
             'item_description' => 'required|string|max:500',
             'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-            'stores_id' => 'required|integer|min:1',
         ]);
-      
     
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
@@ -85,7 +85,7 @@ class OrderListController extends Controller
             'order_qty' => $request->order_qty,
             'item_description' => $request->item_description,
             'phone_number' => $request->phone_number,
-            'stores_id' => $request->stores_id,
+            'stores_id' => CommonHelpers::myLocationId(),
             'uploaded_file' => time() . '_' . $request->uploaded_file->getClientOriginalName(),
             'created_by' => CommonHelpers::myId(),
             'order_date' => date('Y-m-d H:i:s'),
@@ -105,6 +105,7 @@ class OrderListController extends Controller
         $data = [];
         $data['order_list'] = OrderList::find($id);
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
+        $data['store_name'] = StoreLocation::where('id', $data['order_list']->stores_id)->first()->location_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
         if (CommonHelpers::myPrivilegeId() == 6) {
             return Inertia::render('OrderList/EditMerchandising', $data);
@@ -115,13 +116,22 @@ class OrderListController extends Controller
 
     public function editSave(Request $request) {
         $orderList = OrderList::find($request->order_list_id);
+        $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
         if ($orderList->status == self::forPartNumber) {
-            $orderList->update([
-                'status' => self::forCosting,
-                'part_number' => $request->part_number,
-                'updated_by_mcb' => CommonHelpers::myId(),
-                'updated_by_mcb_date' => date('Y-m-d H:i:s'),
-                 ]);
+            if($isPartNumberExisting) {
+                $orderList->update([
+                    'status' => self::existing,
+                    'updated_by_mcb' => CommonHelpers::myId(),
+                    'updated_by_mcb_date' => date('Y-m-d H:i:s'),
+                    ]);
+            }else {
+                $orderList->update([
+                    'status' => self::forCosting,
+                    'part_number' => $request->part_number,
+                    'updated_by_mcb' => CommonHelpers::myId(),
+                    'updated_by_mcb_date' => date('Y-m-d H:i:s'),
+                ]);
+            }
         }else if ($orderList->status == self::forCosting) {
             $orderList->update([
                 'status' => self::forSRP,
@@ -138,21 +148,13 @@ class OrderListController extends Controller
                  ]);
 
             $data = [
-                'reference_number' => $orderList->reference_number,
-                'customer_name' => $orderList->customer_name,
-                'order_qty' => $orderList->order_qty,
-                'stores_id' => $orderList->stores_id,
-                'phone_number' => $orderList->phone_number,
                 'item_description' => $orderList->item_description,
-                'uom' => $orderList->uom,
-                'brand' => $orderList->brand,
                 'part_number' => $orderList->part_number,
                 'store_cost' => $orderList->store_cost,
                 'srp' => $orderList->srp,
-                'order_date' => $orderList->order_date,
             ];
 
-            BtoImfs::create($data);
+            ItemMaster::create($data);
         }
         
     

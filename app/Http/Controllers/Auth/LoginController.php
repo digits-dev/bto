@@ -56,6 +56,7 @@ class LoginController extends Controller
             Session::put("admin_privileges", $session_details['priv']->id);
             Session::put('admin_privileges_roles', $session_details['roles']);
             Session::put('theme_color', $session_details['priv']->theme_color);
+            Session::put('stores_id', $users->stores_id);
             CommonHelpers::insertLog(trans("adm_default.log_login", ['email' => $users->email, 'ip' => $request->server('REMOTE_ADDR')]));
 
             return redirect()->intended('dashboard');

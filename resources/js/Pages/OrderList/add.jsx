@@ -38,8 +38,8 @@ const AddForm = ({ store_name }) => {
         customer_name: "",
         order_qty: "",
         phone_number: "",
-        stores_id: "",
         uploaded_file: "",
+        // stores_id: "",
     });
 
     const handleSubmit = (e) => {
@@ -71,11 +71,11 @@ const AddForm = ({ store_name }) => {
         });
     };
 
-    const storeOptions = store_name.map((store) => ({
-        id: store.id,
-        label: store.location_name,
-        name: store.location_name,
-    }));
+    // const storeOptions = store_name.map((store) => ({
+    //     id: store.id,
+    //     label: store.location_name,
+    //     name: store.location_name,
+    // }));
 
     return (
         <>
@@ -120,14 +120,14 @@ const AddForm = ({ store_name }) => {
                                 )}
                             </div>
                             <div className="flex flex-col flex-1 gap-y-3">
-                                <DropdownSelect
+                                {/* <DropdownSelect
                                     displayName="Store Name"
                                     name="stores_id"
                                     selectType="react-select"
                                     is_required={true}
                                     onChange={handleChange}
                                     options={storeOptions}
-                                />
+                                /> */}
                                 <InputComponent
                                     extendClass="w-full"
                                     name="item_description"
