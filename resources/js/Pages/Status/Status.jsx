@@ -131,7 +131,7 @@ const Status = ({btoStatus, queryParams}) => {
       <ContentPanel>
         <TopPanel>
           <BulkActions actions={bulkActions} onActionSelected={handleActionSelected}></BulkActions>
-          <TableSearch queryParams={queryParams} />
+          <TableSearch queryParams={queryParams} placeholder='Search Status' />
           <PerPage queryParams={queryParams} />
           <TableButton onClick={handleShowCreate}>
               Add BTO Status

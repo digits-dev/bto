@@ -30,7 +30,7 @@ class ItemMasterController extends Controller{
         $query = ItemMaster::query();
 
         $query->when(request('search'), function ($query, $search) {
-            $query->where('status_name', 'LIKE', "%$search%");
+            $query->where('part_number', 'LIKE', "%$search%");
         });
 
         $query->select('*', DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as created_date"));

@@ -56,34 +56,50 @@ const AddPrivileges = ({ moduleses, row }) => {
         }
 
     }, []);
+
+    useEffect(()=>{
+        setSelectAll((prevState) => ({
+            ...prevState,
+            is_visible: modules.every(item => item.roles?.is_visible == 1) ? 1 : 0,
+            is_create: modules.every(item => item.roles?.is_create == 1) ? 1 : 0,
+            is_read: modules.every(item => item.roles?.is_read == 1) ? 1 : 0,
+            is_edit: modules.every(item => item.roles?.is_edit == 1) ? 1 : 0,
+            is_delete: modules.every(item => item.roles?.is_delete == 1) ? 1 : 0,
+            is_void: modules.every(item => item.roles?.is_void == 1) ? 1 : 0,
+            is_override: modules.every(item => item.roles?.is_override == 1) ? 1 : 0
+        }));
+    },[modules]);
     
     const handleSelectAll = (e, permission) => {
-        const { type, checked } = e.target;
+        const { type, checked, value } = e.target;
         const actualValue = type === "checkbox" ? (checked ? "1" : "") : value;
         setSelectAll((prevState) => ({
             ...prevState,
             [permission]: !prevState[permission],
         }));
         // Update roles state based on new select all state
-        modules.map((item) => {
-            const isChecked = !roles[item.id]?.is_visible;
-            setRoles((prevRoles) => ({
-                ...prevRoles,
-                [item.id]: {
-                    [permission]: isChecked,
-                },
-            }));
+        setModules(modules.map(modul => {
+            return {
+                ...modul,
+                roles: {
+                    ...modul.roles,
+                    [permission]: checked,
+                }
+            };
+            
+        }));
 
-            setForms({
+        modules.map(item => {
+            setForms(forms => ({
                 ...forms,
                 privileges: {
                     ...forms.privileges,
                     [item.id]: {
-                        ...forms.privileges[item.id],
+                        ...forms.privileges?.[item.id],
                         [permission]: actualValue,
                     },
                 },
-            });
+            }));
         });
     };
 
@@ -275,7 +291,6 @@ const AddPrivileges = ({ moduleses, row }) => {
  
     return (
         <>
-            <AppContent>
                 <form onSubmit={row.length === 0 ? handleCreate : handleEdit}>
                     <ContentPanel marginBottom={2}>
                         <input
@@ -685,7 +700,6 @@ const AddPrivileges = ({ moduleses, row }) => {
                         </div>
                     </ContentPanel>
                 </form>
-            </AppContent>
         </>
     );
 };

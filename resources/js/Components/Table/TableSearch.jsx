@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import debounce from "lodash/debounce";
 
-const TableSearch = ({ queryParams }) => {
+const TableSearch = ({ queryParams, placeholder="Search" }) => {
 	const [searchValue, setSearchValue] = useState(queryParams?.search || "");
 	const path = window.location.pathname;
 
@@ -27,7 +27,7 @@ const TableSearch = ({ queryParams }) => {
 				type="text"
 				name="search"
 				id="search"
-				placeholder="Search"
+				placeholder={placeholder}
 				value={searchValue}
 				onChange={(e) => setSearchValue(e.target.value)}
 			/>

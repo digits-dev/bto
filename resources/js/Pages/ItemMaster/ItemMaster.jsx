@@ -26,21 +26,13 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
     const [showEdit, setShowEdit] = useState(false);
     const [loading, setLoading] = useState(false);
     const { handleToast } = useToast();
-    const [updateFormValues, setUpdateFormValues] = useState({
-        id: "",
-        digits_code: "",
-        part_number: "",
-        item_description: "",
-        srp: "",
-        store_cost: "",
-    });
 
     router.on("start", () => setLoading(true));
     router.on("finish", () => setLoading(false));
 
     useEffect(() => {
         setTimeout(() => {
-            setTitle("Submaster - Item Master");
+            setTitle("BTO Item Master");
         }, 5);
     }, []);
 
@@ -48,7 +40,7 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
         <>
             <ContentPanel>
                 <TopPanel>
-                    <TableSearch queryParams={queryParams} />
+                    <TableSearch queryParams={queryParams} placeholder="Search Part #" />
                     <PerPage queryParams={queryParams} />
                     <Export />
                 </TopPanel>

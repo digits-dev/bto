@@ -127,7 +127,7 @@ const StoreLocation = ({storeLocation,queryParams}) => {
     <ContentPanel>
       <TopPanel>
       <BulkActions actions={bulkActions} onActionSelected={handleActionSelected}></BulkActions>
-        <TableSearch queryParams={queryParams} />
+        <TableSearch queryParams={queryParams} placeholder="Search Store Location"/>
         <PerPage queryParams={queryParams} />
         <TableButton onClick={handleShowCreate}>
             Add Location
