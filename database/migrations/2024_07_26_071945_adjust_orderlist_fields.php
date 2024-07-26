@@ -17,8 +17,7 @@ return new class extends Migration
             $table->dropColumn('srp');
             $table->dropColumn('uom');
             $table->dropColumn('brand');
-            $table->dropColumn('item_description');
-            $table->integer('item_master_id')->nullable()->after('part_number');
+            $table->integer('item_master_id')->nullable()->after('id');
 
         });
     }
@@ -29,7 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('order_lists', function (Blueprint $table) {
-            $table->string('item_description')->after('phone_number')->nullable();
             $table->string('uom')->after('item_description')->default('PCS');
             $table->string('brand')->after('uom')->default('APPLE');
             $table->string('digits_code', 10)->after('uploaded_file')->nullable();
