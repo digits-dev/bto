@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavbarContext } from "../../Context/NavbarContext";
 import AppContent from "../../Layouts/layout/AppContent";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import ContentPanel from "../../Components/Table/ContentPanel";
 import TopPanel from "../../Components/Table/TopPanel";
 import TableSearch from "../../Components/Table/TableSearch";
@@ -21,8 +21,10 @@ import RowAction from "../../Components/Table/RowAction";
 import RowActions from "../../Components/Table/RowActions";
 import RowStatus from "../../Components/Table/RowStatus";
 import moment from "moment";
+import ReactSelect from "../../Components/Forms/ReactSelect";
+import InputComponent from "../../Components/Forms/Input";
 
-const OrderList = ({ orders, my_privilege_id, queryParams }) => {
+const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => {
     const { setTitle } = useContext(NavbarContext);
     const [loading, setLoading] = useState(false);
     const [orderId, setOrderId] = useState(null);
@@ -41,6 +43,57 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
         );
     };
 
+    const storeOptions = store.map((store) => ({
+        value: store.id,
+        label: store.location_name,
+    }));
+
+    const statusOptions = status.map((status) => ({
+        value: status.id,
+        label: status.status_name,
+    }));
+
+    const [filters, setFilters] = useState({
+        status: "",
+        reference_number: "",
+        customer_name: "",
+        order_qty: "",
+        stores_id: "",
+        phone_number: "",
+        item_description: "",
+        uom: "",
+        brand: "",
+        part_number: "",
+        store_cost: "",
+        srp: "",
+        order_date: "",
+    });
+
+    const handleFilter = (e, attrName) => {
+        if(attrName) {
+            const { value } = e;
+
+            setFilters(filters => ({
+                ...filters,
+                [attrName]: value,
+            }));
+          
+        }else{
+            const { name, value } = e.target;
+
+            setFilters(filters => ({
+            ...filters,
+            [name]: value,
+            }));
+       }
+    }
+
+    const handleFilterSubmit = (e) => {
+        e.preventDefault();
+        const queryString = new URLSearchParams(filters).toString();
+        router.get(`/bto_order_list?${queryString}`);
+    };
+
     return (
         <>
             <Head title="BTO Order List" />
@@ -48,8 +101,93 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                 <TopPanel>
                     <TableSearch queryParams={queryParams} />
                     <PerPage queryParams={queryParams} />
-                    <Export path="" />
-                    <Filters />
+                    <Filters onSubmit={handleFilterSubmit}>
+                        <ReactSelect
+                            name="status"
+                            placeholder="Select Status"
+                            options={statusOptions}
+                            value={statusOptions.find(status => status.value === filters.status)} 
+                            onChange={(e) => handleFilter(e,'status')}
+                        />
+                        <InputComponent
+                            name="reference_number"
+                            value={filters.reference_number}
+                            isrequired={false}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="customer_name"
+                            isrequired={false}
+                            value={filters.customer_name}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="order_qty"
+                            isrequired={false}
+                            value={filters.order_qty}
+                            onChange={handleFilter}
+                        />
+                        <ReactSelect
+                            name="stores_id"
+                            displayName="Store Name"
+                            placeholder="Select Store Name"
+                            options={storeOptions}
+                            value={storeOptions.find(store => store.value === filters.stores_id)} 
+                            onChange={(e) => handleFilter(e,'stores_id')}
+                        />
+                        <InputComponent
+                            name="phone_number"
+                            isrequired={false}
+                            value={filters.phone_number}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="item_description"
+                            isrequired={false}
+                            value={filters.item_description}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="uom"
+                            displayName="UOM"
+                            isrequired={false}
+                            value={filters.uom}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="brand"
+                            isrequired={false}
+                            value={filters.brand}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="part_number"
+                            displayName="Part #"
+                            isrequired={false}
+                            value={filters.part_number}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="store_cost"
+                            isrequired={false}
+                            value={filters.store_cost}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="srp"
+                            displayName="SRP"
+                            isrequired={false}
+                            value={filters.srp}
+                            onChange={handleFilter}
+                        />
+                        <InputComponent
+                            name="order_date"
+                            isrequired={false}
+                            value={filters.order_date}
+                            onChange={handleFilter}
+                        />
+                    </Filters>
+                    <Export path={`/bto_order_list_export${window.location.search}`} />
                     {[1, 3, 4].includes(my_privilege_id) && (
                         <Button type="btn" href="/bto_order_list/add">
                             Create Order
@@ -68,7 +206,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams }) => {
                                 Status
                             </TableHeader>
                             <TableHeader
-                                name="customer_name"
+                                name="reference_number"
                                 queryParams={queryParams}
                                 width="lg"
                             >

@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/store_location/bulkupdate', [StoreLocationController::class, 'bulkUpdate']);
 
     // EXPORTS
+    Route::get('/bto_order_list_export', [OrderListController::class, 'export']);
     Route::get('/bto_status_export', [StatusController::class, 'export']);
     Route::get('/store_location_export', [StoreLocationController::class, 'export']);
 

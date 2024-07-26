@@ -12,12 +12,17 @@ class OrderList extends Model
     protected $guarded = [];
 
     protected $filterable = [
-        'customer_name', 
-        'order_qty', 
-        'stores_id', 
-        'phone_number', 
-        'status', 
+        'status',
+        'reference_number',
+        'customer_name',
+        'order_qty',
+        'stores_id',
+        'phone_number',
+        'item_description',
+        'uom',
+        'brand',
         'part_number',
+        'store_cost',
         'srp',
         'order_date',
     ];
@@ -34,7 +39,7 @@ class OrderList extends Model
                         });
                     }
                     if($field === 'stores_id') {
-                        $query->orWhereHas('btoStore', function ($query) use ($search) {
+                        $query->orWhereHas('storeLocation', function ($query) use ($search) {
                             $query->where('location_name', 'LIKE', "%$search%");
                         });
                     }

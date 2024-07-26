@@ -12,6 +12,7 @@ const InputComponent = ({
     is_disabled,
     extendClass,
     extendClass1,
+    isrequired = true,
 }) => {
     return (
         <div className={extendClass}>
@@ -23,7 +24,7 @@ const InputComponent = ({
             </label>
             <input
                 id={name}
-                required
+                required ={isrequired}
                 type={type}
                 value={value}
                 name={name}

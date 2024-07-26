@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\OrderList;
 
+use App\Exports\OrderListExport;
 use App\Http\Controllers\Controller;
 use App\Models\OrderList;
 use App\Models\BtoImfs;
@@ -12,6 +13,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Helpers\CommonHelpers;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderListController extends Controller
 {
@@ -49,6 +51,8 @@ class OrderListController extends Controller
         $data['orders'] = self::getAllData()->paginate($this->perPage)->withQueryString();
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
         $data['queryParams'] = request()->query();
+        $data['store'] = StoreLocation::get();
+        $data['status'] = BtoStatus::get();
 
         return Inertia::render('OrderList/OrderList', $data);
 
@@ -67,7 +71,7 @@ class OrderListController extends Controller
         $data = [];
         // $data['store_name'] = StoreLocation::get();
 
-        return Inertia::render('OrderList/Add', $data);
+        return Inertia::render('OrderList/AddForm', $data);
     }
     
     public function addSave(Request $request) {
@@ -160,6 +164,17 @@ class OrderListController extends Controller
     
         return redirect ('/bto_order_list');
     }
+
+    public function export(Request $request)
+    {
+
+        $filename = "BTO Order List - " . date ('Y-m-d H:i:s');
+
+        $data = self::getAllData();
+
+        return Excel::download(new OrderListExport($data), $filename . '.xlsx');
+    }
+
 }
 
 ?>

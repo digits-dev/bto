@@ -19,7 +19,7 @@ const Orders = ({ orders_count_wdate }) => {
             type: "datetime",
             categories: [],
         },
-        colors: ["#0096FF"],
+        colors: ["#15116e"],
     });
 
     const [chartSeries, setChartSeries] = useState([

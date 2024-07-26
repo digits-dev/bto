@@ -30,8 +30,8 @@ const Filters = ({path, children, onSubmit}) => {
            </div>
             {/* Buttons */}
             <div className='flex gap-4 justify-center items-center text-sm py-3'>
-              <button className='py-2 px-4 bg-primary border-[0.1px] border-primary text-white rounded-md' type="submit">Search</button>
-              <button onClick={handleShow} className='py-2 px-4 bg-gray-100 border-[0.1px] border-primary text-gray-900 rounded-md' type="button">Cancel</button>
+              <button className='py-2 px-4 bg-secondary border-[0.1px] border-secondary text-white rounded-md' type="submit">Search</button>
+              <button onClick={handleShow} className='py-2 px-4 bg-gray-100 border-[0.1px] border-secondary text-gray-900 rounded-md' type="button">Cancel</button>
             </div>
           </form>
 
