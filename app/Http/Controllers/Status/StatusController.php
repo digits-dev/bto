@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Status;
 
 use App\Exports\BtoStatusExport;
+use app\Helpers\CommonHelpers;
 use App\ImportTemplates\BtoStatusTemplate;
 use App\Http\Controllers\Controller;
 use App\Imports\BtoStatusImport;
@@ -27,6 +28,11 @@ class StatusController extends Controller
 
     public function getIndex(): Response
     {
+        
+        if(!CommonHelpers::isView()) {
+            return Inertia::render('Errors/RestrictionPage');
+        }
+
         $query = BtoStatus::query();
 
         $query->when(request('search'), function ($query, $search) {

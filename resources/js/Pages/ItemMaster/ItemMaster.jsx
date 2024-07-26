@@ -14,7 +14,7 @@ import Tbody from "../../Components/Table/Tbody";
 import Row from "../../Components/Table/Row";
 import TableHeader from "../../Components/Table/TableHeader";
 import RowData from "../../Components/Table/RowData";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import RowAction from "../../Components/Table/RowAction";
 // import ItemMasterForm from "./ItemMasterForm";
 import Modal from "../../Components/Modal/Modal";
@@ -38,11 +38,12 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
 
     return (
         <>
+            <Head title="BTO Item Master" />
             <ContentPanel>
                 <TopPanel>
                     <TableSearch queryParams={queryParams} placeholder="Search Part #" />
                     <PerPage queryParams={queryParams} />
-                    <Export />
+                    <Export path="/item_master_export"/>
                 </TopPanel>
                 <TableContainer>
                     <Thead>

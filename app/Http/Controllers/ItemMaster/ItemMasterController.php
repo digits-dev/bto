@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers\ItemMaster;
+
+use App\Exports\ItemMasterExport;
 use App\Helpers\CommonHelpers;
 use App\Http\Controllers\Controller;
 use App\Models\ItemMaster;
@@ -10,8 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use Maatwebsite\Excel\Facades\Excel;
 
-    
 class ItemMasterController extends Controller{
 
     private $sortBy;
@@ -26,6 +28,10 @@ class ItemMasterController extends Controller{
 
 
     public function getIndex(){
+        
+        if(!CommonHelpers::isView()) {
+            return Inertia::render('Errors/RestrictionPage');
+        }
 
         $query = ItemMaster::query();
 
@@ -53,6 +59,29 @@ class ItemMasterController extends Controller{
             return response()->json(['message' => 'Part number is not existing'], 404);
         }
     }
+
+    
+    public function getAllData()
+    {
+        return ItemMaster::select([
+            'id',
+            'digits_code',
+            'part_number',
+            'item_description',
+            'srp',
+            'store_cost',
+        ]);
+    }
+
+    public function export()
+    {
+        $filename = "BTO Item Master - " . date('Y-m-d H:i:s');
+        $query = $this->getAllData()->orderBy($this->sortBy, $this->sortDir);
+
+        return Excel::download(new ItemMasterExport($query), $filename . '.xlsx');
+    }
+
+
 }
 
 ?>

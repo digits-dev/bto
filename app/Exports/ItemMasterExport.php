@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithStyles;
+
+class ItemMasterExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
+{
+    use Exportable;
+    public $query;
+
+    public function __construct($query) {
+        $this->query = $query;
+    }
+
+    public function headings(): array {
+        $headers = [
+                    "Digits Code",
+                    "Part #",
+                    "Item Description",
+                    "SRP",
+                    "Store Cost",
+                ];
+
+        return $headers;
+    }
+
+    public function map($item): array {
+
+       $itemMaster = [
+                    $item->digits_code,
+                    $item->part_number,
+                    $item->item_description,
+                    $item->srp,
+                    $item->store_cost,
+                 ];
+       
+        return $itemMaster;
+    }
+
+    public function query(){       
+        return $this->query;
+    }
+    
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getStyle('1:1')->getFont()->setBold(true);
+        $sheet->getStyle($sheet->calculateWorksheetDimension())->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+    }
+    
+}

@@ -1,4 +1,6 @@
 <?php
+
+use App\Exports\ItemMasterExport;
 use App\Helpers\CommonHelpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -87,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
     // EXPORTS
     Route::get('/bto_order_list_export', [OrderListController::class, 'export']);
+    Route::get('/item_master_export', [ItemMasterController::class, 'export']);
     Route::get('/bto_status_export', [StatusController::class, 'export']);
     Route::get('/store_location_export', [StoreLocationController::class, 'export']);
 

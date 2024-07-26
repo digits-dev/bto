@@ -47,6 +47,10 @@ class OrderListController extends Controller
 
     public function getIndex(): Response
     {
+        if(!CommonHelpers::isView()) {
+            return Inertia::render('Errors/RestrictionPage');
+        }
+        
         $data = [];
         $data['orders'] = self::getAllData()->paginate($this->perPage)->withQueryString();
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();

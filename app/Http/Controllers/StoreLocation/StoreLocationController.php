@@ -30,6 +30,10 @@ class StoreLocationController extends Controller{
 
     public function getIndex(){
 
+        if(!CommonHelpers::isView()) {
+            return Inertia::render('Errors/RestrictionPage');
+        }
+
         $query = StoreLocation::query();
 
         $query->when(request('search'), function ($query, $search) {
