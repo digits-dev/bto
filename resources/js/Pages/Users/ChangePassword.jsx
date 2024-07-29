@@ -53,9 +53,11 @@ const ChangePassword = () => {
                 title: `<p class="font-nunito-sans text-3xl" >Change Password?</p>`,
                 showCancelButton: true,
                 confirmButtonText: "Confirm",
-                confirmButtonColor: "#000000",
+                confirmButtonColor: "#201E43",
+                cancelButtonColor: "#134B70",
                 icon: "question",
-                iconColor: "#000000",
+                iconColor: "#134B70",
+                reverseButtons: true,
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     setLoading(true);

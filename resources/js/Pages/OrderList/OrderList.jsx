@@ -34,6 +34,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
         }, 5);
     }, []);
 
+    console.log(orders);
 
     const canEdit = (privilegeId, status) => {
         return (
@@ -262,7 +263,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             </TableHeader>
                         </Row>
                     </Thead>
-                    <Tbody data={orders}>
+                    <Tbody data={orders.data}>
                         {orders &&
                             orders.data.map((item) => (
                                 <Row key={item.id}>
