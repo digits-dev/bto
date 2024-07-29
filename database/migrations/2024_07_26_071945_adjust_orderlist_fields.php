@@ -17,6 +17,7 @@ return new class extends Migration
             $table->dropColumn('srp');
             $table->dropColumn('uom');
             $table->dropColumn('brand');
+            $table->integer('item_master_id')->nullable()->after('id');
 
         });
     }
