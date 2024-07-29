@@ -57,15 +57,11 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
         status: "",
         reference_number: "",
         customer_name: "",
-        order_qty: "",
         stores_id: "",
         phone_number: "",
         item_description: "",
-        uom: "",
         brand: "",
         part_number: "",
-        store_cost: "",
-        srp: "",
         order_date: "",
     });
 
@@ -121,12 +117,6 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             value={filters.customer_name}
                             onChange={handleFilter}
                         />
-                        <InputComponent
-                            name="order_qty"
-                            isrequired={false}
-                            value={filters.order_qty}
-                            onChange={handleFilter}
-                        />
                         <ReactSelect
                             name="stores_id"
                             displayName="Store Name"
@@ -148,13 +138,6 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             onChange={handleFilter}
                         />
                         <InputComponent
-                            name="uom"
-                            displayName="UOM"
-                            isrequired={false}
-                            value={filters.uom}
-                            onChange={handleFilter}
-                        />
-                        <InputComponent
                             name="brand"
                             isrequired={false}
                             value={filters.brand}
@@ -167,22 +150,11 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             value={filters.part_number}
                             onChange={handleFilter}
                         />
-                        <InputComponent
-                            name="store_cost"
-                            isrequired={false}
-                            value={filters.store_cost}
-                            onChange={handleFilter}
-                        />
-                        <InputComponent
-                            name="srp"
-                            displayName="SRP"
-                            isrequired={false}
-                            value={filters.srp}
-                            onChange={handleFilter}
-                        />
+                
                         <InputComponent
                             name="order_date"
                             isrequired={false}
+                            type="date"
                             value={filters.order_date}
                             onChange={handleFilter}
                         />
