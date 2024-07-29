@@ -28,6 +28,7 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
                     "Order Qty",
                     "Store Location",
                     "Phone Number",
+                    "Digits Code",
                     "Item Description",
                     "UOM",
                     "Brand",
@@ -43,20 +44,21 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
     public function map($item): array {
 
        $orderlist = [
-                    $item->btoStatus->status_name,
-                    $item->reference_number,
-                    $item->customer_name,
-                    $item->order_qty,
-                    $item->storeLocation->location_name,
-                    $item->phone_number,
-                    $item->item_description,
-                    $item->uom,
-                    $item->brand,
-                    $item->part_number,
-                    $item->store_cost,
-                    $item->srp,
-                    $item->order_date,
-                 ];
+            $item->btoStatus->status_name ?? null,
+            $item->reference_number ?? null,
+            $item->customer_name ?? null,
+            $item->order_qty ?? null,
+            $item->storeLocation->location_name ?? null,
+            $item->phone_number ?? null,
+            $item->itemMaster->digits_code ?? null,
+            $item->itemMaster->item_description ?? null,
+            $item->itemMaster->uom ?? null,
+            $item->itemMaster->brand ?? null,
+            $item->itemMaster->part_number ?? null,
+            $item->itemMaster->store_cost ?? null,
+            $item->itemMaster->srp ?? null,
+            $item->order_date ?? null,
+        ];
        
         return $orderlist;
     }

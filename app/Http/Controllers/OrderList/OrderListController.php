@@ -36,7 +36,12 @@ class OrderListController extends Controller
 
     public function getAllData()
     {
-        $query = OrderList::query()->with(['btoStatus:id,status_name,color', 'storeLocation:id,location_name']);
+        $query = OrderList::query()->with([
+            'btoStatus:id,status_name,color',
+            'storeLocation:id,location_name',
+            'itemMaster:id,digits_code,part_number,item_description,uom,brand,srp,store_cost'
+        ]);
+
 
         $filter = $query->searchAndFilter(request());
 
@@ -65,7 +70,11 @@ class OrderListController extends Controller
     public function OrderListIndex($id){
 
         $data = [];
-        $data['order_details'] =  OrderList::with('btoStatus:id,status_name')->findOrFail($id);
+        $data['order_details'] =  OrderList::with([
+            'btoStatus:id,status_name,color',
+            'storeLocation:id,location_name',
+            'itemMaster:id,digits_code,part_number,item_description,uom,brand,srp,store_cost'
+        ])->findOrFail($id);
 
         return Inertia::render('OrderList/OrderListView', $data);
 

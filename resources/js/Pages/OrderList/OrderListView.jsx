@@ -13,6 +13,8 @@ const OrderListView = ({order_details}) => {
             setTitle("BTO Order List - Details");
         }, 5);
     }, []);
+
+    console.log(order_details);
   return (
     <>
         <Head title='BTO Order List - Details'/>
@@ -51,7 +53,7 @@ const OrderListView = ({order_details}) => {
                             extendClass="w-full"
                             is_disabled={true}
                             name="stores_id"
-                            value={order_details.stores_id}
+                            value={order_details.store_location.location_name}
                         />
                         <InputComponent
                             extendClass="w-full"
@@ -63,7 +65,7 @@ const OrderListView = ({order_details}) => {
                             extendClass="w-full"
                             is_disabled={true}
                             name="item_description"
-                            value={order_details.item_description}
+                            value={order_details.item_master?.item_description || order_details.item_description}
                         />
                     </div>
                     <div className="flex flex-col flex-1 gap-y-3">
@@ -72,39 +74,39 @@ const OrderListView = ({order_details}) => {
                             is_disabled={true}
                             name="uom"
                             displayName='UOM'
-                            value={order_details.uom}
+                            value={order_details.item_master?.uom || null}
                         />
                         <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="brand"
-                            value={order_details.brand}
+                            value={order_details.item_master?.brand || null}
                         />
-                        {order_details.part_number &&
+                        {order_details.item_master?.part_number &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="part_number"
                             displayName="Part #"
-                            value={order_details.part_number}
+                            value={order_details.item_master?.part_number || null}
                             />
                         }
-                        {order_details.store_cost &&
+                        {order_details.item_master?.store_cost &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="store_cost"
-                            value={order_details.store_cost}
+                            value={order_details.item_master?.store_cost || null}
                             />
                         }
                        
-                        {order_details.srp && 
+                        {order_details.item_master?.srp && 
                             <InputComponent
                                 extendClass="w-full"
                                 is_disabled={true}
                                 name="srp"
                                 displayName='SRP'
-                                value={order_details.srp}
+                                value={order_details.item_master.srp}
                             />
                         }
                         <InputComponent

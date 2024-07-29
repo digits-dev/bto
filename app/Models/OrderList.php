@@ -18,13 +18,8 @@ class OrderList extends Model
         'order_qty',
         'stores_id',
         'phone_number',
-        'item_description',
-        'uom',
-        'brand',
-        'part_number',
-        'store_cost',
-        'srp',
         'order_date',
+        'item_master_id',
     ];
 
     public function scopeSearchAndFilter($query, $request){
@@ -33,6 +28,17 @@ class OrderList extends Model
             $search = $request->input('search');
             $query->where(function ($query) use ($search) {
                 foreach ($this->filterable as $field) {
+                    if($field === 'item_master_id') {
+                        $query->orWhereHas('itemMaster', function ($query) use ($search) {
+                            $query->where('digits_code', 'LIKE', "%$search%")
+                            ->orWhere('part_number', 'LIKE', "%$search%")
+                            ->orWhere('item_description', 'LIKE', "%$search%")
+                            ->orWhere('uom', 'LIKE', "%$search%")
+                            ->orWhere('brand', 'LIKE', "%$search%")
+                            ->orWhere('srp', 'LIKE', "%$search%")
+                            ->orWhere('store_cost', 'LIKE', "%$search%");
+                        });
+                    }
                     if($field === 'status') {
                         $query->orWhereHas('btoStatus', function ($query) use ($search) {
                             $query->where('status_name', 'LIKE', "%$search%");
@@ -65,6 +71,11 @@ class OrderList extends Model
     public function storeLocation()
     {
         return $this->belongsTo(StoreLocation::class, 'stores_id', 'id');
+    }
+
+    public function itemMaster()
+    {
+        return $this->belongsTo(ItemMaster::class, 'item_master_id', 'id');
     }
 
     public static function generateReferenceNumber()

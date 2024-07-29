@@ -246,6 +246,13 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             >
                                 Item Description
                             </TableHeader>
+                            <TableHeader
+                                name="digits_code"
+                                  width="lg"
+                                queryParams={queryParams}
+                            >
+                                Digits Code
+                            </TableHeader>
                             <TableHeader name="uom" queryParams={queryParams}>
                                 UOM
                             </TableHeader>
@@ -299,7 +306,6 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                                     <RowData isLoading={loading}>
                                         {item.customer_name}
                                     </RowData>
-
                                     <RowData isLoading={loading}>
                                         {item.order_qty}
                                     </RowData>
@@ -311,23 +317,25 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                                         {item.phone_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_description}
+                                        {item.item_master?.item_description || item.item_description}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.uom}
+                                        {item.item_master?.digits_code || ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.brand}
-                                    </RowData>
-
-                                    <RowData isLoading={loading}>
-                                        {item.part_number}
+                                        {item.item_master?.uom || ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.store_cost}
+                                        {item.item_master?.brand || ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.srp}
+                                        {item.item_master?.part_number || item.part_number}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.item_master?.store_cost || ""}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.item_master?.srp || ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {moment(item.order_date).format(
