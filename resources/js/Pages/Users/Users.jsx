@@ -1,6 +1,5 @@
 import { router, Head } from "@inertiajs/react";
 import React, { useEffect, useState, useContext } from "react";
-import AppContent from "../../Layouts/layout/AppContent";
 import Modal from "../../Components/Modal/Modal";
 import DropdownSelect from "../../Components/Dropdown/Dropdown";
 import axios from "axios";
@@ -26,7 +25,7 @@ import { NavbarContext } from "../../Context/NavbarContext";
 import Tbody from "../../Components/Table/Tbody";
 import { useToast } from "../../Context/ToastContext";
 
-const Users = ({ users, options, queryParams }) => {
+const Users = ({ users, options, queryParams, store }) => {
     queryParams = queryParams || {};
     const { handleToast } = useToast();
     router.on("start", () => setLoading(true));
@@ -77,9 +76,11 @@ const Users = ({ users, options, queryParams }) => {
                 }?</p>`,
                 showCancelButton: true,
                 confirmButtonText: "Confirm",
-                confirmButtonColor: "#000000",
+                confirmButtonColor: "#201E43",
+                cancelButtonColor: "#134B70",
                 icon: "question",
-                iconColor: "#000000",
+                iconColor: "#134B70",
+                reverseButtons: true,
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
@@ -115,6 +116,12 @@ const Users = ({ users, options, queryParams }) => {
         setShowCreateModal(false);
     };
 
+    const storeOptions = store.map((store) => ({
+        
+        id: store.id,
+        name: store.location_name,
+    }));
+
     const CreateUserForm = ({ onClose }) => {
         const [errors, setErrors] = useState({});
         const [serverErrors, setServerErrors] = useState({});
@@ -124,6 +131,7 @@ const Users = ({ users, options, queryParams }) => {
             name: "",
             email: "",
             privilege_id: "",
+            stores_id: "",
             password: "",
         });
 
@@ -239,6 +247,17 @@ const Users = ({ users, options, queryParams }) => {
                     )}
                 </div>
                 <div className="flex flex-col mb-3 w-full">
+                    <DropdownSelect
+                        placeholder="Choose Location"
+                        selectType="select2"
+                        displayName="Select Location"
+                        name="stores_id"
+                        options={storeOptions}
+                        value={forms.privilege_id}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="flex flex-col mb-3 w-full">
                     <label className="font-nunito-sans font-semibold">
                         Password
                     </label>
@@ -282,9 +301,13 @@ const Users = ({ users, options, queryParams }) => {
             name: user?.user_name || "",
             email: user?.email || "",
             privilege_id: user?.id_adm_privileges || "",
+            stores_id: user?.stores_id || "",
+            stores_name: user.user_store?.location_name || "",
             password: "",
             status: user?.status || "",
+            status_name: user?.status == 1 ? "Active" : "Inactive",
         });
+
 
         function handleChange(e) {
             const key = e.name ? e.name : e.target.name;
@@ -306,13 +329,14 @@ const Users = ({ users, options, queryParams }) => {
                 });
                 if (response.data.type === "success") {
                     handleToast(response.data.message, response.data.type);
-                    setShowEditModal(false);
                     router.reload({ only: ["users"] });
+                    setShowEditModal(false);
                 } else {
                     handleToast(response.data.message, response.data.type);
                 }
             } catch (error) {
                 if (error.response && error.response.status === 422) {
+                    handleToast("Error", "error");
                 }
             } finally {
                 setLoading(false);
@@ -365,6 +389,19 @@ const Users = ({ users, options, queryParams }) => {
                     />
                 </div>
                 <div className="flex flex-col mb-3 w-full">
+                    <DropdownSelect
+                        selectType="select2"
+                        displayName="Select Location"
+                        name="stores_id"
+                        options={storeOptions}
+                        value={{
+                            label: editForms.stores_name,
+                            value: editForms.stores_id,
+                        }}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="flex flex-col mb-3 w-full">
                     <label className="font-nunito-sans font-semibold">
                         Password
                     </label>
@@ -382,7 +419,7 @@ const Users = ({ users, options, queryParams }) => {
                         displayName="Select a Status"
                         name="status"
                         options={options.status}
-                        value={{ label: "Active", value: editForms.status }}
+                        value={{ label: editForms.status_name, value: editForms.status }}
                         onChange={handleChange}
                     />
                 </div>
@@ -401,7 +438,7 @@ const Users = ({ users, options, queryParams }) => {
         {
             label: (
                 <span>
-                    <i className="fa fa-check-circle mr-2 text-green-600"></i>{" "}
+                    <i className="fa fa-check-circle mr-2 text-green-600"></i>
                     Set Active
                 </span>
             ),
@@ -410,7 +447,7 @@ const Users = ({ users, options, queryParams }) => {
         {
             label: (
                 <span>
-                    <i className="fa fa-times-circle mr-2 text-red-600"></i> Set
+                    <i className="fa fa-times-circle mr-2 text-red-600"></i>Set
                     Inactive
                 </span>
             ),
@@ -470,6 +507,14 @@ const Users = ({ users, options, queryParams }) => {
                             </TableHeader>
 
                             <TableHeader
+                                name="stores_id"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
+                                Location
+                            </TableHeader>
+
+                            <TableHeader
                                 name="privilege_name"
                                 queryParams={queryParams}
                                 width="sm"
@@ -517,6 +562,9 @@ const Users = ({ users, options, queryParams }) => {
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {user.email}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {user.user_store?.location_name}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {user.privilege_name}

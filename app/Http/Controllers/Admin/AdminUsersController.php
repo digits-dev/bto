@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin; 
 use App\Helpers\CommonHelpers;
 use App\Http\Controllers\Controller;
+use App\Models\StoreLocation;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -32,18 +33,21 @@ use Inertia\Response;
       
     
         public function getIndex(){
-            $query = User::getData();
+            $query = User::with('userStore')->getData();
             $query->when(request('search'), function ($query, $search) {
                 $query->where('users.name', 'LIKE', "%$search%")
                     ->orWhere('users.email', "LIKE", "%$search%");
             });
+
+            $store = StoreLocation::get();
     
             $data_users = $query->orderBy($this->sortBy, $this->sortDir)->paginate($this->perPage)->withQueryString();
             $submasters = self::getSubmaster();
             return Inertia::render('Users/Users', [
                 'users' => $data_users,
                 'options' => ['privileges'=>$submasters['privileges'], 'status'=>$submasters['status']],
-                'queryParams' => request()->query()
+                'queryParams' => request()->query(),
+                'store' => $store
             ]);
         }
 
@@ -72,14 +76,20 @@ use Inertia\Response;
 
         public function postAddSave(Request $request){
             $users = DB::table("users")->where("email", $request->email)->first();
+
             $request->validate([
-                'email' => 'required',
+                'email' => 'required|email|unique:users,email', 
                 'name' => 'required',
                 'privilege_id' => 'required'
             ]);
             
             if(!$users){
-                User::create([$request]);
+                User::create([
+                    'email'=> $request->input('email'),
+                    'name'=> $request->input('name'),
+                    'privilege_id'=> $request->input('privilege_id'),
+                    'stores_id'=> $request->input('stores_id'),
+                ]);
                 return json_encode(["message"=>"Data Saved!", "type"=>"success"]);
             }else{
                 return json_encode(["message"=>"Users Exist!", "type"=>"danger"]);
@@ -89,7 +99,7 @@ use Inertia\Response;
         public function getEditUser($id){
             $data = [];
             $datA['page_title'] = 'Edit user';
-            $data['user'] = User::getDataPerUser($id);
+            $data['user'] = User::with('userStore')->getDataPerUser($id);
             $submasters = self::getSubmaster();
             $data = array_merge($submasters, $data);
             return view('admin/users/add-user', $data);
@@ -107,6 +117,7 @@ use Inertia\Response;
                 'email' => $request->email,
                 'password'  => $password,
                 'id_adm_privileges' => $request->privilege_id,
+                'stores_id' => $request->stores_id,
                 'status'  => $request->status,
               
             ]);
