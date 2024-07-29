@@ -4,7 +4,7 @@ import Overview from "../../Components/Dashboard/Overview";
 import { NavbarContext } from "../../Context/NavbarContext";
 import Orders from "../../Components/Dashboard/Orders";
 
-const Dashboard = ({ total_orders, part_input, costing, srp, closed, orders_count_wdate }) => {
+const Dashboard = ({ total_orders, part_input, costing, srp, closed, existing, orders_count_wdate }) => {
     const { auth } = usePage().props;
     const { setTitle } = useContext(NavbarContext);
 
@@ -41,6 +41,7 @@ const Dashboard = ({ total_orders, part_input, costing, srp, closed, orders_coun
                 costing={costing}
                 srp={srp}
                 closed={closed}
+                existing={existing}
             />
             <Orders orders_count_wdate={orders_count_wdate} />
         </>

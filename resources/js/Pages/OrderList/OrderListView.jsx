@@ -7,14 +7,12 @@ import { NavbarContext } from "../../Context/NavbarContext";
 
 const OrderListView = ({order_details}) => {
     const { setTitle } = useContext(NavbarContext);
-
     useEffect(() => {
         setTimeout(() => {
             setTitle("BTO Order List - Details");
         }, 5);
     }, []);
 
-    console.log(order_details);
   return (
     <>
         <Head title='BTO Order List - Details'/>
@@ -69,19 +67,24 @@ const OrderListView = ({order_details}) => {
                         />
                     </div>
                     <div className="flex flex-col flex-1 gap-y-3">
-                        <InputComponent
+                        {order_details.item_master?.uom &&
+                            <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="uom"
                             displayName='UOM'
                             value={order_details.item_master?.uom || null}
-                        />
-                        <InputComponent
+                            />
+                        }
+                        
+                        {order_details.item_master?.brand &&
+                            <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="brand"
                             value={order_details.item_master?.brand || null}
-                        />
+                            />
+                        } 
                         {order_details.item_master?.part_number &&
                             <InputComponent
                             extendClass="w-full"

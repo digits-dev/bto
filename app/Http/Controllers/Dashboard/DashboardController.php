@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $data['costing'] = OrderList::where('status', 2)->count();
         $data['srp'] = OrderList::where('status', 3)->count();
         $data['closed'] = OrderList::where('status', 4)->count();
+        $data['existing'] = OrderList::where('status', 5)->count();
         $data['orders_count_wdate'] = OrderList::select(DB::raw('DATE(order_date) as date'), DB::raw('count(*) as count'))
         ->groupBy('date')
         ->orderBy('date', 'desc')
