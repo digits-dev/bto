@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('item_masters', function (Blueprint $table) {
             $table->string('uom')->default('PCS')->after('item_description');
             $table->string('brand')->default('APPLE')->after('uom');
+            $table->integer('order_list_id')->after('id')->nullable();
         });
     }
 
@@ -25,6 +26,8 @@ return new class extends Migration
         Schema::table('item_masters', function (Blueprint $table) {
             $table->dropColumn('uom');
             $table->dropColumn('brand');
+            $table->dropColumn('order_list_id');
+
         });
     }
 };
