@@ -124,12 +124,6 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
-                                    displayName="digits_code"
-                                />
-
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
                                     value={order_list.part_number}
                                     displayName="Part Number"
                                     name="part_number"

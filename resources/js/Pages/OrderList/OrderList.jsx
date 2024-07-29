@@ -24,7 +24,7 @@ import moment from "moment";
 import ReactSelect from "../../Components/Forms/ReactSelect";
 import InputComponent from "../../Components/Forms/Input";
 
-const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => {
+const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
     const { setTitle } = useContext(NavbarContext);
     const [loading, setLoading] = useState(false);
     const [orderId, setOrderId] = useState(null);
@@ -33,8 +33,6 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
             setTitle("BTO Order List");
         }, 5);
     }, []);
-
-    console.log(orders);
 
     const canEdit = (privilegeId, status) => {
         return (
@@ -67,23 +65,22 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
     });
 
     const handleFilter = (e, attrName) => {
-        if(attrName) {
+        if (attrName) {
             const { value } = e;
 
-            setFilters(filters => ({
+            setFilters((filters) => ({
                 ...filters,
                 [attrName]: value,
             }));
-          
-        }else{
+        } else {
             const { name, value } = e.target;
 
-            setFilters(filters => ({
-            ...filters,
-            [name]: value,
+            setFilters((filters) => ({
+                ...filters,
+                [name]: value,
             }));
-       }
-    }
+        }
+    };
 
     const handleFilterSubmit = (e) => {
         e.preventDefault();
@@ -103,8 +100,10 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             name="status"
                             placeholder="Select Status"
                             options={statusOptions}
-                            value={statusOptions.find(status => status.value === filters.status)} 
-                            onChange={(e) => handleFilter(e,'status')}
+                            value={statusOptions.find(
+                                (status) => status.value === filters.status
+                            )}
+                            onChange={(e) => handleFilter(e, "status")}
                         />
                         <InputComponent
                             name="reference_number"
@@ -123,8 +122,10 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             displayName="Store Name"
                             placeholder="Select Store Name"
                             options={storeOptions}
-                            value={storeOptions.find(store => store.value === filters.stores_id)} 
-                            onChange={(e) => handleFilter(e,'stores_id')}
+                            value={storeOptions.find(
+                                (store) => store.value === filters.stores_id
+                            )}
+                            onChange={(e) => handleFilter(e, "stores_id")}
                         />
                         <InputComponent
                             name="phone_number"
@@ -151,7 +152,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             value={filters.part_number}
                             onChange={handleFilter}
                         />
-                
+
                         <InputComponent
                             name="order_date"
                             isrequired={false}
@@ -160,7 +161,9 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             onChange={handleFilter}
                         />
                     </Filters>
-                    <Export path={`/bto_order_list_export${window.location.search}`} />
+                    <Export
+                        path={`/bto_order_list_export${window.location.search}`}
+                    />
                     {[1, 3, 4].includes(my_privilege_id) && (
                         <Button type="btn" href="/bto_order_list/add">
                             Create Order
@@ -221,7 +224,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                             </TableHeader>
                             <TableHeader
                                 name="digits_code"
-                                  width="lg"
+                                width="lg"
                                 queryParams={queryParams}
                             >
                                 Digits Code
@@ -290,7 +293,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                                         {item.phone_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.item_description || item.item_description}
+                                        {item.item_master?.item_description ||
+                                            item.item_description}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.item_master?.digits_code || ""}
@@ -302,7 +306,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store , status }) => 
                                         {item.item_master?.brand || ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.part_number || item.part_number}
+                                        {item.item_master?.part_number ||
+                                            item.part_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.item_master?.store_cost || ""}

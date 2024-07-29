@@ -177,6 +177,11 @@ const AddForm = ({ store_name }) => {
                                         </>
                                     )}
                                 </div>
+                                {errors.uploaded_file && (
+                                    <span className="text-red-500">
+                                        {errors.uploaded_file}
+                                    </span>
+                                )}
                             </label>
                         </div>
                     </div>

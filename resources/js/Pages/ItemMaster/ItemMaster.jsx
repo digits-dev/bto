@@ -41,9 +41,12 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
             <Head title="BTO Item Master" />
             <ContentPanel>
                 <TopPanel>
-                    <TableSearch queryParams={queryParams} placeholder="Search Part #" />
+                    <TableSearch
+                        queryParams={queryParams}
+                        placeholder="Search Part #"
+                    />
                     <PerPage queryParams={queryParams} />
-                    <Export path="/item_master_export"/>
+                    <Export path="/item_master_export" />
                 </TopPanel>
                 <TableContainer>
                     <Thead>
@@ -66,14 +69,14 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
                             >
                                 Item Description
                             </TableHeader>
-                            <TableHeader name="srp" queryParams={queryParams}>
-                                SRP
-                            </TableHeader>
                             <TableHeader
                                 name="store_cost"
                                 queryParams={queryParams}
                             >
                                 Store Cost
+                            </TableHeader>
+                            <TableHeader name="srp" queryParams={queryParams}>
+                                SRP
                             </TableHeader>
                         </Row>
                     </Thead>
@@ -91,10 +94,10 @@ const ItemMaster = ({ itemMaster, queryParams }) => {
                                         {item.item_description}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.srp}
+                                        {item.store_cost}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.store_cost}
+                                        {item.srp}
                                     </RowData>
                                 </Row>
                             ))}

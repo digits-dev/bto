@@ -19,9 +19,9 @@ const EditFormMerchandising = ({
 
     const [digitsCode, setDigitsCode] = useState("");
     const [partNumberMessage, setPartNumberMessage] = useState("");
-    const [customerName, setCustomerName] = useState(order_list.customer_name);
-    const [orderQty, setOrderQty] = useState(order_list.order_qty);
-    const [phoneNumber, setPhoneNumber] = useState(order_list.phone_number);
+    const [storeCost, setStoreCost] = useState(order_list.store_cost);
+    const [srp, setSrp] = useState(order_list.srp);
+    const [isChecking, setIsChecking] = useState(true);
     const [itemDescription, setItemDescription] = useState(
         order_list.item_description
     );
@@ -44,25 +44,27 @@ const EditFormMerchandising = ({
     // Fetch digits code based on part number
     const debouncedFetchDigitsCode = useCallback(
         debounce(async (partNumber) => {
+            if (!partNumber.trim()) {
+                setPartNumberMessage("Not Exists");
+                setItemDescription(order_list.item_description);
+                return;
+            }
             try {
                 const response = await axios.post("/get-digits-code", {
                     part_number: partNumber,
                 });
                 setDigitsCode(response.data.digits_code);
-                setOrderQty("");
-                setCustomerName("");
                 setItemDescription(response.data.item_description);
-                setPhoneNumber("");
+                setStoreCost(response.data.store_cost);
+                setSrp(response.data.srp);
                 setPartNumberMessage("Exists");
             } catch (error) {
                 console.error(error);
                 setItemDescription(order_list.item_description);
-                setOrderQty(order_list.order_qty);
-                setCustomerName(order_list.customer_name);
-                setPhoneNumber(order_list.phone_number);
                 setDigitsCode("");
-                setPartNumberMessage("Not");
+                setPartNumberMessage("Not Exists");
             } finally {
+                setIsChecking(false);
             }
         }, 1000),
         []
@@ -72,8 +74,10 @@ const EditFormMerchandising = ({
         const name = e.name ? e.name : e.target.name;
         const value = e.value ? e.value : e.target.value;
         setData(name, value);
+        console.log(data);
 
         if (name === "part_number") {
+            setIsChecking(true);
             debouncedFetchDigitsCode(value);
         }
     };
@@ -87,7 +91,14 @@ const EditFormMerchandising = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         Swal.fire({
-            title: `<p class="font-nunito-sans">Are you sure that you want to edit this?</p>`,
+            title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: ${
+                partNumberMessage === "Exists" ? "#309fb5" : "#10B981"
+            };" >${
+                partNumberMessage === "Exists" || order_list.status == 3
+                    ? "CLOSE"
+                    : "UPDATE"
+            }</span> this?</p>`,
+
             showCancelButton: true,
             confirmButtonText: "Confirm",
             confirmButtonColor: "#201E43",
@@ -132,19 +143,19 @@ const EditFormMerchandising = ({
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="customer_name"
-                                    value={customerName}
+                                    value={order_list.customer_name}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="order_qty"
-                                    value={orderQty}
+                                    value={order_list.order_qty}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="phone_number"
-                                    value={phoneNumber}
+                                    value={order_list.phone_number}
                                 />
                                 <InputComponent
                                     displayName="Store Name"
@@ -153,14 +164,6 @@ const EditFormMerchandising = ({
                                     name="stores_id"
                                     value={store_name}
                                 />
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    name="item_description"
-                                    value={itemDescription}
-                                />
-                            </div>
-                            <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
@@ -173,36 +176,8 @@ const EditFormMerchandising = ({
                                     displayName="Brand"
                                     value="Apple"
                                 />
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    displayName="digits_code"
-                                    value={digitsCode}
-                                />
-                                {data.part_number && partNumberMessage && (
-                                    <div className="relative flex items-center">
-                                        <span className="bg-slate-500  px-[10px] rounded-full mr-2 text-white relative group">
-                                            !
-                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-gray-800 text-white text-xs rounded-md w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                {partNumberMessage === "Exists"
-                                                    ? "Part Number already exists"
-                                                    : "Part Number does not exist"}
-                                            </span>
-                                        </span>
-                                        <span
-                                            className={`text-sm ${
-                                                partNumberMessage === "Exists"
-                                                    ? "text-red-500"
-                                                    : "text-green-500"
-                                            }`}
-                                        >
-                                            {partNumberMessage === "Exists"
-                                                ? "Part Number already exists"
-                                                : "Part Number does not exist"}
-                                        </span>
-                                    </div>
-                                )}
-
+                            </div>
+                            <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={
@@ -221,22 +196,58 @@ const EditFormMerchandising = ({
                                     name="part_number"
                                     onChange={handleChange}
                                 />
-                                {order_list.status != 1 && (
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        is_disabled={true}
-                                        value={order_list.store_cost}
-                                        name="store_cost"
-                                        onChange={handleChange}
-                                    />
+                                {partNumberMessage === "Exists" && (
+                                    <div className="relative flex items-center">
+                                        <span className="bg-slate-500  px-[10px] rounded-full mr-2 text-white relative group">
+                                            !
+                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-gray-800 text-white text-xs rounded-md w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                Part Number already exists"
+                                            </span>
+                                        </span>
+                                        <span className="text-sm text-red-500">
+                                            "Part Number already exists"
+                                        </span>
+                                    </div>
                                 )}
-                                {order_list.status == 3 && (
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        name="srp"
-                                        displayName="SRP"
-                                        onChange={handleChange}
-                                    />
+
+                                <InputComponent
+                                    extendClass="w-full"
+                                    is_disabled={true}
+                                    name="item_description"
+                                    value={itemDescription}
+                                />
+                                {(partNumberMessage === "Exists" ||
+                                    order_list.status == 3) && (
+                                    <>
+                                        {order_list.status != 3 && (
+                                            <InputComponent
+                                                extendClass="w-full"
+                                                is_disabled={true}
+                                                displayName="Digits Code"
+                                                value={digitsCode || ""}
+                                            />
+                                        )}
+
+                                        <InputComponent
+                                            extendClass="w-full"
+                                            is_disabled={
+                                                partNumberMessage ===
+                                                    "Exists" ||
+                                                order_list.status == 3
+                                            }
+                                            value={storeCost}
+                                            name="store_cost"
+                                            onChange={handleChange}
+                                        />
+                                        <InputComponent
+                                            extendClass="w-full"
+                                            is_disabled={order_list.status != 3}
+                                            name="srp"
+                                            value={srp}
+                                            displayName="SRP"
+                                            onChange={handleChange}
+                                        />
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -269,7 +280,11 @@ const EditFormMerchandising = ({
                     >
                         Back
                     </Link>
-                    <TableButton extendClass="mt-4" type="submit">
+                    <TableButton
+                        disabled={order_list.status != 3 && isChecking}
+                        extendClass="mt-4"
+                        type="submit"
+                    >
                         {order_list.status == 3 ||
                         partNumberMessage === "Exists"
                             ? "Close"

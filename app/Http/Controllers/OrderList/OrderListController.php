@@ -52,6 +52,7 @@ class OrderListController extends Controller
             ])->where('stores_id', CommonHelpers::myLocationId());
         }
 
+
         $filter = $query->searchAndFilter(request());
 
         $result = $filter->orderBy($this->sortBy, $this->sortDir);
@@ -64,7 +65,7 @@ class OrderListController extends Controller
         if(!CommonHelpers::isView()) {
             return Inertia::render('Errors/RestrictionPage');
         }
-
+        
         $data = [];
         $data['orders'] = self::getAllData()->paginate($this->perPage)->withQueryString();
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
@@ -103,6 +104,7 @@ class OrderListController extends Controller
             'order_qty' => 'required|integer|min:1',
             'item_description' => 'required|string|max:500',
             'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
+            'uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
         $data = [
@@ -129,16 +131,28 @@ class OrderListController extends Controller
 
     public function edit($id) {
         $data = [];
-        $data['order_list'] = OrderList::find($id);
+        $orderList = OrderList::find($id);
+        if ($orderList && $orderList->part_number) {
+            $data['order_list'] = OrderList::join('item_masters', 'order_lists.part_number', '=', 'item_masters.part_number')
+            ->where('order_lists.id', $id)
+            ->select('order_lists.*', 'item_masters.digits_code', 'item_masters.item_description as item_master_description', 'item_masters.srp', 'item_masters.store_cost')
+            ->first();
+        
+        } else {
+            $data['order_list'] = $orderList;
+        }
+
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
         $data['store_name'] = StoreLocation::where('id', $data['order_list']->stores_id)->first()->location_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
-        if (CommonHelpers::myPrivilegeId() == 6) {
+    
+        if ($data['my_privilege_id'] == 6) {
             return Inertia::render('OrderList/EditMerchandising', $data);
-        }else {
+        } else {
             return Inertia::render('OrderList/EditAccounting', $data);
         }
     }
+    
 
     public function editSave(Request $request) {
         $orderList = OrderList::find($request->order_list_id);
@@ -147,40 +161,52 @@ class OrderListController extends Controller
             if($isPartNumberExisting) {
                 $orderList->update([
                     'status' => self::existing,
+                    'item_master_id' => $isPartNumberExisting->id,
+                    'item_description' => $isPartNumberExisting->item_description,
+                    'part_number' => $request->part_number,
                     'updated_by_mcb' => CommonHelpers::myId(),
                     'updated_by_mcb_date' => date('Y-m-d H:i:s'),
                     ]);
             }else {
+                
+                $itemMasterId = ItemMaster::insertGetId([
+                    'part_number' => $request->part_number,
+                    'item_description' => $orderList->item_description,
+                    'uom' => 'PCS',
+                    'brand' => 'APPLE',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
                 $orderList->update([
+                    'item_master_id' => $itemMasterId,
                     'status' => self::forCosting,
                     'part_number' => $request->part_number,
                     'updated_by_mcb' => CommonHelpers::myId(),
                     'updated_by_mcb_date' => date('Y-m-d H:i:s'),
                 ]);
+
+              
             }
         }else if ($orderList->status == self::forCosting) {
             $orderList->update([
                 'status' => self::forSRP,
-                'store_cost' => $request->store_cost,
                 'updated_by_acctg' => CommonHelpers::myId(),
                 'updated_by_acctg_date' => date('Y-m-d H:i:s'),
                  ]);
+                
+            ItemMaster::where('part_number', $orderList->part_number)->update([
+                'store_cost' => $request->store_cost,
+            ]);
         }else if ($orderList->status == self::forSRP) {
             $orderList->update([
                 'status' => self::closed,
-                'srp' => $request->srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
                  ]);
 
-            $data = [
-                'item_description' => $orderList->item_description,
-                'part_number' => $orderList->part_number,
-                'store_cost' => $orderList->store_cost,
-                'srp' => $orderList->srp,
-            ];
-
-            ItemMaster::create($data);
+                 ItemMaster::where('part_number', $orderList->part_number)->update([
+                    'srp' => $request->srp,
+                ]);
         }
         
     
