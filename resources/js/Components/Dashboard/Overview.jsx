@@ -19,7 +19,7 @@ const DashboardOverviewCard = ({ title, data, src, url }) => {
     );
 };
 
-const Overview = ({ total_orders, part_input, costing, srp, closed, existing }) => {
+const Overview = ({ total_orders, part_input, costing, srp, closed}) => {
     return (
         <>
             <ContentPanel marginBottom={2}>
@@ -48,11 +48,6 @@ const Overview = ({ total_orders, part_input, costing, srp, closed, existing }) 
                     <DashboardOverviewCard
                         title="Closed"
                         data={closed}
-                        src={"images/others/closed-icon.png"}
-                    />
-                    <DashboardOverviewCard
-                        title="Existing"
-                        data={existing}
                         src={"images/others/closed-icon.png"}
                     />
                 </div>

@@ -34,11 +34,6 @@ class BtoStatusSeeder extends Seeder
                 'color' => '#1C6D1F',
                 'status' => '1',
             ],
-            [
-                'status_name' => 'Existing',
-                'color' => '#309fb5',
-                'status' => '1',
-            ]
           
         ];
 

@@ -41,7 +41,6 @@ const Dashboard = ({ total_orders, part_input, costing, srp, closed, existing, o
                 costing={costing}
                 srp={srp}
                 closed={closed}
-                existing={existing}
             />
             <Orders orders_count_wdate={orders_count_wdate} />
         </>
