@@ -88,6 +88,7 @@ const AddForm = ({ store_name }) => {
                                 <InputComponent
                                     extendClass="w-full "
                                     name="customer_name"
+                                    placeholder="Customer Name"
                                     onChange={handleChange}
                                 />
                                 <InputComponent
@@ -96,15 +97,19 @@ const AddForm = ({ store_name }) => {
                                         errors.order_qty ? "border-red-500" : ""
                                     }`}
                                     name="order_qty"
+                                    placeholder="Order Quantity"
                                     onChange={handleChange}
                                 />
                                 {errors.order_qty && (
-                                    <span className="text-red-500">
+                                    <span className="text-red-500 text-sm">
                                         {errors.order_qty}
                                     </span>
                                 )}
+                            </div>
+                            <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
+                                    placeholder={"Phone Number"}
                                     extendClass1={`${
                                         errors.phone_number
                                             ? "border-red-500"
@@ -114,22 +119,13 @@ const AddForm = ({ store_name }) => {
                                     onChange={handleChange}
                                 />
                                 {errors.phone_number && (
-                                    <span className="text-red-500">
+                                    <span className="text-red-500 text-sm">
                                         {errors.phone_number}
                                     </span>
                                 )}
-                            </div>
-                            <div className="flex flex-col flex-1 gap-y-3">
-                                {/* <DropdownSelect
-                                    displayName="Store Name"
-                                    name="stores_id"
-                                    selectType="react-select"
-                                    is_required={true}
-                                    onChange={handleChange}
-                                    options={storeOptions}
-                                /> */}
                                 <InputComponent
                                     extendClass="w-full"
+                                    placeholder={"Item Description"}
                                     name="item_description"
                                     onChange={handleChange}
                                 />

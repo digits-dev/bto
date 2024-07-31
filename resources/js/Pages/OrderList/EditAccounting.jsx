@@ -131,6 +131,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                 />
                                 <InputComponent
                                     extendClass="w-full"
+                                    placeholder={"Store Cost"}
                                     name="store_cost"
                                     onChange={handleChange}
                                 />

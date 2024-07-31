@@ -180,6 +180,7 @@ const EditFormMerchandising = ({
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
+                                    placeholder={"Part Number"}
                                     is_disabled={
                                         my_privilege_id == 6 &&
                                         order_list.status == 1
@@ -241,6 +242,7 @@ const EditFormMerchandising = ({
                                         />
                                         <InputComponent
                                             extendClass="w-full"
+                                            placeholder={"SRP"}
                                             is_disabled={order_list.status != 3}
                                             name="srp"
                                             value={srp}
