@@ -29,26 +29,31 @@ const Overview = ({ total_orders, part_input, costing, srp, closed}) => {
                         title="Total Orders"
                         data={total_orders}
                         src={"images/navigation/order-icon.png"}
+                        url="/bto_order_list"
                     />
                     <DashboardOverviewCard
                         title="For Part # Input"
                         data={part_input}
                         src={"images/others/hash-icon.png"}
+                        url="/bto_order_list"
                     />
                     <DashboardOverviewCard
                         title="For Costing"
                         data={costing}
                         src={"images/others/money-icon.png"}
+                        url="/bto_order_list"
                     />
                     <DashboardOverviewCard
                         title="For SRP"
                         data={srp}
                         src={"images/others/tag-icon.png"}
+                        url="/bto_order_list"
                     />
                     <DashboardOverviewCard
                         title="Closed"
                         data={closed}
                         src={"images/others/closed-icon.png"}
+                        url="/bto_order_list"
                     />
                 </div>
             </ContentPanel>
