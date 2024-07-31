@@ -81,8 +81,8 @@ class OrderListController extends Controller
         $data['order_details'] =  OrderList::with([
             'btoStatus:id,status_name,color',
             'storeLocation:id,location_name',
-            'itemMaster:id,digits_code,part_number,item_description,uom,brand,srp,store_cost'
         ])->findOrFail($id);
+        $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
 
         return Inertia::render('OrderList/OrderListView', $data);
 

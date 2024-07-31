@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use app\Helpers\CommonHelpers;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -22,29 +23,33 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
 
     public function headings(): array {
         $headers = [
-                    "Status",
-                    "Reference Number",
-                    "Customer Name",
-                    "Order Qty",
-                    "Store Name",
-                    "Phone Number",
-                    "Item Description",
-                    "Digits Item Description",
-                    "UOM",
-                    "Brand",
-                    "Part #",
-                    "Digits Code",
-                    "Store Cost",
-                    "SRP",
-                    "Order Date",
-                ];
+            "Status",
+            "Reference Number",
+            "Customer Name",
+            "Order Qty",
+            "Store Name",
+            "Phone Number",
+            "Item Description",
+            "Digits Item Description",
+            "UOM",
+            "Brand",
+            "Part #",
+            "Digits Code",
+        ];
+        
+        if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
+            $headers[] = "Store Cost";
+        }
+        
+        $headers[] = "SRP";
+        $headers[] = "Order Date";
 
         return $headers;
     }
 
     public function map($item): array {
-
-       $orderlist = [
+     
+        $orderlist = [
             $item->btoStatus->status_name ?? null,
             $item->reference_number ?? null,
             $item->customer_name ?? null,
@@ -57,10 +62,14 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
             $item->brand ?? null,
             $item->part_number ?? null,
             $item->digits_code ?? null,
-            $item->store_cost ?? null,
-            $item->srp ?? null,
-            $item->order_date ?? null,
         ];
+
+        if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
+            $orderlist[] = $item->store_cost ?? null;
+        }
+
+        $orderlist[] = $item->srp ?? null;
+        $orderlist[] = $item->order_date ?? null;
        
         return $orderlist;
     }

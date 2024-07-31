@@ -5,7 +5,7 @@ import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
 import { NavbarContext } from "../../Context/NavbarContext";
 
-const OrderListView = ({order_details}) => {
+const OrderListView = ({order_details, my_privilege_id}) => {
     const { setTitle } = useContext(NavbarContext);
     useEffect(() => {
         setTimeout(() => {
@@ -63,53 +63,60 @@ const OrderListView = ({order_details}) => {
                             extendClass="w-full"
                             is_disabled={true}
                             name="item_description"
-                            value={order_details.item_master?.item_description || order_details.item_description}
+                            value={order_details.item_description}
                         />
                     </div>
                     <div className="flex flex-col flex-1 gap-y-3">
-                        {order_details.item_master?.uom &&
+                        {order_details.uom &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="uom"
                             displayName='UOM'
-                            value={order_details.item_master?.uom || null}
+                            value={order_details.uom}
                             />
                         }
                         
-                        {order_details.item_master?.brand &&
+                        {order_details.brand &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="brand"
-                            value={order_details.item_master?.brand || null}
+                            value={order_details.brand}
                             />
                         } 
-                        {order_details.item_master?.part_number &&
+                        {order_details.part_number &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
                             name="part_number"
                             displayName="Part #"
-                            value={order_details.item_master?.part_number || null}
+                            value={order_details.part_number}
                             />
                         }
-                        {order_details.item_master?.store_cost &&
+                        {order_details.digits_code &&
                             <InputComponent
                             extendClass="w-full"
                             is_disabled={true}
-                            name="store_cost"
-                            value={order_details.item_master?.store_cost || null}
+                            name="digits_code"
+                            value={order_details.digits_code}
                             />
                         }
-                       
-                        {order_details.item_master?.srp && 
+                        {[1, 6, 7].includes(my_privilege_id) && order_details.store_cost && (
+                            <InputComponent
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="store_cost"
+                                value={order_details.store_cost}
+                            />
+                        )}
+                        {order_details.srp && 
                             <InputComponent
                                 extendClass="w-full"
                                 is_disabled={true}
                                 name="srp"
                                 displayName='SRP'
-                                value={order_details.item_master.srp}
+                                value={order_details.srp}
                             />
                         }
                         <InputComponent
