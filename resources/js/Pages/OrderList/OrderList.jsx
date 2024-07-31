@@ -217,17 +217,17 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             </TableHeader>
                             <TableHeader
                                 name="item_description"
-                                width="lg"
+                                width="xl"
                                 queryParams={queryParams}
                             >
                                 Item Description
                             </TableHeader>
                             <TableHeader
-                                name="digits_code"
-                                width="lg"
+                                name="digits_item_description"
+                                width="xl"
                                 queryParams={queryParams}
                             >
-                                Digits Code
+                                Digits Item Description
                             </TableHeader>
                             <TableHeader name="uom" queryParams={queryParams}>
                                 UOM
@@ -242,11 +242,20 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                 Part #
                             </TableHeader>
                             <TableHeader
-                                name="store_cost"
+                                name="digits_code"
+                                width="lg"
                                 queryParams={queryParams}
                             >
-                                Store Cost
+                                Digits Code
                             </TableHeader>
+                            {[1,6,7].includes(my_privilege_id) && (
+                                <TableHeader
+                                name="store_cost"
+                                queryParams={queryParams}
+                                >
+                                    Store Cost
+                                </TableHeader>
+                            )}
                             <TableHeader name="srp" queryParams={queryParams}>
                                 SRP
                             </TableHeader>
@@ -287,38 +296,40 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.store_location?.location_name ||
-                                            ""}
+                                        ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.phone_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.item_description ||
-                                            item.item_description}
+                                        {item.item_description}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.digits_code || ""}
+                                        {item.digits_item_description}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.uom || ""}
+                                        {item.uom}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.brand || ""}
+                                        {item.brand}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.item_master?.part_number ||
                                             item.part_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.store_cost || ""}
+                                        {item.digits_code}
+                                    </RowData>
+                                    {[1,6,7].includes(my_privilege_id) && (
+                                        <RowData isLoading={loading}>
+                                            {item.store_cost}
+                                        </RowData>
+                                    )}
+                                    <RowData isLoading={loading}>
+                                        {item.srp}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.srp || ""}
-                                    </RowData>
-                                    <RowData isLoading={loading}>
-                                        {moment(item.order_date).format(
-                                            "YYYY-MM-DD"
-                                        )}
+                                        {moment(item.order_date).format("YYYY-MM-DD")}
                                     </RowData>
                                     <RowData
                                         isLoading={loading}

@@ -41,14 +41,12 @@ class OrderListController extends Controller
         if (in_array($privilegeIds, [1, 6, 7])) {
             $query = OrderList::query()->with([
                 'btoStatus:id,status_name,color',
-                'storeLocation:id,location_name',
-                'itemMaster:id,digits_code,part_number,item_description,uom,brand,srp,store_cost'
+                'storeLocation:id,location_name'
             ]);
         } else {
             $query = OrderList::query()->with([
                 'btoStatus:id,status_name,color',
                 'storeLocation:id,location_name',
-                'itemMaster:id,digits_code,part_number,item_description,uom,brand,srp,store_cost'
             ])->where('stores_id', CommonHelpers::myLocationId());
         }
 
