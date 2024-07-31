@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('brand')->nullable()->default('APPLE')->after('uom');
             $table->decimal('srp')->nullable()->after('store_cost');
             $table->dropColumn('item_master_id');
-            $table->string('digits_code', 10)->after('id')->nullable();
+            $table->string('digits_code', 10)->after('part_number')->nullable();
 
         });
     }
