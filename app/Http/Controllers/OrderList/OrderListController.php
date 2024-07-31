@@ -92,7 +92,7 @@ class OrderListController extends Controller
 
     public function add() {
         $data = [];
-        // $data['store_name'] = StoreLocation::get();
+        $data['store_name'] = StoreLocation::where('id', CommonHelpers::myLocationId())->first()->location_name;
 
         return Inertia::render('OrderList/AddForm', $data);
     }

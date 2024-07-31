@@ -105,6 +105,13 @@ const AddForm = ({ store_name }) => {
                                         {errors.order_qty}
                                     </span>
                                 )}
+                                <InputComponent
+                                    extendClass="w-full text-red-500"
+                                    name="customer_name"
+                                    placeholder="Store Name"
+                                    is_disabled={true}
+                                    value={store_name}
+                                />
                             </div>
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
@@ -179,6 +186,10 @@ const AddForm = ({ store_name }) => {
                                     </span>
                                 )}
                             </label>
+                            <span className="mt-3 text-red-500 font-nunito-sans text-sm text-center">
+                                Note: Please upload screenshot of BTO build from
+                                apple website.
+                            </span>
                         </div>
                     </div>
                     <Link
