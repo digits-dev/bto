@@ -30,6 +30,11 @@ class BtoStatusSeeder extends Seeder
                 'status' => '1',
             ],
             [
+                'status_name' => 'For Payment',
+                'color' => '#fb6341',
+                'status' => '1',
+            ],
+            [
                 'status_name' => 'Closed',
                 'color' => '#1C6D1F',
                 'status' => '1',
