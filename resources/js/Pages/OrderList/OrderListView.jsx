@@ -4,18 +4,19 @@ import ContentPanel from '../../Components/Table/ContentPanel'
 import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
 import { NavbarContext } from "../../Context/NavbarContext";
+import ImageView from '../../Components/ImageView/ImageView'
 
 const OrderListView = ({order_details, my_privilege_id}) => {
     const { setTitle } = useContext(NavbarContext);
     useEffect(() => {
         setTimeout(() => {
-            setTitle("BTO Order List - Details");
+            setTitle("BTO Quotation - Details");
         }, 5);
     }, []);
 
   return (
     <>
-        <Head title='BTO Order List - Details'/>
+        <Head title='BTO Quotation - Details'/>
         <ContentPanel>
             <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
                 <div className="lg:w-[60%] lg:flex gap-3">
@@ -65,8 +66,14 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             name="item_description"
                             value={order_details.item_description}
                         />
-                    </div>
-                    <div className="flex flex-col flex-1 gap-y-3">
+                        {order_details.digits_item_description &&
+                            <InputComponent
+                            extendClass="w-full"
+                            is_disabled={true}
+                            name="digits_item_description"
+                            value={order_details.digits_item_description}
+                            />
+                        }
                         {order_details.uom &&
                             <InputComponent
                             extendClass="w-full"
@@ -77,6 +84,9 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             />
                         }
                         
+                        
+                    </div>
+                    <div className="flex flex-col flex-1 gap-y-3">
                         {order_details.brand &&
                             <InputComponent
                             extendClass="w-full"
@@ -94,6 +104,14 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             value={order_details.part_number}
                             />
                         }
+                        {order_details.supplier_cost &&
+                            <InputComponent
+                            extendClass="w-full"
+                            is_disabled={true}
+                            name="supplier_cost"
+                            value={order_details.supplier_cost}
+                            />
+                        }
                         {order_details.digits_code &&
                             <InputComponent
                             extendClass="w-full"
@@ -102,12 +120,20 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             value={order_details.digits_code}
                             />
                         }
-                        {[1, 6, 7].includes(my_privilege_id) && order_details.store_cost && (
+                        {[1, 6, 7].includes(my_privilege_id) && order_details.estimated_store_cost && (
                             <InputComponent
                                 extendClass="w-full"
                                 is_disabled={true}
-                                name="store_cost"
-                                value={order_details.store_cost}
+                                name="estimated_store_cost"
+                                value={order_details.estimated_store_cost}
+                            />
+                        )}
+                        {[1, 6, 7].includes(my_privilege_id) && order_details.estimated_landed_cost && (
+                            <InputComponent
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="estimated_landed_cost"
+                                value={order_details.estimated_landed_cost}
                             />
                         )}
                         {order_details.srp && 
@@ -128,27 +154,9 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                      
                     </div>
                 </div>
-                <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
-                    <label
-                        htmlFor="input-file"
-                        className="relative w-full"
-                    >
-                        <div
-                            id="image-view"
-                            className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7 bg-blue-50 text-center overflow-hidden"
-                        >
-                            <a
-                                href={`/images/uploaded-images/${order_details.uploaded_file}`}
-                                target="_blank"
-                            >
-                                <img
-                                    className='w-64'
-                                    src={`/images/uploaded-images/${order_details.uploaded_file}`}
-                                    alt="Uploaded File"
-                                />
-                            </a>
-                        </div>
-                    </label>
+                <div className="sm:w-full lg:w-[40%] flex flex-col m-4 space-y-3">
+                    <ImageView imageTitle="Original Image" path={order_details.original_uploaded_file}/>
+                    <ImageView imageTitle="Final Image" path={order_details.final_uploaded_file}/>
                 </div>
             </div>
             <div>
@@ -159,6 +167,7 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                     Back
                 </Link>
             </div>
+           
         </ContentPanel>
     </>
   )

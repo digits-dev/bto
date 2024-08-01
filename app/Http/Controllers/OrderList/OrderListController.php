@@ -136,8 +136,12 @@ class OrderListController extends Controller
     
         if ($data['my_privilege_id'] == 6) {
             return Inertia::render('OrderList/EditMerchandising', $data);
-        } else {
+        } 
+        else if ($data['my_privilege_id'] == 7) {
             return Inertia::render('OrderList/EditAccounting', $data);
+        }
+        else {
+            return Inertia::render('OrderList/EditStore', $data);
         }
     }
     

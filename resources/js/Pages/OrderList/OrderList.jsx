@@ -38,7 +38,10 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
         return (
             (privilegeId === 6 && status === 1) ||
             (privilegeId === 7 && status === 2) ||
-            (privilegeId === 6 && status === 3)
+            (privilegeId === 6 && status === 3) ||
+            (privilegeId === 3 && status === 4) ||
+            (privilegeId === 4 && status === 4) ||
+            (privilegeId === 5 && status === 4) 
         );
     };
 
@@ -236,11 +239,21 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                 Brand
                             </TableHeader>
                             <TableHeader
-                                name="part_no"
+                                name="part_number"
                                 queryParams={queryParams}
                             >
                                 Part #
                             </TableHeader>
+                            {[1,6,7].includes(my_privilege_id) && (
+                                <TableHeader
+                                name="supplier_cost"
+                                queryParams={queryParams}
+                                width="lg"
+                                >
+                                    Supplier Cost
+                                </TableHeader>
+                            )}
+                           
                             <TableHeader
                                 name="digits_code"
                                 width="lg"
@@ -250,10 +263,20 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             </TableHeader>
                             {[1,6,7].includes(my_privilege_id) && (
                                 <TableHeader
-                                name="store_cost"
+                                name="estimated_store_cost"
                                 queryParams={queryParams}
+                                width="lg"
                                 >
-                                    Store Cost
+                                    Estimated Store Cost
+                                </TableHeader>
+                            )}
+                            {[1,6,7].includes(my_privilege_id) && (
+                                <TableHeader
+                                name="estimated_landed_cost"
+                                queryParams={queryParams}
+                                width="lg"
+                                >
+                                    Estimated Landed Cost
                                 </TableHeader>
                             )}
                             <TableHeader name="srp" queryParams={queryParams}>
@@ -314,15 +337,24 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                         {item.brand}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {item.item_master?.part_number ||
-                                            item.part_number}
+                                        {item.part_number}
                                     </RowData>
+                                    {[1,6,7].includes(my_privilege_id) && (
+                                        <RowData isLoading={loading}>
+                                            {item.supplier_cost}
+                                        </RowData>
+                                    )}
                                     <RowData isLoading={loading}>
                                         {item.digits_code}
                                     </RowData>
                                     {[1,6,7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
-                                            {item.store_cost}
+                                            {item.estimated_store_cost}
+                                        </RowData>
+                                    )}
+                                    {[1,6,7].includes(my_privilege_id) && (
+                                        <RowData isLoading={loading}>
+                                            {item.estimated_landed_cost}
                                         </RowData>
                                     )}
                                     <RowData isLoading={loading}>

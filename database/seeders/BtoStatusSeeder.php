@@ -39,6 +39,11 @@ class BtoStatusSeeder extends Seeder
                 'color' => '#1C6D1F',
                 'status' => '1',
             ],
+            [
+                'status_name' => 'Cancelled',
+                'color' => '#682f22',
+                'status' => '1',
+            ],
           
         ];
 
