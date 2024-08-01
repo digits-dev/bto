@@ -18,8 +18,8 @@ return new class extends Migration
 
         Schema::table('order_lists', function (Blueprint $table) {
             $table->decimal('supplier_cost', 8, 2)->after('part_number')->nullable();
-            $table->decimal('estimated_landed_cost', 8, 2)->after('estimated_store_cost');
-            $table->string('final_uploaded_file')->after('original_uploaded_file');
+            $table->decimal('estimated_landed_cost', 8, 2)->after('estimated_store_cost')->nullable();
+            $table->string('final_uploaded_file')->after('original_uploaded_file')->nullable();
             $table->integer('updated_by_store')->after('updated_by_mcb_date2')->nullable();
             $table->dateTime('updated_by_store_date')->after('updated_by_store')->nullable();
         });
