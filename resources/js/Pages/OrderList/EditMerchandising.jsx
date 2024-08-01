@@ -19,7 +19,6 @@ const EditFormMerchandising = ({
 
     const [digitsCode, setDigitsCode] = useState("");
     const [partNumberMessage, setPartNumberMessage] = useState("");
-    const [storeCost, setStoreCost] = useState(order_list.store_cost);
     const [srp, setSrp] = useState(order_list.srp);
     const [isChecking, setIsChecking] = useState(true);
     const [itemDescription, setItemDescription] = useState(
@@ -55,8 +54,6 @@ const EditFormMerchandising = ({
                 });
                 setDigitsCode(response.data.digits_code);
                 setItemDescription(response.data.item_description);
-                setStoreCost(response.data.store_cost);
-                setSrp(response.data.srp);
                 setPartNumberMessage("Exists");
             } catch (error) {
                 console.error(error);
@@ -92,11 +89,9 @@ const EditFormMerchandising = ({
         e.preventDefault();
         Swal.fire({
             title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: ${
-                partNumberMessage === "Exists" ? "#309fb5" : "#10B981"
+                order_list.status == 3 ? "#309fb5" : "#10B981"
             };" >${
-                partNumberMessage === "Exists" || order_list.status == 3
-                    ? "CLOSE"
-                    : "UPDATE"
+                order_list.status == 3 ? "CLOSE" : "UPDATE"
             }</span> this?</p>`,
 
             showCancelButton: true,
@@ -180,6 +175,12 @@ const EditFormMerchandising = ({
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
+                                    is_disabled={true}
+                                    name="item_description"
+                                    value={order_list.item_description}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
                                     placeholder={"Part Number"}
                                     is_disabled={
                                         my_privilege_id == 6 &&
@@ -210,42 +211,56 @@ const EditFormMerchandising = ({
                                         </span>
                                     </div>
                                 )}
-
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    name="item_description"
-                                    value={itemDescription}
-                                />
-                                {(partNumberMessage === "Exists" ||
-                                    order_list.status == 3) && (
+                                {partNumberMessage === "Exists" && (
                                     <>
-                                        {order_list.status != 3 && (
+                                        <InputComponent
+                                            extendClass="w-full"
+                                            is_disabled={true}
+                                            name="digits_item_description"
+                                            value={itemDescription}
+                                        />
+                                        <InputComponent
+                                            extendClass="w-full"
+                                            is_disabled={true}
+                                            displayName="Digits Code"
+                                            value={digitsCode || ""}
+                                        />
+                                    </>
+                                )}
+                                {order_list.status == 3 && (
+                                    <>
+                                        {order_list.digits_item_description && (
+                                            <InputComponent
+                                                extendClass="w-full"
+                                                is_disabled={true}
+                                                name="digits_item_description"
+                                                value={
+                                                    order_list.digits_item_description
+                                                }
+                                            />
+                                        )}
+                                        {order_list.digits_code && (
                                             <InputComponent
                                                 extendClass="w-full"
                                                 is_disabled={true}
                                                 displayName="Digits Code"
-                                                value={digitsCode || ""}
+                                                value={order_list.digits_code}
                                             />
                                         )}
-
                                         <InputComponent
                                             extendClass="w-full"
-                                            is_disabled={
-                                                partNumberMessage ===
-                                                    "Exists" ||
-                                                order_list.status == 3
-                                            }
-                                            value={storeCost}
+                                            is_disabled={true}
+                                            value={order_list.store_cost}
                                             name="store_cost"
                                             onChange={handleChange}
                                         />
+
                                         <InputComponent
                                             extendClass="w-full"
                                             placeholder={"SRP"}
                                             is_disabled={order_list.status != 3}
                                             name="srp"
-                                            value={srp}
+                                            value={order_list.srp}
                                             displayName="SRP"
                                             onChange={handleChange}
                                         />
@@ -287,10 +302,7 @@ const EditFormMerchandising = ({
                         extendClass="mt-4"
                         type="submit"
                     >
-                        {order_list.status == 3 ||
-                        partNumberMessage === "Exists"
-                            ? "Close"
-                            : "Update"}
+                        {order_list.status == 3 ? "Close" : "Update"}
                     </TableButton>
                 </form>
             </ContentPanel>

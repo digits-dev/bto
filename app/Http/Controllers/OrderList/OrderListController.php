@@ -129,17 +129,7 @@ class OrderListController extends Controller
 
     public function edit($id) {
         $data = [];
-        $orderList = OrderList::find($id);
-        if ($orderList && $orderList->part_number) {
-            $data['order_list'] = OrderList::join('item_masters', 'order_lists.part_number', '=', 'item_masters.part_number')
-            ->where('order_lists.id', $id)
-            ->select('order_lists.*', 'item_masters.digits_code', 'item_masters.item_description as item_master_description', 'item_masters.srp', 'item_masters.store_cost')
-            ->first();
-        
-        } else {
-            $data['order_list'] = $orderList;
-        }
-
+        $data['order_list'] = OrderList::find($id);
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
         $data['store_name'] = StoreLocation::where('id', $data['order_list']->stores_id)->first()->location_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
@@ -154,59 +144,62 @@ class OrderListController extends Controller
 
     public function editSave(Request $request) {
         $orderList = OrderList::find($request->order_list_id);
+
         $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
+        $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
         if ($orderList->status == self::forPartNumber) {
-            if($isPartNumberExisting) {
-                $orderList->update([
-                    'status' => self::existing,
-                    'item_master_id' => $isPartNumberExisting->id,
-                    'item_description' => $isPartNumberExisting->item_description,
-                    'part_number' => $request->part_number,
-                    'updated_by_mcb' => CommonHelpers::myId(),
-                    'updated_by_mcb_date' => date('Y-m-d H:i:s'),
-                    ]);
-            }else {
-                
-                $itemMasterId = ItemMaster::insertGetId([
-                    'part_number' => $request->part_number,
-                    'item_description' => $orderList->item_description,
-                    'uom' => 'PCS',
-                    'brand' => 'APPLE',
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]);
 
-                $orderList->update([
-                    'item_master_id' => $itemMasterId,
-                    'status' => self::forCosting,
-                    'part_number' => $request->part_number,
-                    'updated_by_mcb' => CommonHelpers::myId(),
-                    'updated_by_mcb_date' => date('Y-m-d H:i:s'),
-                ]);
-
-              
+            $updateData = [
+                'status' => self::forCosting,
+                'part_number' => $request->part_number,
+                'updated_by_mcb' => CommonHelpers::myId(),
+                'updated_by_mcb_date' => date('Y-m-d H:i:s'),
+            ];
+            
+            if ($isPartNumberExisting) {
+                $updateData['digits_item_description'] = $isPartNumberExisting->item_description;
+                $updateData['digits_code'] = $isPartNumberExisting->digits_code;
             }
+            
+            $orderList->update($updateData);
+
         }else if ($orderList->status == self::forCosting) {
+         
             $orderList->update([
                 'status' => self::forSRP,
                 'updated_by_acctg' => CommonHelpers::myId(),
+                'store_cost' => $request->store_cost,
                 'updated_by_acctg_date' => date('Y-m-d H:i:s'),
                  ]);
                 
-            ItemMaster::where('part_number', $orderList->part_number)->update([
-                'store_cost' => $request->store_cost,
-            ]);
+            if ($itemMasterPartNumberExisting) {
+                ItemMaster::where('part_number', $orderList->part_number)->update([
+                    'store_cost' => $request->store_cost,
+                ]);
+            }
+        
         }else if ($orderList->status == self::forSRP) {
             $orderList->update([
                 'status' => self::closed,
+                'srp' => $request->srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
                  ]);
-
-                 ItemMaster::where('part_number', $orderList->part_number)->update([
-                    'srp' => $request->srp,
-                ]);
+           
+                if ($itemMasterPartNumberExisting) {
+                    ItemMaster::where('part_number', $orderList->part_number)->update([
+                        'srp' => $request->srp,
+                    ]);
+                }else {
+                    ItemMaster::insert([
+                        'part_number' => $orderList->part_number,
+                        'item_description' => $orderList->item_description,
+                        'store_cost' => $orderList->store_cost,
+                        'srp' => $request->srp,
+                        'created_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
         }
-        
     
         return redirect ('/bto_order_list');
     }

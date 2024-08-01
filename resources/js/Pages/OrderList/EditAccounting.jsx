@@ -104,14 +104,6 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
-                                    name="item_description"
-                                    value={order_list.item_description}
-                                />
-                            </div>
-                            <div className="flex flex-col flex-1 gap-y-3">
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
                                     displayName="UOM"
                                     value="PCS"
                                 />
@@ -121,6 +113,15 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                     displayName="Brand"
                                     value="Apple"
                                 />
+                            </div>
+                            <div className="flex flex-col flex-1 gap-y-3">
+                                <InputComponent
+                                    extendClass="w-full"
+                                    is_disabled={true}
+                                    name="item_description"
+                                    value={order_list.item_description}
+                                />
+
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
@@ -129,6 +130,24 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                     name="part_number"
                                     onChange={handleChange}
                                 />
+                                {order_list.digits_item_description && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="digits_item_description"
+                                        value={
+                                            order_list.digits_item_description
+                                        }
+                                    />
+                                )}
+                                {order_list.digits_code && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        displayName="Digits Code"
+                                        value={order_list.digits_code}
+                                    />
+                                )}
                                 <InputComponent
                                     extendClass="w-full"
                                     placeholder={"Store Cost"}
