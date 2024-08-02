@@ -221,8 +221,9 @@ class OrderListController extends Controller
                 $data['status'] = self::cancelled; 
             }
             $orderList->update($data);
+
         }
-    
+        
         return redirect ('/bto_order_list');
     }
 
