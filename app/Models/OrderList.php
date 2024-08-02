@@ -22,9 +22,11 @@ class OrderList extends Model
         'digits_item_description',
         'uom',
         'brand',
+        'supplier_cost',
         'part_number',
         'digits_code',
-        'store_cost',
+        'estimated_store_cost',
+        'estimated_landed_cost',
         'srp',
         'order_date',
     ];

@@ -15,6 +15,7 @@ class AdmMenuPrivileges extends Seeder
     public function run()
     {
         $data = [
+            // SUPER ADMIN
             [
                 'id_adm_menus' => 1,
                 'id_adm_privileges' => 1
@@ -28,10 +29,6 @@ class AdmMenuPrivileges extends Seeder
                 'id_adm_privileges' => 1
             ],
             [
-                'id_adm_menus' => 3,
-                'id_adm_privileges' => 2
-            ],
-            [
                 'id_adm_menus' => 4,
                 'id_adm_privileges' => 1
             ],
@@ -42,6 +39,37 @@ class AdmMenuPrivileges extends Seeder
             [
                 'id_adm_menus' => 6,
                 'id_adm_privileges' => 1
+            ],
+            // MERCHANDISING
+            [
+                'id_adm_menus' => 2,
+                'id_adm_privileges' => 6
+            ],
+            [
+                'id_adm_menus' => 3,
+                'id_adm_privileges' => 6
+            ],
+            // ACCOUNTING
+            [
+                'id_adm_menus' => 2,
+                'id_adm_privileges' => 7
+            ],
+            [
+                'id_adm_menus' => 3,
+                'id_adm_privileges' => 7
+            ],
+            // STORES
+            [
+                'id_adm_menus' => 2,
+                'id_adm_privileges' => 3
+            ],
+            [
+                'id_adm_menus' => 2,
+                'id_adm_privileges' => 4
+            ],
+            [
+                'id_adm_menus' => 2,
+                'id_adm_privileges' => 5
             ],
            
         ];

@@ -19,7 +19,7 @@ const DashboardOverviewCard = ({ title, data, src, url }) => {
     );
 };
 
-const Overview = ({ total_orders, part_input, costing, srp, closed}) => {
+const Overview = ({ total_orders, part_input, costing, srp, payment, closed, cancelled}) => {
     return (
         <>
             <ContentPanel marginBottom={2}>
@@ -50,8 +50,20 @@ const Overview = ({ total_orders, part_input, costing, srp, closed}) => {
                         url="/bto_order_list"
                     />
                     <DashboardOverviewCard
+                        title="For Payment"
+                        data={payment}
+                        src={"images/others/payment-icon.png"}
+                        url="/bto_order_list"
+                    />
+                    <DashboardOverviewCard
                         title="Closed"
                         data={closed}
+                        src={"images/others/closed-icon.png"}
+                        url="/bto_order_list"
+                    />
+                    <DashboardOverviewCard
+                        title="Cancelled"
+                        data={cancelled}
                         src={"images/others/closed-icon.png"}
                         url="/bto_order_list"
                     />

@@ -14,7 +14,6 @@ class DashboardController extends Controller
 
     public function getIndex(): Response
     {
-        // $sidebarMenus = CommonHelpers::sidebarMenu();
 
         $privilegeIds = CommonHelpers::myPrivilegeId();
     
@@ -24,7 +23,9 @@ class DashboardController extends Controller
             $data['part_input'] = OrderList::where('status', 1)->count();
             $data['costing'] = OrderList::where('status', 2)->count();
             $data['srp'] = OrderList::where('status', 3)->count();
-            $data['closed'] = OrderList::where('status', 4)->count();
+            $data['payment'] = OrderList::where('status', 4)->count();
+            $data['closed'] = OrderList::where('status', 5)->count();
+            $data['cancelled'] = OrderList::where('status', 6)->count();
             $data['orders_count_wdate'] = OrderList::select(DB::raw('DATE(order_date) as date'), DB::raw('count(*) as count'))
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -38,8 +39,9 @@ class DashboardController extends Controller
             $data['part_input'] = OrderList::where('status', 1)->where('stores_id', $locationId)->count();
             $data['costing'] = OrderList::where('status', 2)->where('stores_id', $locationId)->count();
             $data['srp'] = OrderList::where('status', 3)->where('stores_id', $locationId)->count();
-            $data['closed'] = OrderList::where('status', 4)->where('stores_id', $locationId)->count();
-            $data['existing'] = OrderList::where('status', 5)->where('stores_id', $locationId)->count();
+            $data['payment'] = OrderList::where('status', 4)->where('stores_id', $locationId)->count();
+            $data['closed'] = OrderList::where('status', 5)->where('stores_id', $locationId)->count();
+            $data['cancelled'] = OrderList::where('status', 6)->where('stores_id', $locationId)->count();
             $data['orders_count_wdate'] = OrderList::select(DB::raw('DATE(order_date) as date'), DB::raw('count(*) as count'))
                 ->where('stores_id', $locationId)
                 ->groupBy('date')
@@ -47,8 +49,6 @@ class DashboardController extends Controller
                 ->get();
         }
 
-       
-        
 
         return Inertia::render('Dashboard/Dashboard', $data);
     }

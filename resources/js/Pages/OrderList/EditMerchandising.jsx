@@ -8,6 +8,7 @@ import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 import ImageView from "../../Components/ImageView/ImageView";
+import ImageViewer from "../../Components/ImageView/ImageViewer";
 
 const EditFormMerchandising = ({
     order_list,
@@ -31,6 +32,18 @@ const EditFormMerchandising = ({
             setTitle("BTO Edit Order Form");
         }, 5);
     }, []);
+
+    const [handleImageView, setHandleImageView] = useState(false);
+    const [clickedImage, setClickedImage] = useState('');
+
+    const handleCloseImageView = () => {
+        setHandleImageView(!handleImageView);
+    };
+
+    const handleImageClick = () => {
+
+        setHandleImageView(!handleImageView);
+    };
 
     const handleImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -303,18 +316,15 @@ const EditFormMerchandising = ({
                                     className="relative w-full"
                                 >
                                     <div
+                                        onClick={() => {handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
                                         id="image-view"
-                                        className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center"
+                                        className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center cursor-pointer"
+                                        
                                     >
-                                        <a
-                                            href={`/images/uploaded-images/${order_list.original_uploaded_file}`}
-                                            target="_blank"
-                                        >
                                             <img
                                                 src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
                                                 alt="Uploaded File"
                                             />
-                                        </a>
                                     </div>
                                 </label>
                             </div>
@@ -324,7 +334,8 @@ const EditFormMerchandising = ({
                                 <ImageView
                                     imageTitle="Uploaded File"
                                     path={order_list.original_uploaded_file}
-                                ></ImageView>
+                                    handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
+                                />
                                 <div>
                                     <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
                                         Upload Screenshot
@@ -403,6 +414,10 @@ const EditFormMerchandising = ({
                     </TableButton>
                 </form>
             </ContentPanel>
+            <ImageViewer
+            show={handleImageView}
+            onClose={handleCloseImageView}
+            selectedImage={clickedImage}/>
         </>
     );
 };

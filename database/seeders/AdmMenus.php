@@ -43,10 +43,10 @@ class AdmMenus extends Seeder
 
         DB::table('adm_menuses')->updateOrInsert(
             [
-                'name'              => 'BTO Order List',
+                'name'              => 'BTO Quotation List',
             ],
             [
-                'name'              => 'BTO Order List',
+                'name'              => 'BTO Quotation List',
                 'type'              => 'Route',
                 'path'              => 'OrderList\OrderListControllerGetIndex',
                 'slug'              => 'bto_order_list',

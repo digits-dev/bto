@@ -1,10 +1,12 @@
 import { Head, Link } from '@inertiajs/react'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ContentPanel from '../../Components/Table/ContentPanel'
 import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
 import { NavbarContext } from "../../Context/NavbarContext";
 import ImageView from '../../Components/ImageView/ImageView'
+import Modal from '../../Components/Modal/Modal'
+import ImageViewer from '../../Components/ImageView/ImageViewer'
 
 const OrderListView = ({order_details, my_privilege_id}) => {
     const { setTitle } = useContext(NavbarContext);
@@ -13,6 +15,18 @@ const OrderListView = ({order_details, my_privilege_id}) => {
             setTitle("BTO Quotation - Details");
         }, 5);
     }, []);
+
+    const [handleImageView, setHandleImageView] = useState(false);
+    const [clickedImage, setClickedImage] = useState('');
+
+    const handleCloseImageView = () => {
+        setHandleImageView(!handleImageView);
+    };
+
+    const handleImageClick = () => {
+
+        setHandleImageView(!handleImageView);
+    };
 
   return (
     <>
@@ -104,14 +118,14 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             value={order_details.part_number}
                             />
                         }
-                        {order_details.supplier_cost &&
+                        {[1, 6, 7].includes(my_privilege_id) && order_details.supplier_cost && (
                             <InputComponent
-                            extendClass="w-full"
-                            is_disabled={true}
-                            name="supplier_cost"
-                            value={order_details.supplier_cost}
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="supplier_cost"
+                                value={order_details.supplier_cost}
                             />
-                        }
+                        )}
                         {order_details.digits_code &&
                             <InputComponent
                             extendClass="w-full"
@@ -155,8 +169,9 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                     </div>
                 </div>
                 <div className="sm:w-full lg:w-[40%] flex flex-col m-4 space-y-3">
-                    <ImageView imageTitle="Original Image" path={order_details.original_uploaded_file}/>
-                    <ImageView imageTitle="Final Image" path={order_details.final_uploaded_file}/>
+                        
+                    <ImageView imageTitle="Original Image" path={order_details.original_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_details.original_uploaded_file)}}/>
+                    <ImageView imageTitle="Final Image" path={order_details.final_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_details.final_uploaded_file)}}/>
                 </div>
             </div>
             <div>
@@ -169,6 +184,11 @@ const OrderListView = ({order_details, my_privilege_id}) => {
             </div>
            
         </ContentPanel>
+        <ImageViewer
+            show={handleImageView}
+            onClose={handleCloseImageView}
+            selectedImage={clickedImage}
+        />
     </>
   )
 }

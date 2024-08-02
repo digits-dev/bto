@@ -14,8 +14,6 @@ class AdmModules extends Seeder
      */
     public function run()
     {
-        // DB::table('cms_moduls')->where('id', '>=', 12)->delete();
-        // DB::statement('ALTER TABLE cms_moduls AUTO_INCREMENT = 12');
         $data = [
             [
 
@@ -153,7 +151,7 @@ class AdmModules extends Seeder
             [
 
                 'created_at' => date('Y-m-d H:i:s'),
-                'name' => 'BTO Order List',
+                'name' => 'BTO Quotation List',
                 'icon' => 'fa-solid fa-list-ul',
                 'path' => 'bto_order_list',
                 'table_name' => 'order_list',

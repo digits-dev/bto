@@ -34,11 +34,17 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
             "UOM",
             "Brand",
             "Part #",
-            "Digits Code",
         ];
+
+        if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
+            $headers[] = "Supplier Cost";
+        }
+
+        $headers[] = "Digits Code";
         
         if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
-            $headers[] = "Store Cost";
+            $headers[] = "Estimated Store Cost";
+            $headers[] = "Estimated Landed Cost";
         }
         
         $headers[] = "SRP";
@@ -61,11 +67,17 @@ class OrderListExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
             $item->uom ?? null,
             $item->brand ?? null,
             $item->part_number ?? null,
-            $item->digits_code ?? null,
         ];
 
         if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
-            $orderlist[] = $item->store_cost ?? null;
+            $orderlist[] = $item->supplier_cost ?? null;
+        }
+        
+        $orderlist[] =  $item->digits_code ?? null;
+
+        if (in_array(CommonHelpers::myPrivilegeId(), [1, 6, 7])) {
+            $orderlist[] = $item->estimated_store_cost ?? null;
+            $orderlist[] = $item->estimated_landed_cost ?? null;
         }
 
         $orderlist[] = $item->srp ?? null;

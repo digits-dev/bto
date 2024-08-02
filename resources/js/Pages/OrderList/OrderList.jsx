@@ -27,12 +27,14 @@ import InputComponent from "../../Components/Forms/Input";
 const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
     const { setTitle } = useContext(NavbarContext);
     const [loading, setLoading] = useState(false);
-    const [orderId, setOrderId] = useState(null);
     useEffect(() => {
         setTimeout(() => {
-            setTitle("BTO Order List");
+            setTitle("BTO Quotation List");
         }, 5);
     }, []);
+
+    router.on("start", () => setLoading(true));
+    router.on("finish", () => setLoading(false));
 
     const canEdit = (privilegeId, status) => {
         return (

@@ -8,6 +8,7 @@ import InputComponent from "../../Components/Forms/Input";
 import moment from "moment";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 import { useToast } from "../../Context/ToastContext";
+import ImageViewer from "../../Components/ImageView/ImageViewer";
 
 const EditStore = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -22,6 +23,20 @@ const EditStore = ({ order_list, status, store_name }) => {
         action: "",
         order_list_id: order_list.id,
     });
+
+    
+    const [handleImageView, setHandleImageView] = useState(false);
+    const [clickedImage, setClickedImage] = useState('');
+
+    const handleCloseImageView = () => {
+        setHandleImageView(!handleImageView);
+    };
+
+    const handleImageClick = () => {
+
+        setHandleImageView(!handleImageView);
+    };
+
 
     const handleButtonClick = (e) => {
         e.preventDefault();
@@ -180,10 +195,12 @@ const EditStore = ({ order_list, status, store_name }) => {
                             <ImageView
                                 imageTitle="Original Image"
                                 path={order_list.original_uploaded_file}
+                                handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
                             />
                             <ImageView
                                 imageTitle="Final Image"
                                 path={order_list.final_uploaded_file}
+                                handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.final_uploaded_file)}}
                             />
                         </div>
                     </div>
@@ -211,6 +228,11 @@ const EditStore = ({ order_list, status, store_name }) => {
                     </div>
                 </form>
             </ContentPanel>
+            <ImageViewer
+            show={handleImageView}
+            onClose={handleCloseImageView}
+            selectedImage={clickedImage}
+        />
         </>
     );
 };
