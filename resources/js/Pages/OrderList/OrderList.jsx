@@ -41,7 +41,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
             (privilegeId === 6 && status === 3) ||
             (privilegeId === 3 && status === 4) ||
             (privilegeId === 4 && status === 4) ||
-            (privilegeId === 5 && status === 4) 
+            (privilegeId === 5 && status === 4)
         );
     };
 
@@ -169,7 +169,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                     />
                     {[1, 3, 4].includes(my_privilege_id) && (
                         <Button type="btn" href="/bto_order_list/add">
-                            Create Order
+                            Create BTO Quotation
                         </Button>
                     )}
                 </TopPanel>
@@ -244,16 +244,16 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             >
                                 Part #
                             </TableHeader>
-                            {[1,6,7].includes(my_privilege_id) && (
+                            {[1, 6, 7].includes(my_privilege_id) && (
                                 <TableHeader
-                                name="supplier_cost"
-                                queryParams={queryParams}
-                                width="lg"
+                                    name="supplier_cost"
+                                    queryParams={queryParams}
+                                    width="lg"
                                 >
                                     Supplier Cost
                                 </TableHeader>
                             )}
-                           
+
                             <TableHeader
                                 name="digits_code"
                                 width="lg"
@@ -261,20 +261,20 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             >
                                 Digits Code
                             </TableHeader>
-                            {[1,6,7].includes(my_privilege_id) && (
+                            {[1, 6, 7].includes(my_privilege_id) && (
                                 <TableHeader
-                                name="estimated_store_cost"
-                                queryParams={queryParams}
-                                width="lg"
+                                    name="estimated_store_cost"
+                                    queryParams={queryParams}
+                                    width="lg"
                                 >
                                     Estimated Store Cost
                                 </TableHeader>
                             )}
-                            {[1,6,7].includes(my_privilege_id) && (
+                            {[1, 6, 7].includes(my_privilege_id) && (
                                 <TableHeader
-                                name="estimated_landed_cost"
-                                queryParams={queryParams}
-                                width="lg"
+                                    name="estimated_landed_cost"
+                                    queryParams={queryParams}
+                                    width="lg"
                                 >
                                     Estimated Landed Cost
                                 </TableHeader>
@@ -319,7 +319,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.store_location?.location_name ||
-                                        ""}
+                                            ""}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.phone_number}
@@ -339,7 +339,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     <RowData isLoading={loading}>
                                         {item.part_number}
                                     </RowData>
-                                    {[1,6,7].includes(my_privilege_id) && (
+                                    {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
                                             {item.supplier_cost}
                                         </RowData>
@@ -347,12 +347,12 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     <RowData isLoading={loading}>
                                         {item.digits_code}
                                     </RowData>
-                                    {[1,6,7].includes(my_privilege_id) && (
+                                    {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
                                             {item.estimated_store_cost}
                                         </RowData>
                                     )}
-                                    {[1,6,7].includes(my_privilege_id) && (
+                                    {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
                                             {item.estimated_landed_cost}
                                         </RowData>
@@ -361,7 +361,9 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                         {item.srp}
                                     </RowData>
                                     <RowData isLoading={loading}>
-                                        {moment(item.order_date).format("YYYY-MM-DD")}
+                                        {moment(item.order_date).format(
+                                            "YYYY-MM-DD"
+                                        )}
                                     </RowData>
                                     <RowData
                                         isLoading={loading}

@@ -24,8 +24,9 @@ class OrderListController extends Controller
     private const forPartNumber = 1;
     private const forCosting = 2;
     private const forSRP = 3;
-    private const closed = 4;
-    private const existing = 5;
+    private const forPayment = 4;
+    private const closed = 5;
+    private const cancelled = 6;
     
 
     public function __construct() {
@@ -102,7 +103,7 @@ class OrderListController extends Controller
             'order_qty' => 'required|integer|min:1',
             'item_description' => 'required|string|max:500',
             'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-            'uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
         $data = [
@@ -112,12 +113,12 @@ class OrderListController extends Controller
             'item_description' => $request->item_description,
             'phone_number' => $request->phone_number,
             'stores_id' => CommonHelpers::myLocationId(),
-            'uploaded_file' => time() . '_' . $request->uploaded_file->getClientOriginalName(),
+            'original_uploaded_file' => time() . '_' . $request->original_uploaded_file->getClientOriginalName(),
             'created_by' => CommonHelpers::myId(),
             'order_date' => date('Y-m-d H:i:s'),
         ];
-        if ($request->hasFile('uploaded_file')) {
-            $file = $request->file('uploaded_file');  
+        if ($request->hasFile('original_uploaded_file')) {
+            $file = $request->file('original_uploaded_file');  
             $filename = time() . '_' . $file->getClientOriginalName();  
             $file->move(public_path('images/uploaded-images'), $filename);  
         }
@@ -148,7 +149,6 @@ class OrderListController extends Controller
 
     public function editSave(Request $request) {
         $orderList = OrderList::find($request->order_list_id);
-
         $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
         $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
         if ($orderList->status == self::forPartNumber) {
@@ -156,6 +156,7 @@ class OrderListController extends Controller
             $updateData = [
                 'status' => self::forCosting,
                 'part_number' => $request->part_number,
+                'supplier_cost' => $request->supplier_cost,
                 'updated_by_mcb' => CommonHelpers::myId(),
                 'updated_by_mcb_date' => date('Y-m-d H:i:s'),
             ];
@@ -171,38 +172,55 @@ class OrderListController extends Controller
          
             $orderList->update([
                 'status' => self::forSRP,
+                'estimated_store_cost' => $request->estimated_store_cost,
+                'estimated_landed_cost' => $request->estimated_landed_cost,
                 'updated_by_acctg' => CommonHelpers::myId(),
-                'store_cost' => $request->store_cost,
                 'updated_by_acctg_date' => date('Y-m-d H:i:s'),
                  ]);
                 
-            if ($itemMasterPartNumberExisting) {
-                ItemMaster::where('part_number', $orderList->part_number)->update([
-                    'store_cost' => $request->store_cost,
-                ]);
-            }
+            // if ($itemMasterPartNumberExisting) {
+            //     ItemMaster::where('part_number', $orderList->part_number)->update([
+            //         'store_cost' => $request->store_cost,
+            //     ]);
+            // }
         
         }else if ($orderList->status == self::forSRP) {
             $orderList->update([
-                'status' => self::closed,
+                'status' => self::forPayment,
                 'srp' => $request->srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
+                'final_uploaded_file' => time() . '_' . $request->final_uploaded_file->getClientOriginalName(),
                  ]);
+
+             if ($request->hasFile('final_uploaded_file')) {
+                 $file = $request->file('final_uploaded_file');  
+                 $filename = time() . '_' . $file->getClientOriginalName();  
+                 $file->move(public_path('images/uploaded-images'), $filename);  
+             }
            
-                if ($itemMasterPartNumberExisting) {
-                    ItemMaster::where('part_number', $orderList->part_number)->update([
-                        'srp' => $request->srp,
-                    ]);
-                }else {
+                if (!$itemMasterPartNumberExisting) {
                     ItemMaster::insert([
                         'part_number' => $orderList->part_number,
                         'item_description' => $orderList->item_description,
-                        'store_cost' => $orderList->store_cost,
+                        'store_cost' => $orderList->estimated_store_cost,
                         'srp' => $request->srp,
                         'created_at' => date('Y-m-d H:i:s'),
                     ]);
                 }
+        }else if ($orderList->status == self::forPayment) {
+            
+            $data = [
+                'updated_by_store' => CommonHelpers::myId(),
+                'updated_by_store_date' => date('Y-m-d H:i:s'),
+            ];
+            
+            if ($request->action == 'Close') {
+                $data['status'] = self::closed; 
+            } else {
+                $data['status'] = self::cancelled; 
+            }
+            $orderList->update($data);
         }
     
         return redirect ('/bto_order_list');

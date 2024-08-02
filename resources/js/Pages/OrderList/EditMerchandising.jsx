@@ -7,6 +7,7 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
+import ImageView from "../../Components/ImageView/ImageView";
 
 const EditFormMerchandising = ({
     order_list,
@@ -24,13 +25,19 @@ const EditFormMerchandising = ({
     const [itemDescription, setItemDescription] = useState(
         order_list.item_description
     );
-
+    const [selectedImage, setSelectedImage] = useState(null);
     useEffect(() => {
         setTimeout(() => {
             setTitle("BTO Edit Order Form");
         }, 5);
     }, []);
 
+    const handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            setSelectedImage(URL.createObjectURL(event.target.files[0]));
+            setData("final_uploaded_file", event.target.files[0]);
+        }
+    };
     // Debounce function
     const debounce = (func, wait) => {
         let timeout;
@@ -81,6 +88,8 @@ const EditFormMerchandising = ({
 
     const { data, setData, post, processing, errors, reset } = useForm({
         part_number: "",
+        supplier_cost: "",
+        final_uploaded_file: "",
         srp: "",
         order_list_id: order_list.id,
     });
@@ -88,11 +97,13 @@ const EditFormMerchandising = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         Swal.fire({
-            title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: ${
-                order_list.status == 3 ? "#309fb5" : "#10B981"
-            };" >${
-                order_list.status == 3 ? "CLOSE" : "UPDATE"
-            }</span> this?</p>`,
+            // title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: ${
+            //     order_list.status == 3 ? "#309fb5" : "#10B981"
+            // };" >${
+            //     order_list.status == 3 ? "CLOSE" : "UPDATE"
+            // }</span> this?</p>`,
+            title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: #10B981
+            };" >UPDATE</span> this?</p>`,
 
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -171,14 +182,14 @@ const EditFormMerchandising = ({
                                     displayName="Brand"
                                     value="Apple"
                                 />
-                            </div>
-                            <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="item_description"
                                     value={order_list.item_description}
                                 />
+                            </div>
+                            <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
                                     placeholder={"Part Number"}
@@ -207,7 +218,7 @@ const EditFormMerchandising = ({
                                             </span>
                                         </span>
                                         <span className="text-sm text-red-500">
-                                            "Part Number already exists"
+                                            Part Number already exists
                                         </span>
                                     </div>
                                 )}
@@ -227,68 +238,128 @@ const EditFormMerchandising = ({
                                         />
                                     </>
                                 )}
-                                {order_list.status == 3 && (
-                                    <>
-                                        {order_list.digits_item_description && (
-                                            <InputComponent
-                                                extendClass="w-full"
-                                                is_disabled={true}
-                                                name="digits_item_description"
-                                                value={
-                                                    order_list.digits_item_description
-                                                }
-                                            />
-                                        )}
-                                        {order_list.digits_code && (
-                                            <InputComponent
-                                                extendClass="w-full"
-                                                is_disabled={true}
-                                                displayName="Digits Code"
-                                                value={order_list.digits_code}
-                                            />
-                                        )}
-                                        <InputComponent
-                                            extendClass="w-full"
-                                            is_disabled={true}
-                                            value={order_list.store_cost}
-                                            name="store_cost"
-                                            onChange={handleChange}
-                                        />
+                                {order_list.digits_code && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        displayName="Digits Code"
+                                        value={order_list.digits_code}
+                                    />
+                                )}
+                                {order_list.digits_item_description && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="digits_item_description"
+                                        value={
+                                            order_list.digits_item_description
+                                        }
+                                    />
+                                )}
+                                <InputComponent
+                                    extendClass="w-full"
+                                    placeholder={"Supplier Cost"}
+                                    is_disabled={
+                                        order_list.status == 3 ? true : false
+                                    }
+                                    value={order_list.supplier_cost}
+                                    name="supplier_cost"
+                                    onChange={handleChange}
+                                />
 
-                                        <InputComponent
-                                            extendClass="w-full"
-                                            placeholder={"SRP"}
-                                            is_disabled={order_list.status != 3}
-                                            name="srp"
-                                            value={order_list.srp}
-                                            displayName="SRP"
-                                            onChange={handleChange}
-                                        />
-                                    </>
+                                {order_list.estimated_store_cost && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        value={order_list.estimated_store_cost}
+                                        displayName={"Estimated Store Cost"}
+                                    />
+                                )}
+                                {order_list.estimated_landed_cost && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        value={order_list.estimated_landed_cost}
+                                        displayName={"Estimated Landed Cost"}
+                                    />
+                                )}
+                                {order_list.status == 3 && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        placeholder={"SRP"}
+                                        is_disabled={order_list.status != 3}
+                                        name="srp"
+                                        value={order_list.srp}
+                                        displayName="SRP"
+                                        onChange={handleChange}
+                                    />
                                 )}
                             </div>
                         </div>
-                        <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
-                            <label
-                                htmlFor="input-file"
-                                className="relative w-full"
-                            >
-                                <div
-                                    id="image-view"
-                                    className="flex flex-col justify-center items-center w-full md:w-auto h-[380px] md:h-auto rounded-2xl border-2 border-gray-400 p-7 bg-white text-center"
+                        <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4 gap-3">
+                            <ImageView
+                                imageTitle="Uploaded File"
+                                path={order_list.original_uploaded_file}
+                            ></ImageView>
+                            <div>
+                                <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
+                                    Upload Screenshot
+                                </p>
+                                <label
+                                    htmlFor="input-file"
+                                    className="relative w-full"
                                 >
-                                    <a
-                                        href={`/images/uploaded-images/${order_list.uploaded_file}`}
-                                        target="_blank"
+                                    <input
+                                        required
+                                        id="input-file"
+                                        name="image"
+                                        type="file"
+                                        accept="image/*"
+                                        className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
+                                        onChange={handleImageChange}
+                                    />
+                                    <div
+                                        id="image-view"
+                                        className="flex flex-col justify-center items-center w-full h-[250px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
                                     >
-                                        <img
-                                            className="w-full h-full object-cover"
-                                            src={`/images/uploaded-images/${order_list.uploaded_file}`}
-                                            alt="Uploaded File"
-                                        />
-                                    </a>
-                                </div>
-                            </label>
+                                        {selectedImage ? (
+                                            <img
+                                                className="w-56"
+                                                id="image"
+                                                src={selectedImage}
+                                                alt="Selected"
+                                            />
+                                        ) : (
+                                            <>
+                                                <img
+                                                    className="w-32"
+                                                    id="image"
+                                                    src="/images/others/upload.png"
+                                                    alt="Upload"
+                                                />
+                                                <p className="text-md font-nunito-sans font-black text-upload-text-color">
+                                                    Upload Image
+                                                </p>
+                                                <p className="text-sm text-slate-500">
+                                                    File Supported: JPEG, PNG
+                                                </p>
+                                            </>
+                                        )}
+                                    </div>
+                                    {errors.final_uploaded_file && (
+                                        <span className="text-red-500">
+                                            {errors.final_uploaded_file}
+                                        </span>
+                                    )}
+                                </label>
+                            </div>
+                            <span
+                                className="
+                             text-red-500 font-nunito-sans text-sm text-center"
+                            >
+                                Note: Please upload a screenshot of BTO build
+                                from apple website.
+                            </span>
                         </div>
                     </div>
                     <Link
@@ -302,7 +373,7 @@ const EditFormMerchandising = ({
                         extendClass="mt-4"
                         type="submit"
                     >
-                        {order_list.status == 3 ? "Close" : "Update"}
+                        Update
                     </TableButton>
                 </form>
             </ContentPanel>

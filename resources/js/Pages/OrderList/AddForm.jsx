@@ -15,7 +15,7 @@ const AddForm = ({ store_name }) => {
 
     useEffect(() => {
         setTimeout(() => {
-            setTitle("BTO Create Order Form");
+            setTitle("Create BTO Quotation Form");
         }, 5);
     }, []);
 
@@ -24,7 +24,7 @@ const AddForm = ({ store_name }) => {
     const handleImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setSelectedImage(URL.createObjectURL(event.target.files[0]));
-            setData("uploaded_file", event.target.files[0]);
+            setData("original_uploaded_file", event.target.files[0]);
         }
     };
 
@@ -38,7 +38,7 @@ const AddForm = ({ store_name }) => {
         customer_name: "",
         order_qty: "",
         phone_number: "",
-        uploaded_file: "",
+        original_uploaded_file: "",
         // stores_id: "",
     });
 
@@ -107,7 +107,7 @@ const AddForm = ({ store_name }) => {
                                 )}
                                 <InputComponent
                                     extendClass="w-full text-red-500"
-                                    name="customer_name"
+                                    name="store_name"
                                     placeholder="Store Name"
                                     is_disabled={true}
                                     value={store_name}
@@ -180,15 +180,15 @@ const AddForm = ({ store_name }) => {
                                         </>
                                     )}
                                 </div>
-                                {errors.uploaded_file && (
+                                {errors.original_uploaded_file && (
                                     <span className="text-red-500">
-                                        {errors.uploaded_file}
+                                        {errors.original_uploaded_file}
                                     </span>
                                 )}
                             </label>
                             <span className="mt-3 text-red-500 font-nunito-sans text-sm text-center">
-                                Note: Please upload screenshot of BTO build from
-                                apple website.
+                                Note: Please upload a screenshot of BTO build
+                                from apple website.
                             </span>
                         </div>
                     </div>

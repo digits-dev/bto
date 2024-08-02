@@ -14,7 +14,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
 
     useEffect(() => {
         setTimeout(() => {
-            setTitle("BTO Edit Order Form");
+            setTitle("BTO Edit Quotation Form");
         }, 5);
     }, []);
 
@@ -25,7 +25,8 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        store_cost: "",
+        estimated_store_cost: "",
+        estimated_landed_cost: "",
         order_list_id: order_list.id,
     });
 
@@ -130,6 +131,14 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                     name="part_number"
                                     onChange={handleChange}
                                 />
+                                {order_list.digits_code && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        displayName="Digits Code"
+                                        value={order_list.digits_code}
+                                    />
+                                )}
                                 {order_list.digits_item_description && (
                                     <InputComponent
                                         extendClass="w-full"
@@ -140,18 +149,25 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                         }
                                     />
                                 )}
-                                {order_list.digits_code && (
+                                {order_list.supplier_cost && (
                                     <InputComponent
                                         extendClass="w-full"
                                         is_disabled={true}
-                                        displayName="Digits Code"
-                                        value={order_list.digits_code}
+                                        name="supplier_cost"
+                                        value={order_list.supplier_cost}
                                     />
                                 )}
+
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Store Cost"}
-                                    name="store_cost"
+                                    placeholder={"Estimated Store Cost"}
+                                    name="estimated_store_cost"
+                                    onChange={handleChange}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    placeholder={"Estimated Landed Cost"}
+                                    name="estimated_landed_cost"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -166,11 +182,11 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                     className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center"
                                 >
                                     <a
-                                        href={`/images/uploaded-images/${order_list.uploaded_file}`}
+                                        href={`/images/uploaded-images/${order_list.original_uploaded_file}`}
                                         target="_blank"
                                     >
                                         <img
-                                            src={`/images/uploaded-images/${order_list.uploaded_file}`}
+                                            src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
                                             alt="Uploaded File"
                                         />
                                     </a>
