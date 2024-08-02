@@ -296,71 +296,97 @@ const EditFormMerchandising = ({
                                 )}
                             </div>
                         </div>
-                        <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4 gap-3">
-                            <ImageView
-                                imageTitle="Uploaded File"
-                                path={order_list.original_uploaded_file}
-                            ></ImageView>
-                            <div>
-                                <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
-                                    Upload Screenshot
-                                </p>
+                        {order_list.status == 1 && (
+                            <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
                                 <label
                                     htmlFor="input-file"
                                     className="relative w-full"
                                 >
-                                    <input
-                                        required
-                                        id="input-file"
-                                        name="image"
-                                        type="file"
-                                        accept="image/*"
-                                        className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
-                                        onChange={handleImageChange}
-                                    />
                                     <div
                                         id="image-view"
-                                        className="flex flex-col justify-center items-center w-full h-[250px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
+                                        className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center"
                                     >
-                                        {selectedImage ? (
+                                        <a
+                                            href={`/images/uploaded-images/${order_list.original_uploaded_file}`}
+                                            target="_blank"
+                                        >
                                             <img
-                                                className="w-56"
-                                                id="image"
-                                                src={selectedImage}
-                                                alt="Selected"
+                                                src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
+                                                alt="Uploaded File"
                                             />
-                                        ) : (
-                                            <>
-                                                <img
-                                                    className="w-32"
-                                                    id="image"
-                                                    src="/images/others/upload.png"
-                                                    alt="Upload"
-                                                />
-                                                <p className="text-md font-nunito-sans font-black text-upload-text-color">
-                                                    Upload Image
-                                                </p>
-                                                <p className="text-sm text-slate-500">
-                                                    File Supported: JPEG, PNG
-                                                </p>
-                                            </>
-                                        )}
+                                        </a>
                                     </div>
-                                    {errors.final_uploaded_file && (
-                                        <span className="text-red-500">
-                                            {errors.final_uploaded_file}
-                                        </span>
-                                    )}
                                 </label>
                             </div>
-                            <span
-                                className="
+                        )}
+                        {order_list.status == 3 && (
+                            <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4 gap-3">
+                                <ImageView
+                                    imageTitle="Uploaded File"
+                                    path={order_list.original_uploaded_file}
+                                ></ImageView>
+                                <div>
+                                    <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
+                                        Upload Screenshot
+                                    </p>
+                                    <label
+                                        htmlFor="input-file"
+                                        className="relative w-full"
+                                    >
+                                        <input
+                                            required
+                                            id="input-file"
+                                            name="image"
+                                            type="file"
+                                            accept="image/*"
+                                            className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
+                                            onChange={handleImageChange}
+                                        />
+                                        <div
+                                            id="image-view"
+                                            className="flex flex-col justify-center items-center w-full h-[250px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
+                                        >
+                                            {selectedImage ? (
+                                                <img
+                                                    className="w-56"
+                                                    id="image"
+                                                    src={selectedImage}
+                                                    alt="Selected"
+                                                />
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        className="w-32"
+                                                        id="image"
+                                                        src="/images/others/upload.png"
+                                                        alt="Upload"
+                                                    />
+                                                    <p className="text-md font-nunito-sans font-black text-upload-text-color">
+                                                        Upload Image
+                                                    </p>
+                                                    <p className="text-sm text-slate-500">
+                                                        File Supported: JPEG,
+                                                        PNG
+                                                    </p>
+                                                </>
+                                            )}
+                                        </div>
+                                        {errors.final_uploaded_file && (
+                                            <span className="text-red-500">
+                                                {errors.final_uploaded_file}
+                                            </span>
+                                        )}
+                                    </label>
+                                </div>
+                                <span
+                                    className="
                              text-red-500 font-nunito-sans text-sm text-center"
-                            >
-                                Note: Please upload a screenshot of BTO build
-                                from apple website.
-                            </span>
-                        </div>
+                                >
+                                    Note: Please upload a screenshot of BTO
+                                    build from apple website.
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <Link
                         className={`bg-secondary text-white overflow-hidden rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
