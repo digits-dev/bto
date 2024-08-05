@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('estimated_srp', 15, 2)->after('estimated_landed_cost')->nullable();
             $table->string('uploaded_reciept1')->after('final_uploaded_file')->nullable();
             $table->string('uploaded_reciept2')->after('uploaded_reciept1')->nullable();
+            $table->decimal('cash_price', 15, 2)->after('supplier_cost')->nullable();
             $table->string('po_number')->after('srp')->nullable();
             $table->string('dr_number')->after('po_number')->nullable();
             $table->integer('po_by_mcb')->after('updated_by_store_date')->nullable();
@@ -55,6 +56,7 @@ return new class extends Migration
             $table->dropColumn('estimated_srp');
             $table->dropColumn('uploaded_reciept1');
             $table->dropColumn('uploaded_reciept2');
+            $table->dropColumn('cash_price');
             $table->dropColumn('po_number');
             $table->dropColumn('dr_number');
             $table->dropColumn('po_by_mcb');
