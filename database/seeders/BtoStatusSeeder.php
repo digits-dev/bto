@@ -40,8 +40,23 @@ class BtoStatusSeeder extends Seeder
                 'status' => '1',
             ],
             [
-                'status_name' => 'Cancelled',
+                'status_name' => 'Voided',
                 'color' => '#682f22',
+                'status' => '1',
+            ],
+            [
+                'status_name' => 'For PO',
+                'color' => '#39afb1',
+                'status' => '1',
+            ],
+            [
+                'status_name' => 'For DR',
+                'color' => '#4a41c8',
+                'status' => '1',
+            ],
+            [
+                'status_name' => 'For Claim',
+                'color' => '#317d40',
                 'status' => '1',
             ],
           
