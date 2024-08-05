@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('inspire')->hourly();
-        $schedule->call('\App\Http\Controllers\PullErpController@getListOfOrdersFromErpv2')->everyMinute();
+        // $schedule->call('\App\Http\Controllers\PullErpController@getListOfOrdersFromErpv2')->everyMinute();
+        // $schedule->call('\App\Http\Controllers\ItemMaster\ItemMasterController@getItemMasterDataApi')->hourly()->between('9:00', '23:00');
+        $schedule->call('\App\Http\Controllers\ItemMaster\ItemMasterController@getItemMasterDataApi')->everyMinute();
         $schedule->command('mysql:backup')->daily()->at('06:00');
     }
 

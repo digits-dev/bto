@@ -206,7 +206,24 @@ class OrderListController extends Controller
                         'store_cost' => $orderList->estimated_store_cost,
                         'srp' => $request->srp,
                         'created_at' => date('Y-m-d H:i:s'),
+                        
                     ]);
+
+                    //ADD API HERE FOR DIMFS ITEM CREATION WITH DIGITS CODE
+                    //ASK MIKE FOR THE ENDPOINT
+                    //ADD ALL COSTING DATA
+
+                    $data = [
+                        'part_number' => $orderList->part_number,
+                        'item_description' => $orderList->item_description,
+                        'store_cost' => $orderList->estimated_store_cost,
+                        'estimated_landed_cost' => $orderList->estimated_landed_cost,
+                        'supplier_cost' => $orderList->supplier_cost,
+                        'srp' => $request->srp,
+                    ];
+
+                    self::pushItemToDimfs(config('services.item_master.create'), $data);
+
                 }
         }else if ($orderList->status == self::forPayment) {
             
@@ -226,6 +243,25 @@ class OrderListController extends Controller
         
         return redirect ('/bto_order_list');
     }
+
+    public function pushItemToDimfs($url, $data) {
+        $secretKey = config('services.item_master.key');
+        $uniqueString = time();
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        if($userAgent == '' || is_null($userAgent)){
+            $userAgent = config('item-api.user_agent');
+        }
+        $xAuthorizationToken = md5( $secretKey . $uniqueString . $userAgent);
+        $xAuthorizationTime = $uniqueString;
+
+        $apiItems = Http::withHeaders([
+            'X-Authorization-Token' => $xAuthorizationToken,
+            'X-Authorization-Time' => $xAuthorizationTime,
+            'User-Agent' => $userAgent
+        ])->post($url, $data);
+
+        return json_decode($apiItems->body(),true);
+        }
 
     public function export(Request $request)
     {

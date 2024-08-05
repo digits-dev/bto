@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Item Master
     Route::post('/get-digits-code', [ItemMasterController::class, 'getDigitsCode']);
+    Route::get('/get-item-master-dc', [ItemMasterController::class, 'getUpdateItem']);
 
 });
 
