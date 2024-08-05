@@ -31,7 +31,7 @@ const InputComponent = ({
                 disabled={is_disabled}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`${extendClass1} mt-1 block w-full px-3 py-2 placeholder:text-gray-300 border placeholder:text-sm placeholder:text-gray-600 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm`}
+                className={`${extendClass1} mt-1 block w-full px-3 py-2 placeholder:text-gray-300 border placeholder:text-sm placeholder:text-gray-300 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm`}
                 checked={checked}
             />
         </div>

@@ -7,6 +7,7 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
+import ImageViewer from "../../Components/ImageView/ImageViewer";
 
 const EditFormAccounting = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -17,6 +18,17 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
             setTitle("BTO Edit Quotation Form");
         }, 5);
     }, []);
+
+    const [handleImageView, setHandleImageView] = useState(false);
+    const [clickedImage, setClickedImage] = useState("");
+
+    const handleCloseImageView = () => {
+        setHandleImageView(!handleImageView);
+    };
+
+    const handleImageClick = () => {
+        setHandleImageView(!handleImageView);
+    };
 
     const handleChange = (e) => {
         const name = e.name ? e.name : e.target.name;
@@ -179,18 +191,19 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                             >
                                 <div
                                     id="image-view"
-                                    className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center"
+                                    className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center cursor-pointer"
+                                    onClick={() => {
+                                            handleImageClick();
+                                            setClickedImage(
+                                                order_list.original_uploaded_file
+                                            );
+                                        }}
                                 >
-                                    <a
-                                        href={`/images/uploaded-images/${order_list.original_uploaded_file}`}
-                                        target="_blank"
-                                    >
                                         <img
                                             className="w-80"
                                             src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
                                             alt="Uploaded File"
                                         />
-                                    </a>
                                 </div>
                             </label>
                         </div>
@@ -206,6 +219,11 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                     </TableButton>
                 </form>
             </ContentPanel>
+            <ImageViewer
+                show={handleImageView}
+                onClose={handleCloseImageView}
+                selectedImage={clickedImage}
+            />
         </>
     );
 };
