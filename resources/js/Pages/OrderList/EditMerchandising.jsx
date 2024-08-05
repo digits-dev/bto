@@ -34,14 +34,13 @@ const EditFormMerchandising = ({
     }, []);
 
     const [handleImageView, setHandleImageView] = useState(false);
-    const [clickedImage, setClickedImage] = useState('');
+    const [clickedImage, setClickedImage] = useState("");
 
     const handleCloseImageView = () => {
         setHandleImageView(!handleImageView);
     };
 
     const handleImageClick = () => {
-
         setHandleImageView(!handleImageView);
     };
 
@@ -316,15 +315,20 @@ const EditFormMerchandising = ({
                                     className="relative w-full"
                                 >
                                     <div
-                                        onClick={() => {handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
+                                        onClick={() => {
+                                            handleImageClick();
+                                            setClickedImage(
+                                                order_list.original_uploaded_file
+                                            );
+                                        }}
                                         id="image-view"
                                         className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center cursor-pointer"
-                                        
                                     >
-                                            <img
-                                                src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
-                                                alt="Uploaded File"
-                                            />
+                                        <img
+                                            className="w-80"
+                                            src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
+                                            alt="Uploaded File"
+                                        />
                                     </div>
                                 </label>
                             </div>
@@ -334,7 +338,12 @@ const EditFormMerchandising = ({
                                 <ImageView
                                     imageTitle="Uploaded File"
                                     path={order_list.original_uploaded_file}
-                                    handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
+                                    handleImageClick={() => {
+                                        handleImageClick();
+                                        setClickedImage(
+                                            order_list.original_uploaded_file
+                                        );
+                                    }}
                                 />
                                 <div>
                                     <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
@@ -415,9 +424,10 @@ const EditFormMerchandising = ({
                 </form>
             </ContentPanel>
             <ImageViewer
-            show={handleImageView}
-            onClose={handleCloseImageView}
-            selectedImage={clickedImage}/>
+                show={handleImageView}
+                onClose={handleCloseImageView}
+                selectedImage={clickedImage}
+            />
         </>
     );
 };

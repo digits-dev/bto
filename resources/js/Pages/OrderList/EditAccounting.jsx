@@ -186,6 +186,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                         target="_blank"
                                     >
                                         <img
+                                            className="w-80"
                                             src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
                                             alt="Uploaded File"
                                         />
