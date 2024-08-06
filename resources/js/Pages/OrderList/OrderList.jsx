@@ -43,7 +43,10 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
             (privilegeId === 6 && status === 3) ||
             (privilegeId === 3 && status === 4) ||
             (privilegeId === 4 && status === 4) ||
-            (privilegeId === 5 && status === 4)
+            (privilegeId === 5 && status === 4) ||
+            (privilegeId === 3 && status === 9) ||
+            (privilegeId === 4 && status === 9) ||
+            (privilegeId === 5 && status === 9)
         );
     };
 
@@ -257,6 +260,13 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             )}
 
                             <TableHeader
+                                name="cash_price"
+                                width="lg"
+                                queryParams={queryParams}
+                            >
+                                Cash Price
+                            </TableHeader>
+                            <TableHeader
                                 name="digits_code"
                                 width="lg"
                                 queryParams={queryParams}
@@ -281,8 +291,17 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     Estimated Landed Cost
                                 </TableHeader>
                             )}
-                            <TableHeader name="srp" queryParams={queryParams}>
-                                SRP
+                            <TableHeader name="estimated_srp" queryParams={queryParams} width="lg">
+                                Estimated SRP
+                            </TableHeader>
+                            <TableHeader name="final_srp" queryParams={queryParams} width="lg">
+                                Final SRP
+                            </TableHeader>
+                            <TableHeader name="po_number" queryParams={queryParams} width="lg">
+                                PO Number
+                            </TableHeader>
+                            <TableHeader name="dr_number" queryParams={queryParams} width="lg">
+                                DR Number
                             </TableHeader>
                             <TableHeader
                                 name="order_date"
@@ -347,6 +366,9 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                         </RowData>
                                     )}
                                     <RowData isLoading={loading}>
+                                        {item.cash_price}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
                                         {item.digits_code}
                                     </RowData>
                                     {[1, 6, 7].includes(my_privilege_id) && (
@@ -360,7 +382,16 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                         </RowData>
                                     )}
                                     <RowData isLoading={loading}>
-                                        {item.srp}
+                                        {item.estimated_srp}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.final_srp}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.po_number}
+                                    </RowData>
+                                    <RowData isLoading={loading}>
+                                        {item.dr_number}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {moment(item.order_date).format(

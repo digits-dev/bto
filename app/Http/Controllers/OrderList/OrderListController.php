@@ -90,6 +90,7 @@ class OrderListController extends Controller
 
     }
 
+
     public function add() {
         $data = [];
         $data['store_name'] = StoreLocation::where('id', CommonHelpers::myLocationId())->first()->location_name;
@@ -135,6 +136,7 @@ class OrderListController extends Controller
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
         $data['store_name'] = StoreLocation::where('id', $data['order_list']->stores_id)->first()->location_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
+
     
         if ($data['my_privilege_id'] == 6) {
             return Inertia::render('OrderList/EditMerchandising', $data);
@@ -142,8 +144,11 @@ class OrderListController extends Controller
         else if ($data['my_privilege_id'] == 7) {
             return Inertia::render('OrderList/EditAccounting', $data);
         }
-        else {
+        else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Payment'){
             return Inertia::render('OrderList/EditStore', $data);
+        }
+        else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Claim') {
+            return Inertia::render('OrderList/ForClaimStore', $data);
         }
     }
     

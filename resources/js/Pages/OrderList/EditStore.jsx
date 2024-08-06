@@ -44,7 +44,7 @@ const EditStore = ({ order_list, status, store_name }) => {
             title: `<p class="font-nunito-sans">Are you sure that you want to <span style="color: ${
                 data.action === "Close" ? "#309fb5" : "#d4081a"
             };">${
-                data.action === "Void" ? "CLOSE" : "VOID"
+                data.action === "Void" ? "VOID" : "CLOSE"
             }</span> this?</p>`,
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -214,16 +214,16 @@ const EditStore = ({ order_list, status, store_name }) => {
                         <TableButton
                             extendClass="mt-4"
                             type="submit"
-                            onClick={() => setData("action", "Cancel")}
+                            onClick={() => setData("action", "Void")}
                         >
                             Void
                         </TableButton>
                         <TableButton
                             extendClass="mt-4"
                             type="submit"
-                            onClick={() => setData("action", "Void")}
+                            onClick={() => setData("action", "Close")}
                         >
-                            Close
+                            DP Paid
                         </TableButton>
                     </div>
                 </form>
