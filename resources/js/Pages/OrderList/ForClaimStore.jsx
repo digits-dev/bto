@@ -164,12 +164,14 @@ const handleImageChange = (event) => {
                     extendClass="w-full"
                     is_disabled={true}
                     name="estimated_srp"
+                    displayName="Estimated SRP"
                     value={order_list.estimated_srp}
                 />
                 <InputComponent
                     extendClass="w-full"
                     is_disabled={true}
                     name="final_srp"
+                     displayName="Final SRP"
                     value={order_list.final_srp}
                 />
                 <InputComponent

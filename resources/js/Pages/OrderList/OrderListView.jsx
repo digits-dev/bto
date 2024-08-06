@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import ContentPanel from '../../Components/Table/ContentPanel'
 import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
@@ -15,6 +15,17 @@ const OrderListView = ({order_details, my_privilege_id}) => {
         }, 5);
     }, []);
 
+    const [childCount, setChildCount] = useState(0);
+    const parentRef1 = useRef(null);
+    const parentRef2 = useRef(null);
+
+    useEffect(() => {
+        if (parentRef1.current || parentRef2.current) {
+            const parentCount = parentRef1.current.children.length + parentRef2.current.children.length;
+            setChildCount(parentCount);
+        }
+      }, []);
+
     const [handleImageView, setHandleImageView] = useState(false);
     const [clickedImage, setClickedImage] = useState('');
 
@@ -27,12 +38,19 @@ const OrderListView = ({order_details, my_privilege_id}) => {
         setHandleImageView(!handleImageView);
     };
 
+    const flexClass = {
+        1: 'flex-col',
+        2: 'flex-col',
+        3: 'flex-wrap justify-center',
+        4: 'flex-wrap justify-center',
+    }[childCount];
+
   return (
     <>
         <Head title='BTO Quotation - Details'/>
         <ContentPanel>
             <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
-                <div className="lg:w-[60%] lg:flex gap-3">
+                <div className="lg:w-[50%] lg:flex gap-3">
                     <div className="flex flex-col flex-1 gap-y-3">
                         <InputComponent
                             extendClass="w-full"
@@ -96,10 +114,6 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             value={order_details.uom}
                             />
                         }
-                        
-                        
-                    </div>
-                    <div className="flex flex-col flex-1 gap-y-3">
                         {order_details.brand &&
                             <InputComponent
                             extendClass="w-full"
@@ -116,7 +130,9 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                             displayName="Part #"
                             value={order_details.part_number}
                             />
-                        }
+                        } 
+                    </div>
+                    <div className="flex flex-col flex-1 gap-y-3">
                         {[1, 6, 7].includes(my_privilege_id) && order_details.supplier_cost && (
                             <InputComponent
                                 extendClass="w-full"
@@ -125,6 +141,14 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                                 value={order_details.supplier_cost}
                             />
                         )}
+                        {order_details.cash_price &&
+                            <InputComponent
+                            extendClass="w-full"
+                            is_disabled={true}
+                            name="cash_price"
+                            value={order_details.cash_price}
+                            />
+                        } 
                         {order_details.digits_code &&
                             <InputComponent
                             extendClass="w-full"
@@ -149,13 +173,40 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                                 value={order_details.estimated_landed_cost}
                             />
                         )}
-                        {order_details.srp && 
+                        {order_details.estimated_srp && 
                             <InputComponent
                                 extendClass="w-full"
                                 is_disabled={true}
                                 name="srp"
-                                displayName='SRP'
-                                value={order_details.srp}
+                                displayName='Estimated SRP'
+                                value={order_details.estimated_srp}
+                            />
+                        }
+                        {order_details.final_srp && 
+                            <InputComponent
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="srp"
+                                displayName='Final SRP'
+                                value={order_details.final_srp}
+                            />
+                        }
+                        {order_details.po_number && 
+                            <InputComponent
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="po_number"
+                                displayName='PO Number'
+                                value={order_details.po_number}
+                            />
+                        }
+                        {order_details.dr_number && 
+                            <InputComponent
+                                extendClass="w-full"
+                                is_disabled={true}
+                                name="dr_number"
+                                displayName='DR Number'
+                                value={order_details.dr_number}
                             />
                         }
                         <InputComponent
@@ -167,10 +218,15 @@ const OrderListView = ({order_details, my_privilege_id}) => {
                      
                     </div>
                 </div>
-                <div className="sm:w-full lg:w-[40%] flex flex-col m-4 space-y-3">
-                        
-                    <ImageView imageTitle="Original Image" path={order_details.original_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_details.original_uploaded_file)}}/>
-                    <ImageView imageTitle="Final Image" path={order_details.final_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_details.final_uploaded_file)}}/>
+                <div className={`sm:w-full lg:w-1/2 flex ${flexClass} gap-2`}>
+                <div className="flex flex-col gap-2" ref={parentRef1}>
+                    <ImageView imageTitle="Original Image" path={order_details.original_uploaded_file} handleImageClick={() => {handleImageClick(); setClickedImage(order_details.original_uploaded_file);}}/>
+                    <ImageView imageTitle="Final Image" path={order_details.final_uploaded_file} handleImageClick={() => {handleImageClick(); setClickedImage(order_details.final_uploaded_file);}}/>
+                </div>
+                <div className="flex flex-col gap-2" ref={parentRef2}>
+                    <ImageView imageTitle="Receipt 1" path={order_details.uploaded_receipt1} handleImageClick={() => {handleImageClick(); setClickedImage(order_details.uploaded_receipt1);}}/>
+                    <ImageView imageTitle="Receipt 2" path={order_details.uploaded_receipt2} handleImageClick={() => {handleImageClick(); setClickedImage(order_details.uploaded_receipt2);}}/>
+                </div>
                 </div>
             </div>
             <div>
