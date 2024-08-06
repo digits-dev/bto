@@ -5,7 +5,6 @@ import InputComponent from '../../Components/Forms/Input'
 import moment from 'moment'
 import { NavbarContext } from "../../Context/NavbarContext";
 import ImageView from '../../Components/ImageView/ImageView'
-import Modal from '../../Components/Modal/Modal'
 import ImageViewer from '../../Components/ImageView/ImageViewer'
 
 const OrderListView = ({order_details, my_privilege_id}) => {
