@@ -98,8 +98,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
             <Head title="BTO Order List" />
             <ContentPanel>
                 <TopPanel>
-                    <TableSearch queryParams={queryParams} />
-                    <PerPage queryParams={queryParams} />
+                    <TableSearch queryParams={queryParams}/>
+                    <PerPage queryParams={queryParams}/>
                     <Filters onSubmit={handleFilterSubmit}>
                         <ReactSelect
                             name="status"

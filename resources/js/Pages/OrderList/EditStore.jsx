@@ -44,7 +44,7 @@ const EditStore = ({ order_list, status, store_name }) => {
             title: `<p class="font-nunito-sans">Are you sure that you want to <span style="color: ${
                 data.action === "Close" ? "#309fb5" : "#d4081a"
             };">${
-                data.action === "Close" ? "CLOSE" : "CANCEL"
+                data.action === "Void" ? "CLOSE" : "VOID"
             }</span> this?</p>`,
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -60,8 +60,8 @@ const EditStore = ({ order_list, status, store_name }) => {
                         onSuccess: (response) => {
                             console.log(response);
                             handleToast(
-                                data.action === "Close"
-                                    ? "Order Updated successfully"
+                                data.action === "Void"
+                                    ? "Order Voided successfully"
                                     : "Order Cancelled successfully",
                                 "success"
                             );
@@ -216,12 +216,12 @@ const EditStore = ({ order_list, status, store_name }) => {
                             type="submit"
                             onClick={() => setData("action", "Cancel")}
                         >
-                            Cancel
+                            Void
                         </TableButton>
                         <TableButton
                             extendClass="mt-4"
                             type="submit"
-                            onClick={() => setData("action", "Close")}
+                            onClick={() => setData("action", "Void")}
                         >
                             Close
                         </TableButton>
