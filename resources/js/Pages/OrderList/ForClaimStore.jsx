@@ -200,7 +200,7 @@ const handleImageChange = (event) => {
               <ImageView imageTitle="Final Image" path={order_list.final_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.final_uploaded_file)}}/>
             </div>
             <div className='md:flex-row flex flex-col gap-3 justify-evenly'>
-              <ImageView imageTitle="Reciept 1" path={order_list.original_uploaded_file} handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}/>
+              <ImageView imageTitle="Reciept 1" path={order_list.uploaded_receipt1} handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}/>
               <div>
                   <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
                       Upload Receipt
