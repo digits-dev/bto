@@ -22,32 +22,6 @@ class OrderListController extends Controller
     private $sortDir;
     private $perPage;
 
-    protected function getValidationRules()
-    {
-        return [
-            // CREATE
-            'customer_name' => 'sometimes|required|string|max:255',
-            'order_qty' => 'sometimes|required|integer',
-            'item_description' => 'sometimes|required|string|max:500',
-            'phone_number' => 'sometimes|required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-            'original_uploaded_file' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
-
-            // EDIT MERCH 1
-            'supplier_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-            'cash_price' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-
-            // EDIT ACCOUNTING 1
-            'estimated_store_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-            'estimated_landed_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-            'estimated_srp' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-            
-            // EDIT MERCH 1
-            'final_srp' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
-
-        ];
-    }
-
-
     public function __construct() {
         $this->sortBy = request()->get('sortBy', 'created_at');
         $this->sortDir = request()->get('sortDir', 'desc');
@@ -118,7 +92,13 @@ class OrderListController extends Controller
     
     public function addSave(Request $request) {
         
-        $request->validate($this->getValidationRules());
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'order_qty' => 'required|integer',
+            'item_description' => 'required|string|max:500',
+            'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
+            'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
     
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
@@ -170,7 +150,10 @@ class OrderListController extends Controller
         $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
         if ($orderList->status == OrderList::forPartNumber) {
 
-            $request->validate($this->getValidationRules());
+            $request->validate([
+                'supplier_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'cash_price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            ]);
 
             $updateData = [
                 'status' => OrderList::forCosting,
@@ -190,7 +173,11 @@ class OrderListController extends Controller
 
         }else if ($orderList->status == OrderList::forCosting) {
 
-            $request->validate($this->getValidationRules());
+            $request->validate([
+                'estimated_store_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'estimated_landed_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'estimated_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            ]);
 
             $orderList->update([
                 'status' => OrderList::forSRP,
@@ -203,7 +190,9 @@ class OrderListController extends Controller
                 
         }else if ($orderList->status == OrderList::forSRP) {
 
-            $request->validate($this->getValidationRules());
+            $request->validate([
+                'final_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            ]);
 
             $orderList->update([
                 'status' => OrderList::forPayment,
