@@ -50,7 +50,7 @@ const EditStore = ({ order_list, status, store_name }) => {
             title: `<p class="font-nunito-sans">Are you sure that you want to <span style="color: ${
                 data.action === "DP Paid" ? "#309fb5" : "#d4081a"
             };">${
-                data.action === "Void" ? "VOID" : "UPDATE TO DP PAID"
+                data.action === "Void" ? "VOID" : "DP PAID "
             }</span> this?</p>`,
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -262,7 +262,7 @@ const EditStore = ({ order_list, status, store_name }) => {
                                         >
                                             {selectedImage ? (
                                                 <img
-                                                    className="w-80"
+                                                    className="w-60"
                                                     id="image"
                                                     src={selectedImage}
                                                     alt="Selected"

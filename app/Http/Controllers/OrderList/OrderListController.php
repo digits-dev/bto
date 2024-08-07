@@ -22,8 +22,31 @@ class OrderListController extends Controller
     private $sortDir;
     private $perPage;
 
-    
-    
+    protected function getValidationRules()
+    {
+        return [
+            // CREATE
+            'customer_name' => 'sometimes|required|string|max:255',
+            'order_qty' => 'sometimes|required|integer',
+            'item_description' => 'sometimes|required|string|max:500',
+            'phone_number' => 'sometimes|required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
+            'original_uploaded_file' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
+
+            // EDIT MERCH 1
+            'supplier_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+            'cash_price' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+
+            // EDIT ACCOUNTING 1
+            'estimated_store_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+            'estimated_landed_cost' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+            'estimated_srp' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+            
+            // EDIT MERCH 1
+            'final_srp' => 'sometimes|required|regex:/^\d+(\.\d{1,2})?$/',
+
+        ];
+    }
+
 
     public function __construct() {
         $this->sortBy = request()->get('sortBy', 'created_at');
@@ -95,13 +118,7 @@ class OrderListController extends Controller
     
     public function addSave(Request $request) {
         
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            // 'order_qty' => 'required|integer|min:1',
-            'item_description' => 'required|string|max:500',
-            'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
-            'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-        ]);
+        $request->validate($this->getValidationRules());
     
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
@@ -148,11 +165,12 @@ class OrderListController extends Controller
     
 
     public function editSave(Request $request) {
-        // dd($request->all());
         $orderList = OrderList::find($request->order_list_id);
         $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
         $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
         if ($orderList->status == OrderList::forPartNumber) {
+
+            $request->validate($this->getValidationRules());
 
             $updateData = [
                 'status' => OrderList::forCosting,
@@ -171,7 +189,9 @@ class OrderListController extends Controller
             $orderList->update($updateData);
 
         }else if ($orderList->status == OrderList::forCosting) {
-         
+
+            $request->validate($this->getValidationRules());
+
             $orderList->update([
                 'status' => OrderList::forSRP,
                 'estimated_store_cost' => $request->estimated_store_cost,
@@ -182,13 +202,16 @@ class OrderListController extends Controller
                  ]);
                 
         }else if ($orderList->status == OrderList::forSRP) {
+
+            $request->validate($this->getValidationRules());
+
             $orderList->update([
                 'status' => OrderList::forPayment,
                 'final_srp' => $request->final_srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
                 'final_uploaded_file' => time() . '_' . $request->final_uploaded_file->getClientOriginalName(),
-                 ]);
+                ]);
 
              if ($request->hasFile('final_uploaded_file')) {
                  $file = $request->file('final_uploaded_file');  
@@ -197,7 +220,7 @@ class OrderListController extends Controller
              }
            
         }else if ($orderList->status == OrderList::forPayment) {
-            
+        
             $data = [
                 'updated_by_store' => CommonHelpers::myId(),
                 'updated_by_store_date' => date('Y-m-d H:i:s'),
@@ -211,6 +234,8 @@ class OrderListController extends Controller
                 $data['status'] = OrderList::forPO; 
 
                 if (!$itemMasterPartNumberExisting) {
+
+
                     ItemMaster::insert([
                         'part_number' => $orderList->part_number,
                         'item_description' => $orderList->item_description,

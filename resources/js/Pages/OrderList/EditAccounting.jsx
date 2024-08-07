@@ -185,24 +185,39 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
 
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Store Cost"}
+                                    placeholder="Estimated Store Cost"
                                     name="estimated_store_cost"
                                     onChange={handleChange}
                                 />
+                                {errors.estimated_store_cost && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.estimated_store_cost}
+                                    </span>
+                                )}
 
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Landed Cost"}
+                                    placeholder="Estimated Landed Cost"
                                     name="estimated_landed_cost"
                                     onChange={handleChange}
                                 />
+                                {errors.estimated_landed_cost && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.estimated_landed_cost}
+                                    </span>
+                                )}
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Landed SRP"}
+                                    placeholder="Estimated SRP"
                                     name="estimated_srp"
                                     displayName={"Estimated SRP"}
                                     onChange={handleChange}
                                 />
+                                {errors.estimated_srp && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.estimated_srp}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">

@@ -200,9 +200,10 @@ const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
                                 <InputComponent
                                     isrequired={true}
                                     extendClass="w-full"
-                                    displayName={"PO Number"}
-                                    name={"po_number"}
+                                    displayName="PO Number"
+                                    name="po_number"
                                     onChange={handleChange}
+                                    placeholder="PO Number"
                                 />
                             </div>
                         </div>
@@ -248,7 +249,7 @@ const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
                                         }}
                                     >
                                         <img
-                                            className="w-80"
+                                            className="w-60"
                                             src={`/images/uploaded-receipts/${order_list.uploaded_receipt1}`}
                                             alt="Uploaded File"
                                         />

@@ -109,8 +109,8 @@ const EditFormMerchandising = ({
 
     const { data, setData, post, processing, errors, reset } = useForm({
         part_number: "",
-        supplier_cost: "",
-        cash_price: "",
+        supplier_cost: order_list.supplier_cost || "",
+        cash_price: order_list.cash_price || "",
         final_uploaded_file: "",
         final_srp: "",
         order_list_id: order_list.id,
@@ -332,6 +332,11 @@ const EditFormMerchandising = ({
                                     name="supplier_cost"
                                     onChange={handleChange}
                                 />
+                                 {errors.supplier_cost && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.supplier_cost}
+                                    </span>
+                                )}
 
                                 <InputComponent
                                     extendClass="w-full"
@@ -343,6 +348,11 @@ const EditFormMerchandising = ({
                                     value={order_list.cash_price}
                                     onChange={handleChange}
                                 />
+                                {errors.cash_price && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.cash_price}
+                                    </span>
+                                )}
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
@@ -362,7 +372,9 @@ const EditFormMerchandising = ({
                                         value={order_list.estimated_store_cost}
                                         displayName="Estimated Store Cost"
                                     />
+                                    
                                 )}
+                                
 
                                 {order_list.estimated_landed_cost && (
                                     <InputComponent
@@ -401,6 +413,11 @@ const EditFormMerchandising = ({
                                         onChange={handleChange}
                                         ref={finalSrpRef}
                                     />
+                                )}
+                                {errors.final_srp && (
+                                    <span className="text-red-500 text-sm">
+                                        {errors.final_srp}
+                                    </span>
                                 )}
                             </div>
                         </div>

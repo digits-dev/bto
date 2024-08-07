@@ -7,6 +7,7 @@ import { NavbarContext } from "../../Context/NavbarContext";
 import ImageView from "../../Components/ImageView/ImageView";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
 import TableButton from "../../Components/Table/Buttons/TableButton";
+import { useToast } from "../../Context/ToastContext";
 
 const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -16,6 +17,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
         }, 5);
     }, []);
 
+    const { handleToast } = useToast();
     const [selectedImage, setSelectedImage] = useState(null);
     const [handleImageView, setHandleImageView] = useState(false);
     const [clickedImage, setClickedImage] = useState("");
@@ -59,7 +61,6 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                 try {
                     post("/bto_order_list/edit_save", {
                         onSuccess: (response) => {
-                            console.log(response);
                             handleToast(
                                 "Order Updated successfully",
                                 "success"

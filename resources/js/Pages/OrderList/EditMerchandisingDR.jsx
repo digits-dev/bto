@@ -261,7 +261,7 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                         }}
                                     >
                                         <img
-                                            className="w-80"
+                                            className="w-60"
                                             src={`/images/uploaded-receipts/${order_list.uploaded_receipt1}`}
                                             alt="Uploaded File"
                                         />
