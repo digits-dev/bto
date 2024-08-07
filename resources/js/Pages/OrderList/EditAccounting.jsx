@@ -243,21 +243,23 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                 </label>
                             </div>
                         </div>
-                        <Link
-                            className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
-                            href="/bto_order_list"
-                        >
-                            Back
-                        </Link>
-                        <TableButton
-                            extendClass="mt-4"
-                            type="submit"
-                            disabled={processing}
-                        >
-                            Update
-                        </TableButton>
-                        <Modal modalLoading show={processing}/> 
+                        <div>
+                            <Link
+                                className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
+                                href="/bto_order_list"
+                            >
+                                Back
+                            </Link>
+                            <TableButton
+                                extendClass="mt-4"
+                                type="submit"
+                                disabled={processing}
+                            >
+                                Update
+                            </TableButton>
+                        </div>
                 </ContentPanel>
+                <Modal modalLoading show={processing}/> 
             </form>
             <ImageViewer
                 show={handleImageView}

@@ -275,8 +275,8 @@ const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
                                 Update
                             </TableButton>
                         </div>
-                <Modal modalLoading show={processing}/>
                 </ContentPanel>
+                <Modal modalLoading show={processing}/>
             </form>
             <ImageViewer
                 show={handleImageView}

@@ -218,6 +218,7 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                     displayName={"DR Number"}
                                     name={"dr_number"}
                                     onChange={handleChange}
+                                    placeholder="DR Number"
                                 />
                             </div>
                         </div>
