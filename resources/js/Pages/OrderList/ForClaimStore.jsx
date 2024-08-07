@@ -307,7 +307,11 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                         >
                             Back
                         </Link>
-                        <TableButton extendClass="mt-4" type="submit">
+                        <TableButton
+                            extendClass="mt-4"
+                            type="submit"
+                            disabled={processing}
+                        >
                             Close
                         </TableButton>
                     </div>

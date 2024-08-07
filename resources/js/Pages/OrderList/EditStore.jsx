@@ -20,7 +20,7 @@ const EditStore = ({ order_list, status, store_name }) => {
         }, 5);
     }, []);
 
-    const { data, setData, post } = useForm({
+    const { data, setData, post, processing } = useForm({
         action: "",
         uploaded_receipt1: "",
         order_list_id: order_list.id,
@@ -300,11 +300,13 @@ const EditStore = ({ order_list, status, store_name }) => {
                         <TableButton
                             extendClass="mt-4"
                             type="submit"
+                            disabled={processing}
                             onClick={() => setData("action", "Void")}
                         >
                             Void
                         </TableButton>
                         <TableButton
+                            disabled={processing}
                             extendClass="mt-4"
                             type="submit"
                             onClick={() => setData("action", "DP Paid")}

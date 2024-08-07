@@ -332,7 +332,7 @@ const EditFormMerchandising = ({
                                     name="supplier_cost"
                                     onChange={handleChange}
                                 />
-                                 {errors.supplier_cost && (
+                                {errors.supplier_cost && (
                                     <span className="text-red-500 text-sm">
                                         {errors.supplier_cost}
                                     </span>
@@ -372,9 +372,7 @@ const EditFormMerchandising = ({
                                         value={order_list.estimated_store_cost}
                                         displayName="Estimated Store Cost"
                                     />
-                                    
                                 )}
-                                
 
                                 {order_list.estimated_landed_cost && (
                                     <InputComponent
@@ -530,7 +528,8 @@ const EditFormMerchandising = ({
                     <TableButton
                         disabled={
                             (order_list.status != 3 && isChecking) ||
-                            (order_list.status == 3 && !isFinalSrpAbove)
+                            (order_list.status == 3 && !isFinalSrpAbove) ||
+                            processing
                         }
                         extendClass="mt-4"
                         type="submit"

@@ -250,7 +250,11 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                     >
                         Back
                     </Link>
-                    <TableButton extendClass="mt-4" type="submit">
+                    <TableButton
+                        extendClass="mt-4"
+                        type="submit"
+                        disabled={processing}
+                    >
                         Update
                     </TableButton>
                 </form>

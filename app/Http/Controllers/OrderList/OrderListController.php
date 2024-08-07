@@ -94,7 +94,7 @@ class OrderListController extends Controller
         
         $request->validate([
             'customer_name' => 'required|string|max:255',
-            'order_qty' => 'required|integer',
+            // 'order_qty' => 'required|integer',
             'item_description' => 'required|string|max:500',
             'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
             'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',

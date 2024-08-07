@@ -195,7 +195,9 @@ const AddForm = ({ store_name }) => {
                     >
                         Back
                     </Link>
-                    <TableButton type="submit">Create</TableButton>
+                    <TableButton type="submit" disabled={processing}>
+                        Create
+                    </TableButton>
                 </form>
             </ContentPanel>
         </>
