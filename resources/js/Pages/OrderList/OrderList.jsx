@@ -120,12 +120,14 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             value={filters.reference_number}
                             isrequired={false}
                             onChange={handleFilter}
+                            placeholder="Reference Number"
                         />
                         <InputComponent
                             name="customer_name"
                             isrequired={false}
                             value={filters.customer_name}
                             onChange={handleFilter}
+                            placeholder="Customer Name"
                         />
                         <ReactSelect
                             name="stores_id"
@@ -142,18 +144,21 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             isrequired={false}
                             value={filters.phone_number}
                             onChange={handleFilter}
+                            placeholder="Phone Number"
                         />
                         <InputComponent
                             name="item_description"
                             isrequired={false}
                             value={filters.item_description}
                             onChange={handleFilter}
+                            placeholder="Item Description"
                         />
                         <InputComponent
                             name="brand"
                             isrequired={false}
                             value={filters.brand}
                             onChange={handleFilter}
+                            placeholder="Brand"
                         />
                         <InputComponent
                             name="part_number"
@@ -161,6 +166,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                             isrequired={false}
                             value={filters.part_number}
                             onChange={handleFilter}
+                            placeholder="Part Number"
                         />
 
                         <InputComponent
