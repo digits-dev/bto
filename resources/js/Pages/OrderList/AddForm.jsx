@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { NavbarContext } from "../../Context/NavbarContext";
 import AppContent from "../../Layouts/layout/AppContent";
 import ContentPanel from "../../Components/Table/ContentPanel";
-
+import Modal from "../../Components/Modal/Modal";
 import { Head, useForm, Link } from "@inertiajs/react";
 import InputComponent from "../../Components/Forms/Input";
 import DropdownSelect from "../../Components/Dropdown/Dropdown";
@@ -36,10 +36,8 @@ const AddForm = ({ store_name }) => {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         customer_name: "",
-        // order_qty: "",
         phone_number: "",
         original_uploaded_file: "",
-        // stores_id: "",
     });
 
     const handleSubmit = (e) => {
@@ -71,12 +69,6 @@ const AddForm = ({ store_name }) => {
         });
     };
 
-    // const storeOptions = store_name.map((store) => ({
-    //     id: store.id,
-    //     label: store.location_name,
-    //     name: store.location_name,
-    // }));
-
     return (
         <>
             <Head title="Add Form" />
@@ -97,11 +89,6 @@ const AddForm = ({ store_name }) => {
                                     is_disabled={true}
                                     value={1}
                                 />
-                                {/* {errors.order_qty && (
-                                    <span className="text-red-500 text-sm">
-                                        {errors.order_qty}
-                                    </span>
-                                )} */}
                                 <InputComponent
                                     extendClass="w-full text-red-500"
                                     name="store_name"
@@ -198,6 +185,7 @@ const AddForm = ({ store_name }) => {
                     <TableButton type="submit" disabled={processing}>
                         Create
                     </TableButton>
+                    <Modal modalLoading show={processing}/>       
                 </form>
             </ContentPanel>
         </>

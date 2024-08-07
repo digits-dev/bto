@@ -7,6 +7,8 @@ import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
+import Modal from "../../Components/Modal/Modal";
+
 
 const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -84,8 +86,8 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
     return (
         <>
             <Head title="Edit Form" />
-            <ContentPanel>
-                <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+                <ContentPanel>
                     <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
                         <div className="lg:w-[50%] lg:flex gap-3">
                             <div className="flex flex-col flex-1 gap-y-3">
@@ -268,86 +270,26 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className="md:flex-row flex flex-col gap-3 justify-evenly">
-                                <ImageView
-                                    imageTitle="Ca"
-                                    path={order_list.original_uploaded_file}
-                                    handleImageClick={() => {
-                                        handleImageClick();
-                                        setClickedImage(
-                                            order_list.original_uploaded_file
-                                        );
-                                        setIsReceipt(false);
-                                    }}
-                                />
-                                <div>
-                                    <p className="font-nunito-sans font-bold text-red-400 mb-1">
-                                        Upload Receipt
-                                    </p>
-                                    <div className="w-full flex flex-col self-center">
-                                        <label
-                                            htmlFor="input-file"
-                                            className="relative w-full"
-                                        >
-                                            <input
-                                                required
-                                                id="input-file"
-                                                name="image"
-                                                type="file"
-                                                accept="image/*"
-                                                className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
-                                                onChange={handleImageChange}
-                                            />
-                                            <div
-                                                id="image-view"
-                                                className="flex flex-col justify-center items-center w-full h-[250px] rounded-2xl border-2 border-dashed border-gray-400 p-10 cursor-pointer bg-[#f5fbff] text-center"
-                                            >
-                                                {selectedImage ? (
-                                                    <img
-                                                        className="w-48"
-                                                        id="image"
-                                                        src={selectedImage}
-                                                        alt="Selected"
-                                                    />
-                                                ) : (
-                                                    <>
-                                                        <img
-                                                            className="w-44"
-                                                            id="image"
-                                                            src="/images/others/upload.png"
-                                                            alt="Upload"
-                                                        />
-                                                        <p className="text-sm font-nunito-sans font-black text-upload-text-color">
-                                                            Upload Image
-                                                        </p>
-                                                        <p className="text-xs text-slate-500">
-                                                            File Supported:
-                                                            JPEG, PNG
-                                                        </p>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
-                    <Link
-                        className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
-                        href="/bto_order_list"
-                    >
-                        Back
-                    </Link>
-                    <TableButton
-                        extendClass="mt-4"
-                        type="submit"
-                        disabled={processing}
-                    >
-                        Update
-                    </TableButton>
-                </form>
-            </ContentPanel>
+                    <div>
+                        <Link
+                            className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
+                            href="/bto_order_list"
+                        >
+                            Back
+                        </Link>
+                        <TableButton
+                            extendClass="mt-4"
+                            type="submit"
+                            disabled={processing}
+                        >
+                            Update
+                        </TableButton>
+                    </div>
+                </ContentPanel>
+                <Modal modalLoading show={processing}/>
+            </form>
             <ImageViewer
                 show={handleImageView}
                 isReceipt={isReceipt}

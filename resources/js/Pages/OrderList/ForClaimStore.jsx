@@ -2,12 +2,12 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import React, { useContext, useEffect, useState } from "react";
 import ContentPanel from "../../Components/Table/ContentPanel";
 import InputComponent from "../../Components/Forms/Input";
-import moment from "moment";
 import { NavbarContext } from "../../Context/NavbarContext";
 import ImageView from "../../Components/ImageView/ImageView";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 import { useToast } from "../../Context/ToastContext";
+import Modal from "../../Components/Modal/Modal";
 
 const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
     const { setTitle } = useContext(NavbarContext);
@@ -76,8 +76,8 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
 
     return (
         <>
-            <ContentPanel>
-                <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+                <ContentPanel>
                     <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
                         <div className="lg:w-[50%] lg:flex gap-3">
                             <div className="flex flex-col flex-1 gap-y-3">
@@ -315,8 +315,9 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                             Close
                         </TableButton>
                     </div>
-                </form>
-            </ContentPanel>
+                </ContentPanel>
+                <Modal modalLoading show={processing}/>
+            </form>
             <ImageViewer
                 show={handleImageView}
                 onClose={handleCloseImageView}
