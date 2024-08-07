@@ -72,8 +72,8 @@ const AddForm = ({ store_name }) => {
     return (
         <>
             <Head title="Add Form" />
-            <ContentPanel>
-                <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+                <ContentPanel>
                     <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
                         <div className="lg:w-[60%] lg:flex gap-3">
                             <div className="flex flex-col flex-1 gap-y-3">
@@ -176,18 +176,20 @@ const AddForm = ({ store_name }) => {
                             </span>
                         </div>
                     </div>
-                    <Link
-                        className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
-                        href="/bto_order_list"
-                    >
-                        Back
-                    </Link>
-                    <TableButton type="submit" disabled={processing}>
-                        Create
-                    </TableButton>
-                    <Modal modalLoading show={processing}/>       
-                </form>
-            </ContentPanel>
+                    <div>
+                        <Link
+                            className={`bg-secondary text-white overflow-hidden  rounded-lg font-nunito-sans text-sm border border-secondary px-5 py-2 hover:opacity-80 mr-2`}
+                            href="/bto_order_list"
+                        >
+                            Back
+                        </Link>
+                        <TableButton type="submit" disabled={processing}>
+                            Create
+                        </TableButton>
+                    </div>
+                </ContentPanel>
+                <Modal modalLoading show={processing}/>       
+            </form>
         </>
     );
 };
