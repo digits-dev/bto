@@ -24,9 +24,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('order_lists', function (Blueprint $table) {
-            $table->integer('po_by_mcb_date')->nullable()->change();
-            $table->integer('dr_by_mcb_date')->nullable()->change();
-            $table->integer('updated_by_store_date2')->nullable()->change();
         });
     }
 };

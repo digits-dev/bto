@@ -25,7 +25,10 @@ class DashboardController extends Controller
             $data['srp'] = OrderList::where('status', 3)->count();
             $data['payment'] = OrderList::where('status', 4)->count();
             $data['closed'] = OrderList::where('status', 5)->count();
-            $data['cancelled'] = OrderList::where('status', 6)->count();
+            $data['voided'] = OrderList::where('status', 6)->count();
+            $data['po'] = OrderList::where('status', 7)->count();
+            $data['dr'] = OrderList::where('status', 8)->count();
+            $data['claim'] = OrderList::where('status', 9)->count();
             $data['orders_count_wdate'] = OrderList::select(DB::raw('DATE(order_date) as date'), DB::raw('count(*) as count'))
             ->groupBy('date')
             ->orderBy('date', 'desc')
@@ -41,7 +44,10 @@ class DashboardController extends Controller
             $data['srp'] = OrderList::where('status', 3)->where('stores_id', $locationId)->count();
             $data['payment'] = OrderList::where('status', 4)->where('stores_id', $locationId)->count();
             $data['closed'] = OrderList::where('status', 5)->where('stores_id', $locationId)->count();
-            $data['cancelled'] = OrderList::where('status', 6)->where('stores_id', $locationId)->count();
+            $data['voided'] = OrderList::where('status', 6)->where('stores_id', $locationId)->count();
+            $data['po'] = OrderList::where('status', 7)->where('stores_id', $locationId)->count();
+            $data['dr'] = OrderList::where('status', 8)->where('stores_id', $locationId)->count();
+            $data['claim'] = OrderList::where('status', 9)->where('stores_id', $locationId)->count();
             $data['orders_count_wdate'] = OrderList::select(DB::raw('DATE(order_date) as date'), DB::raw('count(*) as count'))
                 ->where('stores_id', $locationId)
                 ->groupBy('date')

@@ -19,7 +19,7 @@ const DashboardOverviewCard = ({ title, data, src, url }) => {
     );
 };
 
-const Overview = ({ total_orders, part_input, costing, srp, payment, closed, cancelled}) => {
+const Overview = ({ total_orders, part_input, costing, srp, payment, closed, claim, dr, po, voided}) => {
     return (
         <>
             <ContentPanel marginBottom={2}>
@@ -56,14 +56,32 @@ const Overview = ({ total_orders, part_input, costing, srp, payment, closed, can
                         url="/bto_order_list"
                     />
                     <DashboardOverviewCard
-                        title="Closed"
-                        data={closed}
-                        src={"images/others/closed-icon.png"}
+                        title="Voided"
+                        data={voided}
+                        src={"images/others/void-icon.png"}
                         url="/bto_order_list"
                     />
                     <DashboardOverviewCard
-                        title="Cancelled"
-                        data={cancelled}
+                        title="For PO"
+                        data={po}
+                        src={"images/others/required-icon.png"}
+                        url="/bto_order_list"
+                    />
+                    <DashboardOverviewCard
+                        title="For DR"
+                        data={dr}
+                        src={"images/others/required-icon.png"}
+                        url="/bto_order_list"
+                    />
+                    <DashboardOverviewCard
+                        title="For Claim"
+                        data={claim}
+                        src={"images/others/required-icon.png"}
+                        url="/bto_order_list"
+                    />
+                    <DashboardOverviewCard
+                        title="Closed"
+                        data={closed}
                         src={"images/others/closed-icon.png"}
                         url="/bto_order_list"
                     />
