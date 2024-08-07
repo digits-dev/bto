@@ -174,9 +174,9 @@ class OrderListController extends Controller
         }else if ($orderList->status == OrderList::forCosting) {
 
             $request->validate([
-                'estimated_store_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-                'estimated_landed_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-                'estimated_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'estimated_store_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
+                'estimated_landed_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
+                'estimated_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
             ]);
 
             $orderList->update([
@@ -191,7 +191,7 @@ class OrderListController extends Controller
         }else if ($orderList->status == OrderList::forSRP) {
 
             $request->validate([
-                'final_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'final_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
             ]);
 
             $orderList->update([
