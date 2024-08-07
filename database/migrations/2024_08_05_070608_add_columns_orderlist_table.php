@@ -25,11 +25,11 @@ return new class extends Migration
             $table->string('po_number')->after('srp')->nullable();
             $table->string('dr_number')->after('po_number')->nullable();
             $table->integer('po_by_mcb')->after('updated_by_store_date')->nullable();
-            $table->integer('po_by_mcb_date')->after('po_by_mcb')->nullable();
+            $table->dateTime('po_by_mcb_date')->after('po_by_mcb')->nullable();
             $table->integer('dr_by_mcb')->after('po_by_mcb_date')->nullable();
-            $table->integer('dr_by_mcb_date')->after('dr_by_mcb')->nullable();
+            $table->dateTime('dr_by_mcb_date')->after('dr_by_mcb')->nullable();
             $table->integer('updated_by_store2')->after('dr_by_mcb_date')->nullable();
-            $table->integer('updated_by_store_date2')->after('updated_by_store2')->nullable();
+            $table->dateTime('updated_by_store_date2')->after('updated_by_store2')->nullable();
 
         });
 
@@ -43,10 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('order_lists')->whereNull('supplier_cost')->update(['supplier_cost' => 0]);
-        DB::table('order_lists')->whereNull('estimated_store_cost')->update(['estimated_store_cost' => 0]);
-        DB::table('order_lists')->whereNull('estimated_landed_cost')->update(['estimated_landed_cost' => 0]);
-        DB::table('order_lists')->whereNull('final_srp')->update(['final_srp' => 0]);
 
         Schema::table('order_lists', function (Blueprint $table) {
             $table->decimal('supplier_cost', 15, 2)->nullable(false)->change();

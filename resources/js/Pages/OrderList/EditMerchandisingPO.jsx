@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { NavbarContext } from "../../Context/NavbarContext";
 import AppContent from "../../Layouts/layout/AppContent";
 import ContentPanel from "../../Components/Table/ContentPanel";
-
+import ImageView from "../../Components/ImageView/ImageView";
 import { Head, useForm, Link } from "@inertiajs/react";
 import InputComponent from "../../Components/Forms/Input";
 import { useToast } from "../../Context/ToastContext";
 import TableButton from "../../Components/Table/Buttons/TableButton";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
 
-const EditFormAccounting = ({ order_list, status, store_name }) => {
+const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
     const { handleToast } = useToast();
 
@@ -18,10 +18,11 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
             setTitle("BTO Edit Quotation Form");
         }, 5);
     }, []);
-
     const [handleImageView, setHandleImageView] = useState(false);
     const [clickedImage, setClickedImage] = useState("");
+    const [isReceipt, setIsReceipt] = useState(false);
 
+    console.log("isReceipt:", isReceipt);
     const handleCloseImageView = () => {
         setHandleImageView(!handleImageView);
     };
@@ -37,9 +38,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        estimated_store_cost: "",
-        estimated_landed_cost: "",
-        estimated_srp: "",
+        po_number: "",
         order_list_id: order_list.id,
     });
 
@@ -81,7 +80,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
             <ContentPanel>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
-                        <div className="lg:w-[60%] lg:flex gap-3">
+                        <div className="lg:w-[50%] lg:flex gap-3">
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
@@ -160,73 +159,102 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                                         }
                                     />
                                 )}
-                                {order_list.supplier_cost && (
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        is_disabled={true}
-                                        name="supplier_cost"
-                                        value={order_list.supplier_cost}
-                                    />
-                                )}
-                                {order_list.cash_price && (
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        displayName="Cash Price"
-                                        value={order_list.cash_price}
-                                        is_disabled={true}
-                                    />
-                                )}
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
-                                    value="USD"
-                                    displayName={"Currency"}
+                                    displayName="Supplier Cost"
+                                    value={order_list.supplier_cost}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    displayName="Cash Price"
+                                    value={order_list.cash_price}
+                                    is_disabled={true}
                                 />
 
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Store Cost"}
-                                    name="estimated_store_cost"
-                                    onChange={handleChange}
+                                    displayName={"Estimated Store Cost"}
+                                    value={order_list.estimated_store_cost}
+                                    is_disabled={true}
                                 />
 
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Landed Cost"}
-                                    name="estimated_landed_cost"
-                                    onChange={handleChange}
+                                    is_disabled={true}
+                                    displayName={"Estimated Landed Cost"}
+                                    value={order_list.estimated_landed_cost}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
-                                    placeholder={"Estimated Landed SRP"}
-                                    name="estimated_srp"
                                     displayName={"Estimated SRP"}
+                                    is_disabled={true}
+                                    value={order_list.estimated_srp}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    displayName={"Final SRP"}
+                                    is_disabled={true}
+                                    value={order_list.final_srp}
+                                />
+                                <InputComponent
+                                    isrequired={true}
+                                    extendClass="w-full"
+                                    displayName={"PO Number"}
+                                    name={"po_number"}
                                     onChange={handleChange}
                                 />
                             </div>
                         </div>
-                        <div className="sm:w-full lg:w-[40%] flex flex-col self-center m-4">
-                            <label
-                                htmlFor="input-file"
-                                className="relative w-full"
-                            >
-                                <div
-                                    id="image-view"
-                                    className="flex flex-col justify-center items-center w-full h-[380px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center cursor-pointer"
-                                    onClick={() => {
+                        <div className="sm:w-full lg:w-[50%] my-2 mx-auto flex flex-col gap-5">
+                            <div className="md:flex-row flex flex-col gap-3 justify-evenly">
+                                <ImageView
+                                    imageTitle="Original Image"
+                                    path={order_list.original_uploaded_file}
+                                    handleImageClick={() => {
                                         handleImageClick();
                                         setClickedImage(
                                             order_list.original_uploaded_file
                                         );
+                                        setIsReceipt(false);
                                     }}
-                                >
-                                    <img
-                                        className="w-80"
-                                        src={`/images/uploaded-images/${order_list.original_uploaded_file}`}
-                                        alt="Uploaded File"
-                                    />
+                                />
+                                <ImageView
+                                    imageTitle="Final Image"
+                                    path={order_list.final_uploaded_file}
+                                    handleImageClick={() => {
+                                        handleImageClick();
+                                        setClickedImage(
+                                            order_list.final_uploaded_file
+                                        );
+                                        setIsReceipt(false);
+                                    }}
+                                />
+                            </div>
+                            <div className="flex flex-col justify-center items-center">
+                                <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
+                                    Uploaded Receipt
+                                </p>
+                                <div className="w-[80%] flex flex-col self-center m-4">
+                                    <div
+                                        id="image-view"
+                                        className="flex flex-col justify-center items-center w-full h-[270px] rounded-2xl border-2 border-gray-400 p-7  bg-white text-center cursor-pointer"
+                                        onClick={() => {
+                                            handleImageClick();
+                                            setClickedImage(
+                                                order_list.uploaded_receipt1
+                                            );
+                                            setIsReceipt(true);
+                                        }}
+                                    >
+                                        <img
+                                            className="w-80"
+                                            src={`/images/uploaded-receipts/${order_list.uploaded_receipt1}`}
+                                            alt="Uploaded File"
+                                        />
+                                    </div>
                                 </div>
-                            </label>
+                            </div>
                         </div>
                     </div>
                     <Link
@@ -242,6 +270,7 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
             </ContentPanel>
             <ImageViewer
                 show={handleImageView}
+                isReceipt={isReceipt}
                 onClose={handleCloseImageView}
                 selectedImage={clickedImage}
             />
@@ -249,4 +278,4 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
     );
 };
 
-export default EditFormAccounting;
+export default EditFormMerchandisingPO;

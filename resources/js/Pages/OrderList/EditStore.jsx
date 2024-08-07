@@ -13,6 +13,7 @@ import ImageViewer from "../../Components/ImageView/ImageViewer";
 const EditStore = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
     const { handleToast } = useToast();
+    const [selectedImage, setSelectedImage] = useState(null);
     useEffect(() => {
         setTimeout(() => {
             setTitle("BTO Edit Quotation Form");
@@ -21,30 +22,35 @@ const EditStore = ({ order_list, status, store_name }) => {
 
     const { data, setData, post } = useForm({
         action: "",
+        uploaded_receipt1: "",
         order_list_id: order_list.id,
     });
 
-    
     const [handleImageView, setHandleImageView] = useState(false);
-    const [clickedImage, setClickedImage] = useState('');
+    const [clickedImage, setClickedImage] = useState("");
 
     const handleCloseImageView = () => {
         setHandleImageView(!handleImageView);
     };
 
     const handleImageClick = () => {
-
         setHandleImageView(!handleImageView);
     };
 
+    const handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            setSelectedImage(URL.createObjectURL(event.target.files[0]));
+            setData("uploaded_receipt1", event.target.files[0]);
+        }
+    };
 
     const handleButtonClick = (e) => {
         e.preventDefault();
         Swal.fire({
             title: `<p class="font-nunito-sans">Are you sure that you want to <span style="color: ${
-                data.action === "Close" ? "#309fb5" : "#d4081a"
+                data.action === "DP Paid" ? "#309fb5" : "#d4081a"
             };">${
-                data.action === "Void" ? "VOID" : "CLOSE"
+                data.action === "Void" ? "VOID" : "UPDATE TO DP PAID"
             }</span> this?</p>`,
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -55,6 +61,14 @@ const EditStore = ({ order_list, status, store_name }) => {
             reverseButtons: true,
         }).then(async (result) => {
             if (result.isConfirmed) {
+                if (data.action === "DP Paid" && !data.uploaded_receipt1) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Please upload a receipt!",
+                    });
+                    return;
+                }
                 try {
                     post("/bto_order_list/edit_save", {
                         onSuccess: (response) => {
@@ -80,7 +94,7 @@ const EditStore = ({ order_list, status, store_name }) => {
             <ContentPanel>
                 <form onSubmit={handleButtonClick}>
                     <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
-                        <div className="lg:w-[60%] lg:flex gap-3">
+                        <div className="lg:w-[50%] lg:flex gap-3">
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
@@ -172,13 +186,24 @@ const EditStore = ({ order_list, status, store_name }) => {
                                         value={order_list.digits_code}
                                     />
                                 )}
-                                {order_list.srp && (
+                                <InputComponent
+                                    extendClass="w-full"
+                                    displayName="Cash Price"
+                                    value={order_list.cash_price}
+                                    is_disabled={true}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    displayName={"Estimated SRP"}
+                                    is_disabled={true}
+                                    value={order_list.estimated_srp}
+                                />
+                                {order_list.final_srp && (
                                     <InputComponent
                                         extendClass="w-full"
                                         is_disabled={true}
-                                        name="srp"
-                                        displayName="SRP"
-                                        value={order_list.srp}
+                                        displayName="Final SRP"
+                                        value={order_list.final_srp}
                                     />
                                 )}
                                 <InputComponent
@@ -191,17 +216,78 @@ const EditStore = ({ order_list, status, store_name }) => {
                                 />
                             </div>
                         </div>
-                        <div className="sm:w-full lg:w-[40%] flex flex-col m-4 space-y-3">
-                            <ImageView
-                                imageTitle="Original Image"
-                                path={order_list.original_uploaded_file}
-                                handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.original_uploaded_file)}}
-                            />
-                            <ImageView
-                                imageTitle="Final Image"
-                                path={order_list.final_uploaded_file}
-                                handleImageClick={()=>{handleImageClick(); setClickedImage(order_list.final_uploaded_file)}}
-                            />
+                        <div className="sm:w-full lg:w-[50%] my-2 mx-auto flex flex-col gap-5">
+                            <div className="md:flex-row flex flex-col gap-3 justify-evenly">
+                                <ImageView
+                                    imageTitle="Original Image"
+                                    path={order_list.original_uploaded_file}
+                                    handleImageClick={() => {
+                                        handleImageClick();
+                                        setClickedImage(
+                                            order_list.original_uploaded_file
+                                        );
+                                    }}
+                                />
+                                <ImageView
+                                    imageTitle="Final Image"
+                                    path={order_list.final_uploaded_file}
+                                    handleImageClick={() => {
+                                        handleImageClick();
+                                        setClickedImage(
+                                            order_list.final_uploaded_file
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div className="flex flex-col justify-center items-center">
+                                <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
+                                    Upload Receipt
+                                </p>
+                                <div className="w-[80%] flex flex-col self-center m-4">
+                                    <label
+                                        htmlFor="input-file"
+                                        className="relative w-full"
+                                    >
+                                        <input
+                                            id="input-file"
+                                            name="image"
+                                            type="file"
+                                            accept="image/*"
+                                            className="z-0 absolute w-full h-full opacity-0 cursor-pointer"
+                                            onChange={handleImageChange}
+                                        />
+                                        <div
+                                            id="image-view"
+                                            className="flex flex-col justify-center items-center w-full h-[270px] rounded-2xl border-2 border-dashed border-gray-400 p-7 cursor-pointer bg-[#f5fbff] text-center"
+                                        >
+                                            {selectedImage ? (
+                                                <img
+                                                    className="w-80"
+                                                    id="image"
+                                                    src={selectedImage}
+                                                    alt="Selected"
+                                                />
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        className="w-48"
+                                                        id="image"
+                                                        src="/images/others/upload.png"
+                                                        alt="Upload"
+                                                    />
+                                                    <p className="text-md font-nunito-sans font-black text-upload-text-color">
+                                                        Upload Image
+                                                    </p>
+                                                    <p className="text-sm text-slate-500">
+                                                        File Supported: JPEG,
+                                                        PNG
+                                                    </p>
+                                                </>
+                                            )}
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="space-x-2">
@@ -221,7 +307,7 @@ const EditStore = ({ order_list, status, store_name }) => {
                         <TableButton
                             extendClass="mt-4"
                             type="submit"
-                            onClick={() => setData("action", "Close")}
+                            onClick={() => setData("action", "DP Paid")}
                         >
                             DP Paid
                         </TableButton>
@@ -229,10 +315,10 @@ const EditStore = ({ order_list, status, store_name }) => {
                 </form>
             </ContentPanel>
             <ImageViewer
-            show={handleImageView}
-            onClose={handleCloseImageView}
-            selectedImage={clickedImage}
-        />
+                show={handleImageView}
+                onClose={handleCloseImageView}
+                selectedImage={clickedImage}
+            />
         </>
     );
 };

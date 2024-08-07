@@ -36,7 +36,7 @@ const AddForm = ({ store_name }) => {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         customer_name: "",
-        order_qty: "",
+        // order_qty: "",
         phone_number: "",
         original_uploaded_file: "",
         // stores_id: "",
@@ -93,18 +93,15 @@ const AddForm = ({ store_name }) => {
                                 />
                                 <InputComponent
                                     extendClass="w-full"
-                                    extendClass1={`${
-                                        errors.order_qty ? "border-red-500" : ""
-                                    }`}
-                                    name="order_qty"
-                                    placeholder="Order Quantity"
-                                    onChange={handleChange}
+                                    displayName={"Order Quantity"}
+                                    is_disabled={true}
+                                    value={1}
                                 />
-                                {errors.order_qty && (
+                                {/* {errors.order_qty && (
                                     <span className="text-red-500 text-sm">
                                         {errors.order_qty}
                                     </span>
-                                )}
+                                )} */}
                                 <InputComponent
                                     extendClass="w-full text-red-500"
                                     name="store_name"

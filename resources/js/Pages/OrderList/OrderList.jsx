@@ -36,18 +36,20 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
     router.on("start", () => setLoading(true));
     router.on("finish", () => setLoading(false));
 
+    const editPermissions = [
+        { privilegeId: 6, statuses: [1, 3, 7, 8] },
+        { privilegeId: 7, statuses: [2] },
+        { privilegeId: 3, statuses: [4, 9] },
+        { privilegeId: 4, statuses: [4, 9] },
+        { privilegeId: 5, statuses: [4, 9] },
+    ];
+
     const canEdit = (privilegeId, status) => {
-        return (
-            (privilegeId === 6 && status === 1) ||
-            (privilegeId === 7 && status === 2) ||
-            (privilegeId === 6 && status === 3) ||
-            (privilegeId === 3 && status === 4) ||
-            (privilegeId === 4 && status === 4) ||
-            (privilegeId === 5 && status === 4) ||
-            (privilegeId === 3 && status === 9) ||
-            (privilegeId === 4 && status === 9) ||
-            (privilegeId === 5 && status === 9)
+        const permission = editPermissions.find(
+            (perm) => perm.privilegeId === privilegeId
         );
+
+        return permission ? permission.statuses.includes(status) : false;
     };
 
     const storeOptions = store.map((store) => ({
@@ -101,8 +103,8 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
             <Head title="BTO Order List" />
             <ContentPanel>
                 <TopPanel>
-                    <TableSearch queryParams={queryParams}/>
-                    <PerPage queryParams={queryParams}/>
+                    <TableSearch queryParams={queryParams} />
+                    <PerPage queryParams={queryParams} />
                     <Filters onSubmit={handleFilterSubmit}>
                         <ReactSelect
                             name="status"
@@ -291,16 +293,32 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     Estimated Landed Cost
                                 </TableHeader>
                             )}
-                            <TableHeader name="estimated_srp" queryParams={queryParams} width="lg">
+                            <TableHeader
+                                name="estimated_srp"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
                                 Estimated SRP
                             </TableHeader>
-                            <TableHeader name="final_srp" queryParams={queryParams} width="lg">
+                            <TableHeader
+                                name="final_srp"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
                                 Final SRP
                             </TableHeader>
-                            <TableHeader name="po_number" queryParams={queryParams} width="lg">
+                            <TableHeader
+                                name="po_number"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
                                 PO Number
                             </TableHeader>
-                            <TableHeader name="dr_number" queryParams={queryParams} width="lg">
+                            <TableHeader
+                                name="dr_number"
+                                queryParams={queryParams}
+                                width="lg"
+                            >
                                 DR Number
                             </TableHeader>
                             <TableHeader

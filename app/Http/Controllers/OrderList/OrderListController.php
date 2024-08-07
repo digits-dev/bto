@@ -22,12 +22,7 @@ class OrderListController extends Controller
     private $sortDir;
     private $perPage;
 
-    private const forPartNumber = 1;
-    private const forCosting = 2;
-    private const forSRP = 3;
-    private const forPayment = 4;
-    private const closed = 5;
-    private const cancelled = 6;
+    
     
 
     public function __construct() {
@@ -102,7 +97,7 @@ class OrderListController extends Controller
         
         $request->validate([
             'customer_name' => 'required|string|max:255',
-            'order_qty' => 'required|integer|min:1',
+            // 'order_qty' => 'required|integer|min:1',
             'item_description' => 'required|string|max:500',
             'phone_number' => 'required|string|regex:/^\+?[0-9\s\-]{10,11}$/',
             'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
@@ -111,7 +106,7 @@ class OrderListController extends Controller
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
             'customer_name' => $request->customer_name,
-            'order_qty' => $request->order_qty,
+            'order_qty' => 1,
             'item_description' => $request->item_description,
             'phone_number' => $request->phone_number,
             'stores_id' => CommonHelpers::myLocationId(),
@@ -136,33 +131,34 @@ class OrderListController extends Controller
         $data['status'] = BtoStatus::where('id', $data['order_list']->status)->first()->status_name;
         $data['store_name'] = StoreLocation::where('id', $data['order_list']->stores_id)->first()->location_name;
         $data['my_privilege_id'] = CommonHelpers::myPrivilegeId();
-
-    
-        if ($data['my_privilege_id'] == 6) {
+        if ($data['my_privilege_id'] == 6 && $data['status'] == 'For PO'){
+            return Inertia::render('OrderList/EditMerchandisingPO', $data);
+        } else if ($data['my_privilege_id'] == 6 && $data['status'] == 'For DR'){
+            return Inertia::render('OrderList/EditMerchandisingDR', $data);
+        }else if ($data['my_privilege_id'] == 6) {
             return Inertia::render('OrderList/EditMerchandising', $data);
-        } 
-        else if ($data['my_privilege_id'] == 7) {
+        } else if ($data['my_privilege_id'] == 7) {
             return Inertia::render('OrderList/EditAccounting', $data);
-        }
-        else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Payment'){
+        }else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Payment'){
             return Inertia::render('OrderList/EditStore', $data);
-        }
-        else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Claim') {
+        }else if (in_array($data['my_privilege_id'], [3,4,5]) && $data['status'] == 'For Claim') {
             return Inertia::render('OrderList/ForClaimStore', $data);
         }
     }
     
 
     public function editSave(Request $request) {
+        // dd($request->all());
         $orderList = OrderList::find($request->order_list_id);
         $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
         $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
-        if ($orderList->status == self::forPartNumber) {
+        if ($orderList->status == OrderList::forPartNumber) {
 
             $updateData = [
-                'status' => self::forCosting,
+                'status' => OrderList::forCosting,
                 'part_number' => $request->part_number,
                 'supplier_cost' => $request->supplier_cost,
+                'cash_price' => $request->cash_price,
                 'updated_by_mcb' => CommonHelpers::myId(),
                 'updated_by_mcb_date' => date('Y-m-d H:i:s'),
             ];
@@ -174,26 +170,21 @@ class OrderListController extends Controller
             
             $orderList->update($updateData);
 
-        }else if ($orderList->status == self::forCosting) {
+        }else if ($orderList->status == OrderList::forCosting) {
          
             $orderList->update([
-                'status' => self::forSRP,
+                'status' => OrderList::forSRP,
                 'estimated_store_cost' => $request->estimated_store_cost,
                 'estimated_landed_cost' => $request->estimated_landed_cost,
+                'estimated_srp' => $request->estimated_srp,
                 'updated_by_acctg' => CommonHelpers::myId(),
                 'updated_by_acctg_date' => date('Y-m-d H:i:s'),
                  ]);
                 
-            // if ($itemMasterPartNumberExisting) {
-            //     ItemMaster::where('part_number', $orderList->part_number)->update([
-            //         'store_cost' => $request->store_cost,
-            //     ]);
-            // }
-        
-        }else if ($orderList->status == self::forSRP) {
+        }else if ($orderList->status == OrderList::forSRP) {
             $orderList->update([
-                'status' => self::forPayment,
-                'srp' => $request->srp,
+                'status' => OrderList::forPayment,
+                'final_srp' => $request->final_srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
                 'final_uploaded_file' => time() . '_' . $request->final_uploaded_file->getClientOriginalName(),
@@ -205,12 +196,26 @@ class OrderListController extends Controller
                  $file->move(public_path('images/uploaded-images'), $filename);  
              }
            
+        }else if ($orderList->status == OrderList::forPayment) {
+            
+            $data = [
+                'updated_by_store' => CommonHelpers::myId(),
+                'updated_by_store_date' => date('Y-m-d H:i:s'),
+            ];
+            
+            if ($request->action == 'Void') {
+
+                $data['status'] = OrderList::voided; 
+                
+            } else {
+                $data['status'] = OrderList::forPO; 
+
                 if (!$itemMasterPartNumberExisting) {
                     ItemMaster::insert([
                         'part_number' => $orderList->part_number,
                         'item_description' => $orderList->item_description,
                         'store_cost' => $orderList->estimated_store_cost,
-                        'srp' => $request->srp,
+                        'srp' => $orderList->final_srp,
                         'created_at' => date('Y-m-d H:i:s'),
                         
                     ]);
@@ -219,32 +224,61 @@ class OrderListController extends Controller
                     //ASK MIKE FOR THE ENDPOINT
                     //ADD ALL COSTING DATA
 
-                    $data = [
-                        'part_number' => $orderList->part_number,
-                        'item_description' => $orderList->item_description,
-                        'store_cost' => $orderList->estimated_store_cost,
-                        'estimated_landed_cost' => $orderList->estimated_landed_cost,
-                        'supplier_cost' => $orderList->supplier_cost,
-                        'srp' => $request->srp,
-                    ];
+                    // $data = [
+                    //     'part_number' => $orderList->part_number,
+                    //     'item_description' => $orderList->item_description,
+                    //     'store_cost' => $orderList->estimated_store_cost,
+                    //     'estimated_landed_cost' => $orderList->estimated_landed_cost,
+                    //     'supplier_cost' => $orderList->supplier_cost,
+                    //     'srp' => $orderList->final_srp,
+                    // ];
 
-                    self::pushItemToDimfs(config('services.item_master.create'), $data);
+                    // OrderList::pushItemToDimfs(config('services.item_master.create'), $data);
 
                 }
-        }else if ($orderList->status == self::forPayment) {
-            
-            $data = [
-                'updated_by_store' => CommonHelpers::myId(),
-                'updated_by_store_date' => date('Y-m-d H:i:s'),
-            ];
-            
-            if ($request->action == 'Close') {
-                $data['status'] = self::closed; 
-            } else {
-                $data['status'] = self::cancelled; 
             }
+
+            if ($request->hasFile('uploaded_receipt1')) {
+                $data['uploaded_receipt1'] = time() . '_' . $request->uploaded_receipt1->getClientOriginalName();
+                $file = $request->file('uploaded_receipt1');  
+                $filename = time() . '_' . $file->getClientOriginalName();  
+                $file->move(public_path('images/uploaded-receipts'), $filename);  
+            }
+            
             $orderList->update($data);
 
+        }else if ($orderList->status == OrderList::forPO) {
+            $data = [
+                'status' => OrderList::forDR,
+                'po_number' => $request->po_number,
+                'po_by_mcb' => CommonHelpers::myId(),
+                'po_by_mcb_date' => date('Y-m-d H:i:s')
+            ];
+            $orderList->update($data);
+        }else if ($orderList->status == OrderList::forDR) {
+            $data = [
+                'status' => OrderList::forClaim,
+                'dr_number' => $request->dr_number,
+                'dr_by_mcb' => CommonHelpers::myId(),
+                'dr_by_mcb_date' => date('Y-m-d H:i:s')
+            ];
+            $orderList->update($data);
+        }else if ($orderList->status == OrderList::forClaim) {
+            $data = [
+                'status' => OrderList::closed,
+                'uploaded_receipt2' => time() . '_' . $request->uploaded_receipt2->getClientOriginalName(),
+                'updated_by_store2' => CommonHelpers::myId(),
+                'updated_by_store_date2' => date('Y-m-d H:i:s')
+            ];
+
+
+            if ($request->hasFile('uploaded_receipt2')) {
+                $file = $request->file('uploaded_receipt2');  
+                $filename = time() . '_' . $file->getClientOriginalName();  
+                $file->move(public_path('images/uploaded-receipts'), $filename);  
+            }
+
+            $orderList->update($data);
         }
         
         return redirect ('/bto_order_list');
@@ -274,7 +308,7 @@ class OrderListController extends Controller
 
         $filename = "BTO Order List - " . date ('Y-m-d H:i:s');
 
-        $data = self::getAllData();
+        $data = OrderList::getAllData();
 
         return Excel::download(new OrderListExport($data), $filename . '.xlsx');
     }

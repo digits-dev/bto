@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useState,
+    useCallback,
+    useRef,
+} from "react";
 import axios from "axios";
 import { NavbarContext } from "../../Context/NavbarContext";
 import AppContent from "../../Layouts/layout/AppContent";
@@ -21,12 +27,14 @@ const EditFormMerchandising = ({
 
     const [digitsCode, setDigitsCode] = useState("");
     const [partNumberMessage, setPartNumberMessage] = useState("");
-    const [srp, setSrp] = useState(order_list.srp);
     const [isChecking, setIsChecking] = useState(true);
+    const [isFinalSrpAbove, setIsFinalSrpAbove] = useState(false);
     const [itemDescription, setItemDescription] = useState(
         order_list.item_description
     );
     const [selectedImage, setSelectedImage] = useState(null);
+    const finalSrpRef = useRef("");
+
     useEffect(() => {
         setTimeout(() => {
             setTitle("BTO Edit Order Form");
@@ -91,20 +99,38 @@ const EditFormMerchandising = ({
         const value = e.value ? e.value : e.target.value;
         setData(name, value);
         console.log(data);
-
         if (name === "part_number") {
             setIsChecking(true);
             debouncedFetchDigitsCode(value);
+        } else if (name === "final_srp") {
+            finalSrpRef.current = value;
         }
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
         part_number: "",
         supplier_cost: "",
+        cash_price: "",
         final_uploaded_file: "",
-        srp: "",
+        final_srp: "",
         order_list_id: order_list.id,
     });
+
+    useEffect(() => {
+        if (finalSrpRef.current !== "") {
+            const finalSrpValue = parseFloat(finalSrpRef.current);
+            if (
+                finalSrpValue >= parseFloat(order_list.estimated_store_cost) ||
+                finalSrpValue >= parseFloat(order_list.estimated_landed_cost)
+            ) {
+                setIsFinalSrpAbove(true);
+                console.log("final_srp is above the threshold");
+            } else {
+                setIsFinalSrpAbove(false);
+                console.log("final_srp is below the threshold");
+            }
+        }
+    }, [data]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -200,56 +226,83 @@ const EditFormMerchandising = ({
                                     name="item_description"
                                     value={order_list.item_description}
                                 />
+                                {order_list.status == 3 && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        placeholder="Part Number"
+                                        is_disabled={
+                                            !(
+                                                my_privilege_id === 6 &&
+                                                order_list.status == 1
+                                            )
+                                        }
+                                        value={
+                                            my_privilege_id === 6 &&
+                                            order_list.status == 1
+                                                ? data.part_number
+                                                : order_list.part_number
+                                        }
+                                        displayName="Part Number"
+                                        name="part_number"
+                                        onChange={handleChange}
+                                    />
+                                )}
                             </div>
                             <div className="flex flex-col flex-1 gap-y-3">
-                                <InputComponent
-                                    extendClass="w-full"
-                                    placeholder={"Part Number"}
-                                    is_disabled={
-                                        my_privilege_id == 6 &&
-                                        order_list.status == 1
-                                            ? false
-                                            : true
-                                    }
-                                    value={
-                                        my_privilege_id == 6 &&
-                                        order_list.status == 1
-                                            ? data.part_number
-                                            : order_list.part_number
-                                    }
-                                    displayName="Part Number"
-                                    name="part_number"
-                                    onChange={handleChange}
-                                />
-                                {partNumberMessage === "Exists" && (
-                                    <div className="relative flex items-center">
-                                        <span className="bg-slate-500  px-[10px] rounded-full mr-2 text-white relative group">
-                                            !
-                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-gray-800 text-white text-xs rounded-md w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                Part Number already exists"
-                                            </span>
-                                        </span>
-                                        <span className="text-sm text-red-500">
-                                            Part Number already exists
-                                        </span>
-                                    </div>
-                                )}
-                                {partNumberMessage === "Exists" && (
+                                {order_list.status == 1 && (
                                     <>
                                         <InputComponent
                                             extendClass="w-full"
-                                            is_disabled={true}
-                                            name="digits_item_description"
-                                            value={itemDescription}
+                                            placeholder="Part Number"
+                                            is_disabled={
+                                                !(
+                                                    my_privilege_id === 6 &&
+                                                    order_list.status == 1
+                                                )
+                                            }
+                                            value={
+                                                my_privilege_id === 6 &&
+                                                order_list.status == 1
+                                                    ? data.part_number
+                                                    : order_list.part_number
+                                            }
+                                            displayName="Part Number"
+                                            name="part_number"
+                                            onChange={handleChange}
                                         />
-                                        <InputComponent
-                                            extendClass="w-full"
-                                            is_disabled={true}
-                                            displayName="Digits Code"
-                                            value={digitsCode || ""}
-                                        />
+                                        {partNumberMessage == "Exists" && (
+                                            <div className="relative flex items-center">
+                                                <span className="bg-slate-500 px-[10px] rounded-full mr-2 text-white relative group">
+                                                    !
+                                                    <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-gray-800 text-white text-xs rounded-md w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        Part Number already
+                                                        exists
+                                                    </span>
+                                                </span>
+                                                <span className="text-sm text-red-500">
+                                                    Part Number already exists
+                                                </span>
+                                            </div>
+                                        )}
+                                        {partNumberMessage === "Exists" && (
+                                            <>
+                                                <InputComponent
+                                                    extendClass="w-full"
+                                                    is_disabled={true}
+                                                    name="digits_item_description"
+                                                    value={itemDescription}
+                                                />
+                                                <InputComponent
+                                                    extendClass="w-full"
+                                                    is_disabled={true}
+                                                    displayName="Digits Code"
+                                                    value={digitsCode || ""}
+                                                />
+                                            </>
+                                        )}
                                     </>
                                 )}
+
                                 {order_list.digits_code && (
                                     <InputComponent
                                         extendClass="w-full"
@@ -268,6 +321,7 @@ const EditFormMerchandising = ({
                                         }
                                     />
                                 )}
+
                                 <InputComponent
                                     extendClass="w-full"
                                     placeholder={"Supplier Cost"}
@@ -279,17 +333,45 @@ const EditFormMerchandising = ({
                                     onChange={handleChange}
                                 />
 
+                                <InputComponent
+                                    extendClass="w-full"
+                                    name="cash_price"
+                                    placeholder={"Cash Price"}
+                                    is_disabled={
+                                        order_list.status == 3 ? true : false
+                                    }
+                                    value={order_list.cash_price}
+                                    onChange={handleChange}
+                                />
+                                <InputComponent
+                                    extendClass="w-full"
+                                    is_disabled={true}
+                                    value="USD"
+                                    displayName={"Currency"}
+                                />
+
                                 {order_list.estimated_store_cost && (
                                     <InputComponent
                                         extendClass="w-full"
+                                        extendClass1={`${
+                                            data.final_srp && !isFinalSrpAbove
+                                                ? "border-red-500"
+                                                : ""
+                                        }`}
                                         is_disabled={true}
                                         value={order_list.estimated_store_cost}
-                                        displayName={"Estimated Store Cost"}
+                                        displayName="Estimated Store Cost"
                                     />
                                 )}
+
                                 {order_list.estimated_landed_cost && (
                                     <InputComponent
                                         extendClass="w-full"
+                                        extendClass1={`${
+                                            data.final_srp && !isFinalSrpAbove
+                                                ? "border-red-500"
+                                                : ""
+                                        }`}
                                         is_disabled={true}
                                         value={order_list.estimated_landed_cost}
                                         displayName={"Estimated Landed Cost"}
@@ -298,12 +380,26 @@ const EditFormMerchandising = ({
                                 {order_list.status == 3 && (
                                     <InputComponent
                                         extendClass="w-full"
-                                        placeholder={"SRP"}
-                                        is_disabled={order_list.status != 3}
-                                        name="srp"
-                                        value={order_list.srp}
-                                        displayName="SRP"
+                                        placeholder={"Estimated SRP"}
+                                        name="estimated_srp"
+                                        value={order_list.estimated_srp}
+                                        is_disabled={true}
+                                        displayName={"Estimated SRP"}
+                                    />
+                                )}
+                                {order_list.status == 3 && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        extendClass1={`${
+                                            data.final_srp && !isFinalSrpAbove
+                                                ? "border-red-500 focus:border-red-500"
+                                                : ""
+                                        }`}
+                                        placeholder={"Final SRP"}
+                                        name="final_srp"
+                                        displayName="Final SRP"
                                         onChange={handleChange}
+                                        ref={finalSrpRef}
                                     />
                                 )}
                             </div>
@@ -415,7 +511,10 @@ const EditFormMerchandising = ({
                         Back
                     </Link>
                     <TableButton
-                        disabled={order_list.status != 3 && isChecking}
+                        disabled={
+                            (order_list.status != 3 && isChecking) ||
+                            (order_list.status == 3 && !isFinalSrpAbove)
+                        }
                         extendClass="mt-4"
                         type="submit"
                     >
