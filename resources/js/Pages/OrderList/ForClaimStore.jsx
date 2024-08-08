@@ -38,6 +38,11 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
         }
     };
 
+    const formatNumberWithCommas = (value) => {
+        if (value === null || value === undefined) return "";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         uploaded_receipt2: "",
         order_list_id: order_list.id,
@@ -159,7 +164,9 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="cash_price"
-                                    value={order_list.cash_price}
+                                    value={formatNumberWithCommas(
+                                        order_list.cash_price
+                                    )}
                                 />
                                 {order_list.digits_code && (
                                     <InputComponent
@@ -174,14 +181,18 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                                     is_disabled={true}
                                     name="estimated_srp"
                                     displayName="Estimated SRP"
-                                    value={order_list.estimated_srp}
+                                    value={formatNumberWithCommas(
+                                        order_list.estimated_srp
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="final_srp"
                                     displayName="Final SRP"
-                                    value={order_list.final_srp}
+                                    value={formatNumberWithCommas(
+                                        order_list.final_srp
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
@@ -317,7 +328,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                         </TableButton>
                     </div>
                 </ContentPanel>
-                <Modal modalLoading show={processing}/>
+                <Modal modalLoading show={processing} />
             </form>
             <ImageViewer
                 show={handleImageView}
