@@ -418,7 +418,7 @@ const EditFormMerchandising = ({
                                         extendClass="w-full"
                                         extendClass1={`${
                                             data.final_srp && !isFinalSrpAbove
-                                                ? "border-red-500 focus:border-red-500"
+                                                ? "!border-red-500 focus:border-red-500"
                                                 : ""
                                         }`}
                                         placeholder={"Final SRP"}
