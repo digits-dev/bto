@@ -9,7 +9,6 @@ import TableButton from "../../Components/Table/Buttons/TableButton";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
 import Modal from "../../Components/Modal/Modal";
 
-
 const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
     const { setTitle } = useContext(NavbarContext);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -44,6 +43,11 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
         const name = e.name ? e.name : e.target.name;
         const value = e.value ? e.value : e.target.value;
         setData(name, value);
+    };
+
+    const formatNumberWithCommas = (value) => {
+        if (value === null || value === undefined) return "";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -173,19 +177,25 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                     extendClass="w-full"
                                     is_disabled={true}
                                     displayName="Supplier Cost"
-                                    value={order_list.supplier_cost}
+                                    value={formatNumberWithCommas(
+                                        order_list.supplier_cost
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     displayName="Cash Price"
-                                    value={order_list.cash_price}
+                                    value={formatNumberWithCommas(
+                                        order_list.cash_price
+                                    )}
                                     is_disabled={true}
                                 />
 
                                 <InputComponent
                                     extendClass="w-full"
                                     displayName={"Estimated Store Cost"}
-                                    value={order_list.estimated_store_cost}
+                                    value={formatNumberWithCommas(
+                                        order_list.estimated_store_cost
+                                    )}
                                     is_disabled={true}
                                 />
 
@@ -193,19 +203,25 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                     extendClass="w-full"
                                     is_disabled={true}
                                     displayName={"Estimated Landed Cost"}
-                                    value={order_list.estimated_landed_cost}
+                                    value={formatNumberWithCommas(
+                                        order_list.estimated_landed_cost
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     displayName={"Estimated SRP"}
                                     is_disabled={true}
-                                    value={order_list.estimated_srp}
+                                    value={formatNumberWithCommas(
+                                        order_list.estimated_srp
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
                                     displayName={"Final SRP"}
                                     is_disabled={true}
-                                    value={order_list.final_srp}
+                                    value={formatNumberWithCommas(
+                                        order_list.final_srp
+                                    )}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
@@ -290,7 +306,7 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                         </TableButton>
                     </div>
                 </ContentPanel>
-                <Modal modalLoading show={processing}/>
+                <Modal modalLoading show={processing} />
             </form>
             <ImageViewer
                 show={handleImageView}
