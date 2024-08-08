@@ -49,7 +49,7 @@ const EditStore = ({ order_list, status, store_name }) => {
         e.preventDefault();
         Swal.fire({
             title: `<p class="font-nunito-sans">Are you sure that you want to <span style="color: ${
-                data.action === "DP Paid" ? "#309fb5" : "#d4081a"
+                data.action === "DP Paid" ? "#449964" : "#d4081a"
             };">${
                 data.action === "Void" ? "VOID" : "DP PAID "
             }</span> this?</p>`,
@@ -99,6 +99,7 @@ const EditStore = ({ order_list, status, store_name }) => {
                                 <div className="flex flex-col flex-1 gap-y-3">
                                     <InputComponent
                                         extendClass="w-full"
+                                        extendClass1="border-2 border-blue-500"
                                         is_disabled={true}
                                         name="status"
                                         value={status}
@@ -241,10 +242,10 @@ const EditStore = ({ order_list, status, store_name }) => {
                                     />
                                 </div>
                                 <div className="flex flex-col justify-center items-center">
-                                    <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
-                                        Upload Receipt
+                                    <p className="font-nunito-sans font-bold text-red-400 ">
+                                        Upload Down Payment Receipt
                                     </p>
-                                    <div className="w-[80%] flex flex-col self-center m-4">
+                                    <div className="w-[80%] flex flex-col self-center m-2">
                                         <label
                                             htmlFor="input-file"
                                             className="relative w-full"
@@ -303,6 +304,8 @@ const EditStore = ({ order_list, status, store_name }) => {
                                 type="submit"
                                 disabled={processing}
                                 onClick={() => setData("action", "Void")}
+                                bg="bg-red-700"
+                                border="border-red-700"
                             >
                                 Void
                             </TableButton>
@@ -311,6 +314,8 @@ const EditStore = ({ order_list, status, store_name }) => {
                                 extendClass="mt-4"
                                 type="submit"
                                 onClick={() => setData("action", "DP Paid")}
+                                bg="bg-green-700"
+                                border="border-green-700"
                             >
                                 DP Paid
                             </TableButton>

@@ -43,8 +43,15 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
     const flexClass = {
         1: "flex-col",
         2: "flex-col",
-        3: "flex-wrap justify-center",
-        4: "flex-wrap justify-center",
+        3: "flex-col items-center",
+        4: "flex-col items-center",
+    }[childCount];
+
+    const flexClass2 = {
+        1: "flex-col",
+        2: "flex-col",
+        3: "flex-row",
+        4: "flex-row",
     }[childCount];
 
     return (
@@ -186,7 +193,8 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                         }
                                     />
                                 )}
-                            {order_details.estimated_srp && (
+                            {[1, 6, 7].includes(my_privilege_id) && 
+                                order_details.estimated_srp && (
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
@@ -235,7 +243,7 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                     <div
                         className={`sm:w-full lg:w-1/2 flex ${flexClass} gap-2`}
                     >
-                        <div className="flex flex-col gap-2" ref={parentRef1}>
+                        <div className={`flex ${flexClass2} gap-2`} ref={parentRef1}>
                             <ImageView
                                 imageTitle="Original Image"
                                 path={order_details.original_uploaded_file}
@@ -261,9 +269,9 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                 isReceipt={false}
                             />
                         </div>
-                        <div className="flex flex-col gap-2" ref={parentRef2}>
+                        <div className={`flex ${flexClass2} gap-2`} ref={parentRef2}>
                             <ImageView
-                                imageTitle="Receipt 1"
+                                imageTitle="Down Payment Receipt"
                                 path={order_details.uploaded_receipt1}
                                 handleImageClick={() => {
                                     handleImageClick();
@@ -275,7 +283,7 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                 isReceipt={true}
                             />
                             <ImageView
-                                imageTitle="Receipt 2"
+                                imageTitle="Invoice Receipt"
                                 path={order_details.uploaded_receipt2}
                                 handleImageClick={() => {
                                     handleImageClick();

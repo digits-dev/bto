@@ -86,6 +86,7 @@ const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
                                 <div className="flex flex-col flex-1 gap-y-3">
                                     <InputComponent
                                         extendClass="w-full"
+                                        extendClass1="border-2 border-blue-500"
                                         is_disabled={true}
                                         name="status"
                                         value={status}

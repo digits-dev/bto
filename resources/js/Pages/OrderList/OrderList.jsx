@@ -41,7 +41,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
         { privilegeId: 7, statuses: [2] },
         { privilegeId: 3, statuses: [4, 9] },
         { privilegeId: 4, statuses: [4, 9] },
-        { privilegeId: 5, statuses: [4, 9] },
+        { privilegeId: 5, statuses: [4, 9,] },
     ];
 
     const canEdit = (privilegeId, status) => {
@@ -299,13 +299,16 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     Estimated Landed Cost
                                 </TableHeader>
                             )}
-                            <TableHeader
-                                name="estimated_srp"
-                                queryParams={queryParams}
-                                width="lg"
-                            >
-                                Estimated SRP
-                            </TableHeader>
+                            {[1, 6, 7].includes(my_privilege_id) && (
+                                <TableHeader
+                                    name="estimated_srp"
+                                    queryParams={queryParams}
+                                    width="lg"
+                                >
+                                    Estimated SRP
+                                </TableHeader>
+                            )}
+                            
                             <TableHeader
                                 name="final_srp"
                                 queryParams={queryParams}
@@ -405,9 +408,11 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                             {item.estimated_landed_cost}
                                         </RowData>
                                     )}
-                                    <RowData isLoading={loading}>
-                                        {item.estimated_srp}
-                                    </RowData>
+                                    {[1, 6, 7].includes(my_privilege_id) && (
+                                        <RowData isLoading={loading}>
+                                            {item.estimated_srp}
+                                        </RowData>
+                                    )}
                                     <RowData isLoading={loading}>
                                         {item.final_srp}
                                     </RowData>

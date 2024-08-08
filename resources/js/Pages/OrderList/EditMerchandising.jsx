@@ -176,6 +176,7 @@ const EditFormMerchandising = ({
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
+                                    extendClass1="border-2 border-blue-500"
                                     is_disabled={true}
                                     name="status"
                                     value={status}
@@ -511,7 +512,7 @@ const EditFormMerchandising = ({
                             text-red-500 font-nunito-sans text-sm text-center"
                                 >
                                     Note: Please upload a screenshot of BTO
-                                    build from apple website.
+                                    build with <strong>Peso Amount</strong> price from <strong>Apple Website</strong>.
                                 </span>
                             </div>
                         )}

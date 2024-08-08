@@ -47,7 +47,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
         e.preventDefault();
         Swal.fire({
             title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: #10B981
-        };" >CLOSE</span> this?</p>`,
+        };" >CLAIM</span> this?</p>`,
 
             showCancelButton: true,
             confirmButtonText: "Confirm",
@@ -83,6 +83,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
+                                    extendClass1="border-2 border-blue-500"
                                     is_disabled={true}
                                     name="status"
                                     value={status}
@@ -233,7 +234,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                             </div>
                             <div className="md:flex-row flex flex-col gap-3 justify-evenly">
                                 <ImageView
-                                    imageTitle="Receipt 1"
+                                    imageTitle="Down Payment Receipt"
                                     path={order_list.uploaded_receipt1}
                                     handleImageClick={() => {
                                         handleImageClick();
@@ -246,7 +247,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                                 />
                                 <div>
                                     <p className="font-nunito-sans font-bold text-red-400 mb-1 ">
-                                        Upload Receipt 2
+                                        Upload Invoice Receipt
                                     </p>
                                     <label
                                         htmlFor="input-file"
@@ -312,7 +313,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                             type="submit"
                             disabled={processing}
                         >
-                            Close
+                            Claim
                         </TableButton>
                     </div>
                 </ContentPanel>
