@@ -9,15 +9,15 @@ class OrderList extends Model
 {
     use HasFactory;
 
-     const forPartNumber = 1;
-     const forCosting = 2;
-     const forSRP = 3;
-     const forPayment = 4;
-     const closed = 5;
-     const voided = 6;
-     const forPO = 7;
-     const forDR = 8;
-     const forClaim = 9;
+    const forPartNumber = 1;
+    const forCosting = 2;
+    const forSRP = 3;
+    const forPayment = 4;
+    const closed = 5;
+    const voided = 6;
+    const forPO = 7;
+    const forDR = 8;
+    const forClaim = 9;
 
     protected $guarded = [];
 
@@ -37,7 +37,7 @@ class OrderList extends Model
         'digits_code',
         'estimated_store_cost',
         'estimated_landed_cost',
-        'srp',
+        'final_srp',
         'order_date',
     ];
 

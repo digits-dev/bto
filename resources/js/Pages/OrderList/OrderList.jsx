@@ -98,6 +98,11 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
         router.get(`/bto_order_list?${queryString}`);
     };
 
+    const formatNumberWithCommas = (value) => {
+        if (value === null || value === undefined) return "";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     return (
         <>
             <Head title="BTO Order List" />
@@ -389,32 +394,32 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
                                     </RowData>
                                     {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
-                                            {item.supplier_cost}
+                                            {formatNumberWithCommas(item.supplier_cost)}
                                         </RowData>
                                     )}
                                     <RowData isLoading={loading}>
-                                        {item.cash_price}
+                                        {formatNumberWithCommas(item.cash_price)}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.digits_code}
                                     </RowData>
                                     {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
-                                            {item.estimated_store_cost}
+                                            {formatNumberWithCommas(item.estimated_store_cost)}
                                         </RowData>
                                     )}
                                     {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
-                                            {item.estimated_landed_cost}
+                                            {formatNumberWithCommas(item.estimated_landed_cost)}
                                         </RowData>
                                     )}
                                     {[1, 6, 7].includes(my_privilege_id) && (
                                         <RowData isLoading={loading}>
-                                            {item.estimated_srp}
+                                            {formatNumberWithCommas(item.estimated_srp)}
                                         </RowData>
                                     )}
                                     <RowData isLoading={loading}>
-                                        {item.final_srp}
+                                        {formatNumberWithCommas(item.final_srp)}
                                     </RowData>
                                     <RowData isLoading={loading}>
                                         {item.po_number}
