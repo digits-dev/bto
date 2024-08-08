@@ -147,14 +147,15 @@ class OrderListController extends Controller
     
 
     public function editSave(Request $request) {
+        // dd($request->all());
         $orderList = OrderList::find($request->order_list_id);
         $isPartNumberExisting = ItemMaster::where('part_number', $request->part_number)->first();
         $itemMasterPartNumberExisting = ItemMaster::where('part_number',  $orderList->part_number)->first();   
         if ($orderList->status == OrderList::forPartNumber) {
 
             $request->validate([
-                'supplier_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-                'cash_price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'supplier_cost' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
+                'cash_price' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
             ]);
 
             $updateData = [

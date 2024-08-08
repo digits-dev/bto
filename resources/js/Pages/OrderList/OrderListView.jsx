@@ -40,6 +40,11 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
         setHandleImageView(!handleImageView);
     };
 
+    const formatNumberWithCommas = (value) => {
+        if (value === null || value === undefined) return "";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     const flexClass = {
         1: "flex-col",
         2: "flex-col",
@@ -152,7 +157,9 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                         extendClass="w-full"
                                         is_disabled={true}
                                         name="supplier_cost"
-                                        value={order_details.supplier_cost}
+                                        value={formatNumberWithCommas(
+                                            order_details.supplier_cost
+                                        )}
                                     />
                                 )}
                             {order_details.cash_price && (
@@ -160,7 +167,9 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="cash_price"
-                                    value={order_details.cash_price}
+                                    value={formatNumberWithCommas(
+                                        order_details.cash_price
+                                    )}
                                 />
                             )}
                             {order_details.digits_code && (
@@ -177,9 +186,9 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                         extendClass="w-full"
                                         is_disabled={true}
                                         name="estimated_store_cost"
-                                        value={
+                                        value={formatNumberWithCommas(
                                             order_details.estimated_store_cost
-                                        }
+                                        )}
                                     />
                                 )}
                             {[1, 6, 7].includes(my_privilege_id) &&
@@ -188,28 +197,32 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                         extendClass="w-full"
                                         is_disabled={true}
                                         name="estimated_landed_cost"
-                                        value={
+                                        value={formatNumberWithCommas(
                                             order_details.estimated_landed_cost
-                                        }
+                                        )}
                                     />
                                 )}
-                            {[1, 6, 7].includes(my_privilege_id) && 
+                            {[1, 6, 7].includes(my_privilege_id) &&
                                 order_details.estimated_srp && (
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    name="srp"
-                                    displayName="Estimated SRP"
-                                    value={order_details.estimated_srp}
-                                />
-                            )}
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="srp"
+                                        displayName="Estimated SRP"
+                                        value={formatNumberWithCommas(
+                                            order_details.estimated_srp
+                                        )}
+                                    />
+                                )}
                             {order_details.final_srp && (
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
                                     name="srp"
                                     displayName="Final SRP"
-                                    value={order_details.final_srp}
+                                    value={formatNumberWithCommas(
+                                        order_details.final_srp
+                                    )}
                                 />
                             )}
                             {order_details.po_number && (
@@ -243,7 +256,10 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                     <div
                         className={`sm:w-full lg:w-1/2 flex ${flexClass} gap-2`}
                     >
-                        <div className={`flex ${flexClass2} gap-2`} ref={parentRef1}>
+                        <div
+                            className={`flex ${flexClass2} gap-2`}
+                            ref={parentRef1}
+                        >
                             <ImageView
                                 imageTitle="Original Image"
                                 path={order_details.original_uploaded_file}
@@ -269,7 +285,10 @@ const OrderListView = ({ order_details, my_privilege_id }) => {
                                 isReceipt={false}
                             />
                         </div>
-                        <div className={`flex ${flexClass2} gap-2`} ref={parentRef2}>
+                        <div
+                            className={`flex ${flexClass2} gap-2`}
+                            ref={parentRef2}
+                        >
                             <ImageView
                                 imageTitle="Down Payment Receipt"
                                 path={order_details.uploaded_receipt1}

@@ -16,7 +16,6 @@ import ImageView from "../../Components/ImageView/ImageView";
 import ImageViewer from "../../Components/ImageView/ImageViewer";
 import Modal from "../../Components/Modal/Modal";
 
-
 const EditFormMerchandising = ({
     order_list,
     my_privilege_id,
@@ -95,16 +94,28 @@ const EditFormMerchandising = ({
         []
     );
 
+    const formatNumberWithCommas = (value) => {
+        if (value === null || value === undefined) return "";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     const handleChange = async (e) => {
         const name = e.name ? e.name : e.target.name;
         const value = e.value ? e.value : e.target.value;
-        setData(name, value);
-        console.log(data);
+
+        const rawValue = value.replace(/,/g, "");
+
+        setData((prevData) => ({
+            ...prevData,
+            [name]: rawValue,
+        }));
+
+        // setData(name, value);
         if (name === "part_number") {
             setIsChecking(true);
             debouncedFetchDigitsCode(value);
         } else if (name === "final_srp") {
-            finalSrpRef.current = value;
+            finalSrpRef.current = rawValue;
         }
     };
 
@@ -125,10 +136,8 @@ const EditFormMerchandising = ({
                 finalSrpValue >= parseFloat(order_list.estimated_landed_cost)
             ) {
                 setIsFinalSrpAbove(true);
-                console.log("final_srp is above the threshold");
             } else {
                 setIsFinalSrpAbove(false);
-                console.log("final_srp is below the threshold");
             }
         }
     }, [data]);
@@ -136,7 +145,6 @@ const EditFormMerchandising = ({
     const handleSubmit = (e) => {
         e.preventDefault();
         Swal.fire({
-
             title: `<p class="font-nunito-sans">Are you sure that you want to  <span style="color: #10B981
             };" >UPDATE</span> this?</p>`,
 
@@ -152,7 +160,6 @@ const EditFormMerchandising = ({
                 try {
                     post("/bto_order_list/edit_save", {
                         onSuccess: (response) => {
-                            console.log(response);
                             handleToast(
                                 "Order Updated successfully",
                                 "success"
@@ -326,7 +333,9 @@ const EditFormMerchandising = ({
                                     is_disabled={
                                         order_list.status == 3 ? true : false
                                     }
-                                    value={order_list.supplier_cost}
+                                    value={formatNumberWithCommas(
+                                        data.supplier_cost
+                                    )}
                                     name="supplier_cost"
                                     onChange={handleChange}
                                 />
@@ -343,7 +352,9 @@ const EditFormMerchandising = ({
                                     is_disabled={
                                         order_list.status == 3 ? true : false
                                     }
-                                    value={order_list.cash_price}
+                                    value={formatNumberWithCommas(
+                                        data.cash_price
+                                    )}
                                     onChange={handleChange}
                                 />
                                 {errors.cash_price && (
@@ -367,7 +378,9 @@ const EditFormMerchandising = ({
                                                 : ""
                                         }`}
                                         is_disabled={true}
-                                        value={order_list.estimated_store_cost}
+                                        value={formatNumberWithCommas(
+                                            order_list.estimated_store_cost
+                                        )}
                                         displayName="Estimated Store Cost"
                                     />
                                 )}
@@ -381,7 +394,9 @@ const EditFormMerchandising = ({
                                                 : ""
                                         }`}
                                         is_disabled={true}
-                                        value={order_list.estimated_landed_cost}
+                                        value={formatNumberWithCommas(
+                                            order_list.estimated_landed_cost
+                                        )}
                                         displayName={"Estimated Landed Cost"}
                                     />
                                 )}
@@ -390,7 +405,9 @@ const EditFormMerchandising = ({
                                         extendClass="w-full"
                                         placeholder={"Estimated SRP"}
                                         name="estimated_srp"
-                                        value={order_list.estimated_srp}
+                                        value={formatNumberWithCommas(
+                                            order_list.estimated_srp
+                                        )}
                                         is_disabled={true}
                                         displayName={"Estimated SRP"}
                                     />
@@ -407,6 +424,9 @@ const EditFormMerchandising = ({
                                         name="final_srp"
                                         displayName="Final SRP"
                                         onChange={handleChange}
+                                        value={formatNumberWithCommas(
+                                            data.final_srp
+                                        )}
                                         ref={finalSrpRef}
                                     />
                                 )}
@@ -537,7 +557,7 @@ const EditFormMerchandising = ({
                         </TableButton>
                     </div>
                 </ContentPanel>
-                <Modal modalLoading show={processing}/> 
+                <Modal modalLoading show={processing} />
             </form>
             <ImageViewer
                 show={handleImageView}
