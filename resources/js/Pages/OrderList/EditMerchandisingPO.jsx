@@ -85,28 +85,28 @@ const EditFormMerchandisingPO = ({ order_list, status, store_name }) => {
             <Head title="Edit Form" />
             <form onSubmit={handleSubmit}>
                 <ContentPanel>
-                    <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
-                        <div className="lg:w-[50%] lg:flex gap-3">
-                            <div className="flex flex-col flex-1 gap-y-3">
-                                <InputComponent
-                                    extendClass="w-full"
-                                    extendClass1="border-2 border-blue-500"
-                                    is_disabled={true}
-                                    name="status"
-                                    value={status}
-                                />
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    name="customer_name"
-                                    value={order_list.customer_name}
-                                />
-                                <InputComponent
-                                    extendClass="w-full"
-                                    is_disabled={true}
-                                    name="order_qty"
-                                    value={order_list.order_qty}
-                                />
+                        <div className="flex flex-col sm:flex-col lg:flex-row gap-4">
+                            <div className="lg:w-[50%] lg:flex gap-3">
+                                <div className="flex flex-col flex-1 gap-y-3">
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        extendClass1="text border-2 border-blue-500 bg-blue-100"
+                                        is_disabled={true}
+                                        name="status"
+                                        value={status}
+                                    />
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="customer_name"
+                                        value={order_list.customer_name}
+                                    />
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="order_qty"
+                                        value={order_list.order_qty}
+                                    />
 
                                 <InputComponent
                                     extendClass="w-full"

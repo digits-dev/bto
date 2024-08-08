@@ -88,7 +88,7 @@ const ForClaimStore = ({ order_list, status, store_name, my_privilege_id }) => {
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
-                                    extendClass1="border-2 border-blue-500"
+                                    extendClass1="text border-2 border-blue-500 bg-blue-100"
                                     is_disabled={true}
                                     name="status"
                                     value={status}
