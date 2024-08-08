@@ -96,10 +96,11 @@ const EditFormAccounting = ({ order_list, status, store_name }) => {
                             <div className="flex flex-col flex-1 gap-y-3">
                                 <InputComponent
                                     extendClass="w-full"
-                                    extendClass1="border-2 border-blue-500 bg-blue-100"
+                                    extendClass1="border-2 bg-blue-100"
                                     is_disabled={true}
                                     name="status"
                                     value={status}
+                                    isHighlight={true}
                                 />
                                 <InputComponent
                                     extendClass="w-full"
