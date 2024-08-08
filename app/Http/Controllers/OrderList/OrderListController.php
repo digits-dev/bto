@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\OrderList;
 
+use Ramsey\Uuid\Uuid;
 use App\Exports\OrderListExport;
 use App\Http\Controllers\Controller;
 use App\Models\OrderList;
@@ -100,6 +101,7 @@ class OrderListController extends Controller
             'original_uploaded_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
+        $uuid = Uuid::uuid4()->toString();
         $data = [
             'reference_number' => OrderList::generateReferenceNumber(),
             'customer_name' => $request->customer_name,
@@ -107,13 +109,13 @@ class OrderListController extends Controller
             'item_description' => $request->item_description,
             'phone_number' => $request->phone_number,
             'stores_id' => CommonHelpers::myLocationId(),
-            'original_uploaded_file' => time() . '_' . $request->original_uploaded_file->getClientOriginalName(),
+            'original_uploaded_file' => $uuid . '_' . $request->original_uploaded_file->getClientOriginalName(),
             'created_by' => CommonHelpers::myId(),
             'order_date' => date('Y-m-d H:i:s'),
         ];
         if ($request->hasFile('original_uploaded_file')) {
             $file = $request->file('original_uploaded_file');  
-            $filename = time() . '_' . $file->getClientOriginalName();  
+            $filename = $uuid . '_' . $file->getClientOriginalName();  
             $file->move(public_path('images/uploaded-images'), $filename);  
         }
         
@@ -194,17 +196,19 @@ class OrderListController extends Controller
                 'final_srp' => 'required|regex:/^\d+(\.\d{1,2})?$/|max:15',
             ]);
 
+            $uuid = Uuid::uuid4()->toString();
+
             $orderList->update([
                 'status' => OrderList::forPayment,
                 'final_srp' => $request->final_srp,
                 'updated_by_mcb2' => CommonHelpers::myId(),
                 'updated_by_mcb_date2' => date('Y-m-d H:i:s'),
-                'final_uploaded_file' => time() . '_' . $request->final_uploaded_file->getClientOriginalName(),
+                'final_uploaded_file' => $uuid . '_' . $request->final_uploaded_file->getClientOriginalName(),
                 ]);
 
              if ($request->hasFile('final_uploaded_file')) {
                  $file = $request->file('final_uploaded_file');  
-                 $filename = time() . '_' . $file->getClientOriginalName();  
+                 $filename = $uuid . '_' . $file->getClientOriginalName();  
                  $file->move(public_path('images/uploaded-images'), $filename);  
              }
            
@@ -252,10 +256,12 @@ class OrderListController extends Controller
                 }
             }
 
+            $uuid = Uuid::uuid4()->toString();
+
             if ($request->hasFile('uploaded_receipt1')) {
-                $data['uploaded_receipt1'] = time() . '_' . $request->uploaded_receipt1->getClientOriginalName();
+                $data['uploaded_receipt1'] = $uuid . '_' . $request->uploaded_receipt1->getClientOriginalName();
                 $file = $request->file('uploaded_receipt1');  
-                $filename = time() . '_' . $file->getClientOriginalName();  
+                $filename = $uuid . '_' . $file->getClientOriginalName();  
                 $file->move(public_path('images/uploaded-receipts'), $filename);  
             }
             
@@ -278,9 +284,12 @@ class OrderListController extends Controller
             ];
             $orderList->update($data);
         }else if ($orderList->status == OrderList::forClaim) {
+
+            $uuid = Uuid::uuid4()->toString();
+
             $data = [
                 'status' => OrderList::closed,
-                'uploaded_receipt2' => time() . '_' . $request->uploaded_receipt2->getClientOriginalName(),
+                'uploaded_receipt2' => $uuid . '_' . $request->uploaded_receipt2->getClientOriginalName(),
                 'updated_by_store2' => CommonHelpers::myId(),
                 'updated_by_store_date2' => date('Y-m-d H:i:s')
             ];
@@ -288,7 +297,7 @@ class OrderListController extends Controller
 
             if ($request->hasFile('uploaded_receipt2')) {
                 $file = $request->file('uploaded_receipt2');  
-                $filename = time() . '_' . $file->getClientOriginalName();  
+                $filename = $uuid . '_' . $file->getClientOriginalName();  
                 $file->move(public_path('images/uploaded-receipts'), $filename);  
             }
 
