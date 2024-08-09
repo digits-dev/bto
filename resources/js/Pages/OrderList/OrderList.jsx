@@ -105,7 +105,7 @@ const OrderList = ({ orders, my_privilege_id, queryParams, store, status }) => {
 
     return (
         <>
-            <Head title="BTO Order List" />
+            <Head title="BTO Quotation List" />
             <ContentPanel>
                 <TopPanel>
                     <TableSearch queryParams={queryParams} />
