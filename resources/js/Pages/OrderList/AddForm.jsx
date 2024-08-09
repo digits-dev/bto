@@ -170,9 +170,13 @@ const AddForm = ({ store_name }) => {
                                     </span>
                                 )}
                             </label>
-                            <span className="mt-3 text-red-500 font-nunito-sans text-sm text-center">
+                            <span
+                                className="
+                            text-red-500 font-nunito-sans text-sm text-center"
+                            >
                                 Note: Please upload a screenshot of BTO build
-                                from apple website.
+                                with <strong>Peso Amount</strong> price from{" "}
+                                <strong>Apple Website</strong>.
                             </span>
                         </div>
                     </div>
@@ -188,7 +192,7 @@ const AddForm = ({ store_name }) => {
                         </TableButton>
                     </div>
                 </ContentPanel>
-                <Modal modalLoading show={processing}/>       
+                <Modal modalLoading show={processing} />
             </form>
         </>
     );
