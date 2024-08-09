@@ -235,18 +235,17 @@ class OrderListController extends Controller
                 if (!$itemMasterPartNumberExisting) {
 
                     $dataToPush = [
-                        'supplier_item_code' => $orderList->part_number,
+                        'upc_code' => $orderList->part_number,
                         'item_description' => $orderList->item_description,
-                        // 'store_cost' => $orderList->estimated_store_cost,
-                        // 'estimated_landed_cost' => $orderList->estimated_landed_cost,
-                        // 'supplier_cost' => $orderList->supplier_cost,
-                        // 'srp' => $orderList->final_srp,
+                        'dtp_rf' => $orderList->estimated_store_cost, //dtp_rf
+                        'landed_cost' => $orderList->estimated_landed_cost, //landed_cost
+                        'purchase_price' => $orderList->supplier_cost, //purchase_price
+                        'current_srp' => $orderList->final_srp, //current_srp
                         'has_serial' => 0,
                         'imei_code1' => 0,
                         'imei_code2' => 0,
                         'warranty_duration' => 1,
                         'created_by' => 1,
-                        
                     ];
 
                     $response = self::pushItemToDimfs(config('services.item_master.create'), $dataToPush);
