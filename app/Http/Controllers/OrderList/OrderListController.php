@@ -214,7 +214,7 @@ class OrderListController extends Controller
              }
            
         }else if ($orderList->status == OrderList::forPayment) {
-        
+
             $data = [
                 'updated_by_store' => CommonHelpers::myId(),
                 'updated_by_store_date' => date('Y-m-d H:i:s'),
@@ -224,50 +224,83 @@ class OrderListController extends Controller
 
                 $data['status'] = OrderList::voided; 
                 
+                $orderList->update($data);
+
+                $responseData = ['message' => 'Order Voided successfully', 'status' => 'success'];   
+
+                return redirect('/bto_order_list')->with($responseData);
+                
             } else {
-                $data['status'] = OrderList::forPO; 
 
                 if (!$itemMasterPartNumberExisting) {
 
-
-                    ItemMaster::insert([
-                        'part_number' => $orderList->part_number,
+                    $dataToPush = [
+                        'supplier_item_code' => $orderList->part_number,
                         'item_description' => $orderList->item_description,
-                        'store_cost' => $orderList->estimated_store_cost,
-                        'srp' => $orderList->final_srp,
-                        'created_at' => date('Y-m-d H:i:s'),
+                        // 'store_cost' => $orderList->estimated_store_cost,
+                        // 'estimated_landed_cost' => $orderList->estimated_landed_cost,
+                        // 'supplier_cost' => $orderList->supplier_cost,
+                        // 'srp' => $orderList->final_srp,
+                        'has_serial' => 0,
+                        'imei_code1' => 0,
+                        'imei_code2' => 0,
+                        'warranty_duration' => 1,
+                        'created_by' => 1,
                         
-                    ]);
+                    ];
 
-                    //ADD API HERE FOR DIMFS ITEM CREATION WITH DIGITS CODE
-                    //ASK MIKE FOR THE ENDPOINT
-                    //ADD ALL COSTING DATA
+                    $response = self::pushItemToDimfs(config('services.item_master.create'), $dataToPush);
+                    if(array_key_exists('id', $response)) {
 
-                    // $data = [
-                    //     'part_number' => $orderList->part_number,
-                    //     'item_description' => $orderList->item_description,
-                    //     'store_cost' => $orderList->estimated_store_cost,
-                    //     'estimated_landed_cost' => $orderList->estimated_landed_cost,
-                    //     'supplier_cost' => $orderList->supplier_cost,
-                    //     'srp' => $orderList->final_srp,
-                    // ];
+                        ItemMaster::insert([
+                            'part_number' => $orderList->part_number,
+                            'item_description' => $orderList->item_description,
+                            'store_cost' => $orderList->estimated_store_cost,
+                            'srp' => $orderList->final_srp,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            
+                        ]);
 
-                    // OrderList::pushItemToDimfs(config('services.item_master.create'), $data);
+                        $uuid = Uuid::uuid4()->toString();
 
-                }
-            }
-
-            $uuid = Uuid::uuid4()->toString();
-
-            if ($request->hasFile('uploaded_receipt1')) {
-                $data['uploaded_receipt1'] = $uuid . '_' . $request->uploaded_receipt1->getClientOriginalName();
-                $file = $request->file('uploaded_receipt1');  
-                $filename = $uuid . '_' . $file->getClientOriginalName();  
-                $file->move(public_path('images/uploaded-receipts'), $filename);  
-            }
+                        if ($request->hasFile('uploaded_receipt1')) {
+                            $data['status'] = OrderList::forPO; 
+                            $data['uploaded_receipt1'] = $uuid . '_' . $request->uploaded_receipt1->getClientOriginalName();
+                            $file = $request->file('uploaded_receipt1');  
+                            $filename = $uuid . '_' . $file->getClientOriginalName();  
+                            $file->move(public_path('images/uploaded-receipts'), $filename);  
+                        }
+                        
+                        $orderList->update($data);
             
-            $orderList->update($data);
+                        $responseData = ['message' => 'Order Update Successfully and Success in pushing data to DIMFS', 'status' => 'success'];   
 
+                        return redirect('/bto_order_list')->with($responseData);
+                    }else {
+
+                        $responseData = ['message' => 'Error in pushing data to DIMFS', 'status' => 'error'];   
+                        return back()->with($responseData);
+                    }
+
+                }else {
+                    $uuid = Uuid::uuid4()->toString();
+                    if ($request->hasFile('uploaded_receipt1')) {
+                        $data['status'] = OrderList::forPO; 
+                        $data['uploaded_receipt1'] = $uuid . '_' . $request->uploaded_receipt1->getClientOriginalName();
+                        $file = $request->file('uploaded_receipt1');  
+                        $filename = $uuid . '_' . $file->getClientOriginalName();  
+                        $file->move(public_path('images/uploaded-receipts'), $filename);  
+                    }
+                    $orderList->update($data);
+                    
+                    $responseData = ['message' => 'Order Update Successfully!', 'status' => 'success'];   
+
+                    return redirect('/bto_order_list')->with($responseData);
+                }
+                
+            }
+
+     
         }else if ($orderList->status == OrderList::forPO) {
             $data = [
                 'status' => OrderList::forDR,
@@ -318,14 +351,23 @@ class OrderListController extends Controller
         $xAuthorizationToken = md5( $secretKey . $uniqueString . $userAgent);
         $xAuthorizationTime = $uniqueString;
 
-        $apiItems = Http::withHeaders([
+        $response = $apiItems = Http::withHeaders([
             'X-Authorization-Token' => $xAuthorizationToken,
             'X-Authorization-Time' => $xAuthorizationTime,
             'User-Agent' => $userAgent
         ])->post($url, $data);
 
+        // dd($response->body());
+        // dd([
+        //     'url' => $url,
+        //     'data' => $data,
+        //     'response_status' => $response->status(),
+        //     'response_body' => $response->body()
+        // ]);
+
         return json_decode($apiItems->body(),true);
         }
+        
 
     public function export(Request $request)
     {

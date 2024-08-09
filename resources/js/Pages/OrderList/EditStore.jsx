@@ -79,11 +79,16 @@ const EditStore = ({ order_list, status, store_name }) => {
                     post("/bto_order_list/edit_save", {
                         onSuccess: (response) => {
                             console.log(response);
+
+                            // handleToast(
+                            //     data.action === "Void"
+                            //         ? "Order Voided successfully"
+                            //         : "Order Cancelled successfully",
+                            //     "success"
+                            // );
                             handleToast(
-                                data.action === "Void"
-                                    ? "Order Voided successfully"
-                                    : "Order Cancelled successfully",
-                                "success"
+                                response.props.auth.sessions.message,
+                                response.props.auth.sessions.status
                             );
                         },
                     });
