@@ -108,10 +108,10 @@ class ItemMasterController extends Controller{
         $updatedItems = $this->getItemMasterDataApiV2(config('services.item_master.url'));
         foreach ($updatedItems['data'] ?? [] as $key => $value) {
             try {
-                ItemMaster::where('part_number', $value['supplier_item_code'])->update([
+                ItemMaster::where('part_number', $value['upc_code'])->update([
                     'digits_code' => $value['digits_code'],
                 ]);
-                OrderList::where('part_number', $value['supplier_item_code'])->update([
+                OrderList::where('part_number', $value['upc_code'])->update([
                     'digits_code' => $value['digits_code'],
                 ]);
                 
