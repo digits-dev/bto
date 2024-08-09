@@ -82,9 +82,14 @@ class ItemMasterController extends Controller{
     public function getItemMasterDataApiV2($url) {
             $secretKey = config('services.item_master.key');
             $uniqueString = time();
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
-            if($userAgent == '' || is_null($userAgent)){
-                $userAgent = config('item-api.user_agent');
+            // $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            // if($userAgent == '' || is_null($userAgent)){    
+            //     $userAgent = config('item-api.user_agent');
+            // }
+            if (php_sapi_name() == 'cli') {
+                $userAgent = 'Scheduled Task';
+            } else {
+                $userAgent = $request->header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36');
             }
             $xAuthorizationToken = md5( $secretKey . $uniqueString . $userAgent);
             $xAuthorizationTime = $uniqueString;
@@ -115,8 +120,8 @@ class ItemMasterController extends Controller{
             }
         }
 
-       
 }
+
 }
 
 ?>

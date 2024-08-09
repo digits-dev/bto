@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
         // $schedule->call('\App\Http\Controllers\PullErpController@getListOfOrdersFromErpv2')->everyMinute();
         // $schedule->call('\App\Http\Controllers\ItemMaster\ItemMasterController@getItemMasterDataApi')->hourly()->between('9:00', '23:00');
         $schedule->call('\App\Http\Controllers\ItemMaster\ItemMasterController@getUpdateItem')->everyMinute();
+
+
+
         $schedule->command('mysql:backup')->daily()->at('06:00');
     }
 
