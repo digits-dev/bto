@@ -132,7 +132,7 @@ const EditFormMerchandising = ({
         if (finalSrpRef.current !== "") {
             const finalSrpValue = parseFloat(finalSrpRef.current);
             if (
-                finalSrpValue >= parseFloat(order_list.estimated_store_cost) ||
+                finalSrpValue >= parseFloat(order_list.estimated_store_cost) &&
                 finalSrpValue >= parseFloat(order_list.estimated_landed_cost)
             ) {
                 setIsFinalSrpAbove(true);
