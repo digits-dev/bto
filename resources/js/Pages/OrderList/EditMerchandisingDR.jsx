@@ -147,6 +147,16 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                     name="item_description"
                                     value={order_list.item_description}
                                 />
+                                {order_list.digits_item_description && (
+                                    <InputComponent
+                                        extendClass="w-full"
+                                        is_disabled={true}
+                                        name="digits_item_description"
+                                        value={
+                                            order_list.digits_item_description
+                                        }
+                                    />
+                                )}
                                 <InputComponent
                                     extendClass="w-full"
                                     is_disabled={true}
@@ -162,16 +172,6 @@ const EditFormMerchandisingDR = ({ order_list, status, store_name }) => {
                                         is_disabled={true}
                                         displayName="Digits Code"
                                         value={order_list.digits_code}
-                                    />
-                                )}
-                                {order_list.digits_item_description && (
-                                    <InputComponent
-                                        extendClass="w-full"
-                                        is_disabled={true}
-                                        name="digits_item_description"
-                                        value={
-                                            order_list.digits_item_description
-                                        }
                                     />
                                 )}
                                 <InputComponent

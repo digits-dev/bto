@@ -374,7 +374,7 @@ class OrderListController extends Controller
 
         $filename = "BTO Order List - " . date ('Y-m-d H:i:s');
 
-        $data = OrderList::getAllData();
+        $data = self::getAllData();
 
         return Excel::download(new OrderListExport($data), $filename . '.xlsx');
     }
