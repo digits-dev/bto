@@ -375,7 +375,7 @@ const EditFormMerchandising = ({
                                         extendClass="w-full"
                                         extendClass1={`${
                                             data.final_srp && !isFinalSrpAbove
-                                                ? "border-red-500"
+                                                ? "!border-red-500"
                                                 : ""
                                         }`}
                                         is_disabled={true}
@@ -391,7 +391,7 @@ const EditFormMerchandising = ({
                                         extendClass="w-full"
                                         extendClass1={`${
                                             data.final_srp && !isFinalSrpAbove
-                                                ? "border-red-500"
+                                                ? "!border-red-500"
                                                 : ""
                                         }`}
                                         is_disabled={true}
@@ -533,7 +533,8 @@ const EditFormMerchandising = ({
                             text-red-500 font-nunito-sans text-sm text-center"
                                 >
                                     Note: Please upload a screenshot of BTO
-                                    build with <strong>Peso Amount</strong> price from <strong>Apple Website</strong>.
+                                    build with <strong>Peso Amount</strong>{" "}
+                                    price from <strong>Apple Website</strong>.
                                 </span>
                             </div>
                         )}
